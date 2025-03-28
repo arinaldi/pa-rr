@@ -1,4 +1,5 @@
-import { Album, Song } from './types';
+import { MONTHS } from './constants';
+import { Album, Release, Song } from './types';
 
 export interface ListItem {
   artist: string;
@@ -34,6 +35,35 @@ export function formatFavorites(favorites: RankedAlbum[]): FavoriteResults {
       results[year].push(data);
     } else {
       results[year] = [data];
+    }
+  });
+
+  return results;
+}
+
+function formatReleaseDate(isoString: string) {
+  const newDate = new Date(isoString);
+  const date = newDate.getUTCDate();
+  const month = newDate.getUTCMonth();
+  const year = newDate.getUTCFullYear();
+
+  return `${date} ${MONTHS[month]} ${year}`;
+}
+
+export interface ReleaseResults {
+  [key: string]: Release[];
+}
+
+export function formatReleases(releases: Release[]): ReleaseResults {
+  const results: ReleaseResults = {};
+
+  releases.forEach((r) => {
+    const releaseDate = r.date ? formatReleaseDate(r.date) : 'TBD';
+
+    if (results[releaseDate]) {
+      results[releaseDate].push(r);
+    } else {
+      results[releaseDate] = [r];
     }
   });
 

@@ -17,6 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 const items = [
   {
@@ -51,15 +52,33 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Perfect Albums</SidebarGroupLabel>
+          <SidebarGroupLabel className="uppercase tracking-widest font-semibold">
+            Perfect Albums
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                      {({ isActive }) => (
+                        <>
+                          <item.icon
+                            className={cn(
+                              isActive ? '' : 'text-muted-foreground'
+                            )}
+                          />
+                          <span
+                            className={cn(
+                              isActive
+                                ? 'font-semibold'
+                                : 'text-muted-foreground'
+                            )}
+                          >
+                            {item.title}
+                          </span>
+                        </>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

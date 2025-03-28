@@ -1,8 +1,9 @@
 import { createBrowserRouter } from 'react-router';
 
 import Test from '@/components/test';
-import { getAlbums } from '@/supabase/data';
+import { getAlbums, getSongs } from '@/supabase/data';
 import ErrorPage from './error-page';
+import FeaturedSongs from './routes/songs/featured-songs';
 import TopAlbums from './routes/albums/top-albums';
 import Root from './routes/root';
 
@@ -32,7 +33,8 @@ export const router = createBrowserRouter([
       },
       {
         path: '/songs',
-        Component: Test,
+        Component: FeaturedSongs,
+        loader: getSongs,
       },
     ],
   },

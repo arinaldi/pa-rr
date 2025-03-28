@@ -1,4 +1,4 @@
-import { formatFavorites } from '@/lib/utils';
+import { formatFavorites, formatSongs } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 
 export async function getAlbums() {
@@ -26,5 +26,14 @@ export async function getAlbums() {
   return {
     count: data?.length ?? 0,
     favorites: formatFavorites(data ?? []),
+  };
+}
+
+export async function getSongs() {
+  const { data } = await supabase.from('songs').select('*').order('artist');
+
+  return {
+    count: data?.length ?? 0,
+    songs: formatSongs(data ?? []),
   };
 }

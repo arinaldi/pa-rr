@@ -29,6 +29,20 @@ export async function getAlbums() {
   };
 }
 
+interface Artist {
+  artist: string;
+}
+
+export async function getArtists() {
+  const { data } = await supabase.rpc('get_artists');
+  const artists = (data as unknown as Artist[]) ?? [];
+
+  return {
+    artists: artists.map((a) => a.artist),
+    count: artists.length,
+  };
+}
+
 export async function getReleases() {
   const { data } = await supabase.from('releases').select('*').order('artist');
 

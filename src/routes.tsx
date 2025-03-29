@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router';
 
 import Test from '@/components/test';
-import { getAlbums, getReleases, getSongs } from '@/supabase/data';
+import { getAlbums, getArtists, getReleases, getSongs } from '@/supabase/data';
+import Artists from './routes/artists/artists';
 import ErrorPage from './error-page';
 import FeaturedSongs from './routes/songs/featured-songs';
 import NewReleases from './routes/releases/new-releases';
@@ -22,7 +23,8 @@ export const router = createBrowserRouter([
       },
       {
         path: '/artists',
-        Component: Test,
+        Component: Artists,
+        loader: getArtists,
       },
       {
         path: '/dashboard',

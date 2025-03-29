@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 
+import { Fallback } from '@/components/fallback';
 import Test from '@/components/test';
 import { getAlbums, getArtists, getReleases, getSongs } from '@/supabase/data';
 import Artists from './routes/artists/artists';
@@ -15,7 +16,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     errorElement: <ErrorPage />,
-    HydrateFallback: () => <div>Loading...</div>,
+    HydrateFallback: Fallback,
     children: [
       {
         path: '/albums',

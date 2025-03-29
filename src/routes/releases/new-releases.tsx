@@ -10,6 +10,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getReleases } from '@/supabase/data';
+import AddReleaseModal from './add-release-modal';
+import ReleaseActions from './release-actions';
 
 export default function NewReleases() {
   const { count, releases } = useLoaderData<typeof getReleases>();
@@ -22,6 +24,7 @@ export default function NewReleases() {
           <Badge variant="secondary">{count.toLocaleString()}</Badge>
         </div>
       }
+      titleAction={<AddReleaseModal />}
     >
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {Object.entries(releases)
@@ -53,7 +56,7 @@ export default function NewReleases() {
                           </span>{' '}
                           {r.title}
                         </span>
-                        {/* {<ReleaseActions release={r} />} */}
+                        {<ReleaseActions release={r} />}
                       </span>
                     </li>
                   ))}

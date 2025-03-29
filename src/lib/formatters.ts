@@ -1,6 +1,21 @@
 import { MONTHS } from './constants';
 import { Album, Release, Song } from './types';
 
+function addZeroPrefix(value: number) {
+  return value < 10 ? `0${value}` : value;
+}
+
+export function formatDate(isoString: string): string {
+  if (!isoString) return '';
+
+  const date = new Date(isoString);
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+
+  return `${year}-${addZeroPrefix(month)}-${addZeroPrefix(day)}`;
+}
+
 export interface ListItem {
   artist: string;
   id: number;

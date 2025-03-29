@@ -6,8 +6,9 @@ import Artists from './routes/artists/artists';
 import ErrorPage from './error-page';
 import FeaturedSongs from './routes/songs/featured-songs';
 import NewReleases from './routes/releases/new-releases';
-import TopAlbums from './routes/albums/top-albums';
 import Root from './routes/root';
+import SignIn from './routes/signin/signin';
+import TopAlbums from './routes/albums/top-albums';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
         path: '/releases',
         Component: NewReleases,
         loader: getReleases,
+      },
+      {
+        path: '/signin',
+        Component: SignIn,
       },
       {
         path: '/songs',

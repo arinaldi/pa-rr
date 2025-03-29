@@ -1,4 +1,10 @@
-import { CalendarIcon, LayersIcon, UserIcon, Volume1Icon } from 'lucide-react';
+import {
+  CalendarIcon,
+  LayersIcon,
+  LayoutDashboardIcon,
+  UserIcon,
+  Volume1Icon,
+} from 'lucide-react';
 
 /* ENUM */
 
@@ -63,6 +69,8 @@ export const DECADES = [
   },
 ];
 
+export const EMAIL = import.meta.env.VITE_EMAIL;
+
 export const MONTHS = [
   'Jan',
   'Feb',
@@ -89,6 +97,11 @@ export const ROUTE_HREF = {
 };
 
 export const ROUTES = [
+  {
+    href: ROUTE_HREF.DASHBOARD,
+    icon: LayoutDashboardIcon,
+    label: 'Dashboard',
+  },
   {
     href: ROUTE_HREF.TOP_ALBUMS,
     icon: LayersIcon,

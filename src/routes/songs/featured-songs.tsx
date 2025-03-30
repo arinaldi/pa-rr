@@ -4,8 +4,10 @@ import { ArrowUpIcon } from 'lucide-react';
 
 import AppLayout from '@/components/app-layout';
 import { Badge } from '@/components/ui/badge';
-import { getSongs } from '@/supabase/data';
 import { HEADER_LETTERS } from '@/lib/formatters';
+import { getSongs } from '@/supabase/data';
+import AddSongModal from './add-song-modal';
+import SongActions from './song-actions';
 
 export default function FeaturedSongs() {
   const { count, songs } = useLoaderData<typeof getSongs>();
@@ -18,6 +20,7 @@ export default function FeaturedSongs() {
           <Badge variant="secondary">{count.toLocaleString()}</Badge>
         </div>
       }
+      titleAction={<AddSongModal />}
     >
       <div className="flex flex-wrap gap-1.5">
         {HEADER_LETTERS.map((l, index) => (
@@ -62,7 +65,7 @@ export default function FeaturedSongs() {
                           {s.title}
                         </a>
                       </span>
-                      {/* {<SongActions song={s} />} */}
+                      {<SongActions song={s} />}
                     </span>
                   </li>
                 ))}

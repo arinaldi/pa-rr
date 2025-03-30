@@ -1,7 +1,8 @@
+'use client';
 import { useState } from 'react';
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react';
 
-import { Release } from '@/lib/types';
+import { Song } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {
@@ -13,11 +14,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useSession } from '@/components/session-provider';
-import DeleteReleaseModal from './delete-release-modal';
-import EditReleaseModal from './edit-release-modal';
+import DeleteSongModal from './delete-song-modal';
+import EditSongModal from './edit-song-modal';
 
 interface Props {
-  release: Release;
+  song: Song;
 }
 
 interface ModalState {
@@ -25,7 +26,7 @@ interface ModalState {
   type: 'delete' | 'edit';
 }
 
-export default function ReleaseActions({ release }: Props) {
+export default function SongActions({ song }: Props) {
   const session = useSession();
   const [modal, setModal] = useState<ModalState>({
     open: false,
@@ -45,7 +46,7 @@ export default function ReleaseActions({ release }: Props) {
     >
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button className="-mr-1 -mt-1.5 size-8 shrink-0 p-0" variant="ghost">
+          <Button className="-mt-1 size-8 shrink-0 p-0" variant="ghost">
             <span className="sr-only">Open menu</span>
             <EllipsisVerticalIcon className="size-4" />
           </Button>
@@ -73,11 +74,9 @@ export default function ReleaseActions({ release }: Props) {
           </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
-      {modal.type === 'edit' && (
-        <EditReleaseModal onClose={onClose} release={release} />
-      )}
+      {modal.type === 'edit' && <EditSongModal onClose={onClose} song={song} />}
       {modal.type === 'delete' && (
-        <DeleteReleaseModal onClose={onClose} release={release} />
+        <DeleteSongModal onClose={onClose} song={song} />
       )}
     </Dialog>
   );

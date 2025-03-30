@@ -43,8 +43,8 @@ export default function OtpForm({ email, onCancel }: Props) {
   const { onSubmit, submitting } = useSubmit({
     callbacks: [],
     handleSubmit: form.handleSubmit,
-    submitFn: async ({ code, email, name }: VerifyOtpInput) => {
-      if (name || email !== EMAIL) {
+    submitFn: async ({ code, email }: VerifyOtpInput) => {
+      if (email !== EMAIL) {
         throw new Error(MESSAGES.INVALID_DATA);
       }
 
@@ -101,7 +101,6 @@ export default function OtpForm({ email, onCancel }: Props) {
               </FormItem>
             )}
           />
-          <Input className="hidden" id="name" name="name" tabIndex={-1} />
           <SubmitButton className="mt-6 w-full" submitting={submitting}>
             Submit
           </SubmitButton>

@@ -1,7 +1,9 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, redirect } from 'react-router';
 
 import { Fallback } from '@/components/fallback';
 import Test from '@/components/test';
+import { ROUTE_HREF } from '@/lib/constants';
+import { supabase } from '@/supabase/client';
 import { getAlbums, getArtists, getReleases, getSongs } from '@/supabase/data';
 import Artists from './routes/artists/artists';
 import ErrorPage from './error-page';
@@ -40,6 +42,15 @@ export const router = createBrowserRouter([
       {
         path: '/signin',
         Component: SignIn,
+        loader: async () => {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+
+          if (session) {
+            return redirect(ROUTE_HREF.TOP_ALBUMS);
+          }
+        },
       },
       {
         path: '/songs',

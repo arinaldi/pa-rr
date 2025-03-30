@@ -38,10 +38,8 @@ export default function PasswordForm({ email, onCancel }: Props) {
   const { onSubmit, submitting } = useSubmit({
     callbacks: [],
     handleSubmit: form.handleSubmit,
-    submitFn: async ({ email, name, password }: SignInInput) => {
-      console.log({ email, name, password });
-      if (name || email !== EMAIL) {
-        console.log('hit');
+    submitFn: async ({ email, password }: SignInInput) => {
+      if (email !== EMAIL) {
         throw new Error(MESSAGES.INVALID_DATA);
       }
 
@@ -85,7 +83,6 @@ export default function PasswordForm({ email, onCancel }: Props) {
               </FormItem>
             )}
           />
-          <Input className="hidden" id="name" name="name" tabIndex={-1} />
           <SubmitButton className="mt-6 w-full" submitting={submitting}>
             Submit
           </SubmitButton>

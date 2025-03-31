@@ -127,8 +127,8 @@ export const ROUTES = [
 export const ROUTES_ADMIN = {
   add: { href: '/admin/add', label: 'Add album' },
   base: { href: '/admin', label: 'Admin' },
-  edit: { href: '/admin/edit', label: 'Edit album' },
-  delete: { href: '/admin/delete', label: 'Delete album' },
+  edit: { href: '/admin/edit/:id', label: 'Edit album' },
+  // delete: { href: '/admin/delete', label: 'Delete album' },
 };
 
 export const SPOTIFY_URL = 'https://open.spotify.com/search';

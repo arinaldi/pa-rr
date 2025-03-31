@@ -54,7 +54,6 @@ export default function PasswordForm({ email, onCancel }: Props) {
         throw new Error(error.message);
       }
     },
-    successMessage: 'Success',
   });
 
   return (

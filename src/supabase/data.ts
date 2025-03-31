@@ -2,11 +2,29 @@ import { type LoaderFunctionArgs } from 'react-router';
 
 import { formatFavorites, formatReleases, formatSongs } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
-import { SORT_DIRECTION } from '@/lib/constants';
+import { MESSAGES, SORT_DIRECTION } from '@/lib/constants';
 import { type Album } from '@/lib/types';
 import { parseAdminQuery } from '@/lib/utils';
 
 const { ASC, DESC } = SORT_DIRECTION;
+
+export async function getAlbum({ params }: LoaderFunctionArgs<any>) {
+  if (!params.id) {
+    throw new Error(MESSAGES.NO_DATA);
+  }
+
+  const { data } = await supabase
+    .from('albums')
+    .select('*')
+    .eq('id', parseInt(params.id, 10))
+    .single();
+
+  if (!data) {
+    throw new Error(MESSAGES.NO_DATA);
+  }
+
+  return { album: data as Album };
+}
 
 async function getAlbums({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);

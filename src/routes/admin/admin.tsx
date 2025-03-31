@@ -1,8 +1,9 @@
-import { useLoaderData } from 'react-router';
+import { Link, useLoaderData, useSearchParams } from 'react-router';
 import { CheckIcon, DiscIcon } from 'lucide-react';
 
 import AppLayout from '@/components/app-layout';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -14,14 +15,15 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { getAdminData } from '@/supabase/data';
-// import AddAlbumButton from './add-album-button';
 import DataEmptyPlaceholder from './data-empty-placeholder';
 import Paginate from './paginate';
 import Search from './search';
 import SortableColumn from './sortable-column';
 import TableLink from './table-link';
+import { ROUTES_ADMIN } from '@/lib/constants';
 
 export default function Admin() {
+  const [searchParams] = useSearchParams();
   const { albums, cdTotal, total } = useLoaderData<typeof getAdminData>();
 
   return (
@@ -47,7 +49,9 @@ export default function Admin() {
       <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <Search autoFocus type="artist" />
         <Search type="title" />
-        {/* <AddAlbumButton /> */}
+        <Link to={`${ROUTES_ADMIN.add.href}?${searchParams.toString()}`}>
+          <Button type="button">Add album</Button>
+        </Link>
       </div>
 
       {albums?.length === 0 ? (

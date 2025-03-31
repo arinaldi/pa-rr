@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -21,7 +22,7 @@ import {
 import SubmitButton from '@/components/submit-button';
 import { useMobile } from '@/hooks/use-mobile';
 import { useSubmit } from '@/hooks/use-submit';
-import { EMAIL, MESSAGES } from '@/lib/constants';
+import { EMAIL, MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { verifyOtpSchema, type VerifyOtpInput } from './schema';
 
@@ -31,6 +32,7 @@ interface Props {
 }
 
 export default function OtpForm({ email, onCancel }: Props) {
+  const navigate = useNavigate();
   const mobile = useMobile();
   const form = useForm<VerifyOtpInput>({
     defaultValues: {
@@ -41,7 +43,7 @@ export default function OtpForm({ email, onCancel }: Props) {
   });
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [],
+    callbacks: [() => navigate(ROUTES_ADMIN.base.href)],
     handleSubmit: form.handleSubmit,
     submitFn: async ({ code, email }: VerifyOtpInput) => {
       if (email !== EMAIL) {

@@ -1,7 +1,102 @@
+import { type LoaderFunctionArgs } from 'react-router';
+
 import { formatFavorites, formatReleases, formatSongs } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
+import { SORT_DIRECTION } from '@/lib/constants';
+import { type Album } from '@/lib/types';
+import { parseAdminQuery } from '@/lib/utils';
 
-export async function getAlbums() {
+const { ASC, DESC } = SORT_DIRECTION;
+
+async function getAlbums({ request }: LoaderFunctionArgs<any>) {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+  const searchParams = Object.fromEntries(params.entries());
+  const { artist, page, perPage, sort, studio, title } =
+    parseAdminQuery(searchParams);
+  const [sortProp, desc] = sort.split(':') ?? [];
+  const direction = desc ? DESC : ASC;
+  const start = (page - 1) * perPage;
+  const end = page * perPage - 1;
+
+  let query = supabase
+    .from('albums')
+    .select('*', { count: 'exact' })
+    .ilike('artist', `%${artist}%`)
+    .ilike('title', `%${title}%`)
+    .range(start, end);
+
+  if (studio === 'true') {
+    query = query.eq('studio', true);
+  }
+
+  if (sortProp) {
+    query = query.order(sortProp, { ascending: direction === ASC });
+  } else {
+    query = query
+      .order('artist', { ascending: true })
+      .order('title', { ascending: true });
+  }
+
+  if (sortProp === 'artist') {
+    query = query.order('title', { ascending: true });
+  } else {
+    query = query.order('artist', { ascending: direction === ASC });
+  }
+
+  const { data, count } = await query;
+
+  return {
+    albums: (data as Album[]) ?? [],
+    total: count ?? 0,
+  };
+}
+
+async function getCdCount({ request }: LoaderFunctionArgs<any>) {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+  const searchParams = Object.fromEntries(params.entries());
+  const { artist, studio, title } = parseAdminQuery(searchParams);
+  let query = supabase
+    .from('albums')
+    .select('*', { count: 'exact', head: true })
+    .eq('cd', true)
+    .ilike('artist', `%${artist}%`)
+    .ilike('title', `%${title}%`);
+
+  if (studio === 'true') {
+    query = query.eq('studio', true);
+  }
+
+  const { count } = await query;
+
+  return count ?? 0;
+}
+
+export async function getAdminData(args: LoaderFunctionArgs<any>) {
+  const [{ albums, total }, cdTotal] = await Promise.all([
+    getAlbums(args),
+    getCdCount(args),
+  ]);
+
+  return { albums, cdTotal, total };
+}
+
+interface Artist {
+  artist: string;
+}
+
+export async function getArtists() {
+  const { data } = await supabase.rpc('get_artists');
+  const artists = (data as unknown as Artist[]) ?? [];
+
+  return {
+    artists: artists.map((a) => a.artist),
+    count: artists.length,
+  };
+}
+
+export async function getFavorites() {
   const { data } = await supabase
     .from('albums')
     .select(
@@ -26,20 +121,6 @@ export async function getAlbums() {
   return {
     count: data?.length ?? 0,
     favorites: formatFavorites(data ?? []),
-  };
-}
-
-interface Artist {
-  artist: string;
-}
-
-export async function getArtists() {
-  const { data } = await supabase.rpc('get_artists');
-  const artists = (data as unknown as Artist[]) ?? [];
-
-  return {
-    artists: artists.map((a) => a.artist),
-    count: artists.length,
   };
 }
 

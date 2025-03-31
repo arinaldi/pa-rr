@@ -12,10 +12,10 @@ import {
 } from '@/components/ui/card';
 import { SPOTIFY_URL } from '@/lib/constants';
 import { capitalizeFirstLetter } from '@/lib/utils';
-import { getAlbums } from '@/supabase/data';
+import { getFavorites } from '@/supabase/data';
 
 export default function TopAlbums() {
-  const { count, favorites } = useLoaderData<typeof getAlbums>();
+  const { count, favorites } = useLoaderData<typeof getFavorites>();
 
   return (
     <AppLayout

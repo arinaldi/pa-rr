@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from 'react-router';
-import { ChevronUp, CircleUser } from 'lucide-react';
+import { ChevronUp, CircleUser, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -82,6 +82,32 @@ export function AppSidebar({ children }: Children) {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+                {session && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <NavLink to={ROUTES_ADMIN.base.href}>
+                        {({ isActive }) => (
+                          <>
+                            <Lock
+                              className={cn(
+                                isActive ? '' : 'text-muted-foreground'
+                              )}
+                            />
+                            <span
+                              className={cn(
+                                isActive
+                                  ? 'font-semibold'
+                                  : 'text-muted-foreground'
+                              )}
+                            >
+                              {ROUTES_ADMIN.base.label}
+                            </span>
+                          </>
+                        )}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

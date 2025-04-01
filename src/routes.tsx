@@ -9,6 +9,7 @@ import Artists from '@/routes/artists/artists';
 import EditAlbum from '@/routes/admin/edit-album';
 import FeaturedSongs from '@/routes/songs/featured-songs';
 import NewReleases from '@/routes/releases/new-releases';
+import Playlist from '@/routes/playlist/playlist';
 import Root from '@/routes/root';
 import SignIn from '@/routes/signin/signin';
 import TopAlbums from '@/routes/albums/top-albums';
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.NEW_RELEASES,
         Component: NewReleases,
         loader: getReleases,
+      },
+      {
+        path: '/playlist',
+        Component: Playlist,
       },
       {
         path: ROUTE_HREF.SIGNIN,

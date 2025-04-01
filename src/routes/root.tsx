@@ -7,15 +7,15 @@ import { Toaster } from '@/components/ui/sonner';
 
 export default function Root() {
   return (
-    <ThemeProvider>
-      <SessionProvider>
+    <SessionProvider>
+      <ThemeProvider>
         <AppSidebar>
           <main className="isolate">
             <Outlet />
           </main>
           <Toaster position="top-right" richColors />
         </AppSidebar>
-      </SessionProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }

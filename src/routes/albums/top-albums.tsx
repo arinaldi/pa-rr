@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router';
+import { Link, useLoaderData } from 'react-router';
 import { ArrowUpIcon } from 'lucide-react';
 
 import {
@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { SPOTIFY_URL } from '@/lib/constants';
+import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { getFavorites } from '@/supabase/data';
 import { DecadeSelect } from './decade-select';
@@ -18,7 +18,15 @@ export default function TopAlbums() {
 
   return (
     <div className="space-y-4">
-      <DecadeSelect />
+      <div className="flex flex-wrap items-center gap-2">
+        <Link
+          className="text-foreground hover:text-muted-foreground text-sm underline underline-offset-4"
+          to={ROUTE_HREF.ALL_TIME}
+        >
+          All-time list
+        </Link>
+        <DecadeSelect />
+      </div>
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {Object.entries(favorites)
           .sort((a, b) => Number(b[0]) - Number(a[0]))

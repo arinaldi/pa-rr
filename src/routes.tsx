@@ -4,6 +4,7 @@ import { Fallback } from '@/components/fallback';
 import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
 import AddAlbum from '@/routes/admin/add-album';
 import Admin from '@/routes/admin/admin';
+import AllTimeRankings from '@/routes/albums/all-time-rankings';
 import Artists from '@/routes/artists/artists';
 import EditAlbum from '@/routes/admin/edit-album';
 import FeaturedSongs from '@/routes/songs/featured-songs';
@@ -16,6 +17,7 @@ import { supabase } from '@/supabase/client';
 import {
   getAdminData,
   getAlbum,
+  getAllTimeRankings,
   getArtists,
   getFavorites,
   getReleases,
@@ -39,7 +41,6 @@ export const router = createBrowserRouter([
     HydrateFallback: Fallback,
     children: [
       {
-        id: ROUTES_ADMIN.base.href,
         path: ROUTES_ADMIN.base.href,
         Component: Admin,
         loader: async (args) => {
@@ -53,7 +54,6 @@ export const router = createBrowserRouter([
         },
       },
       {
-        id: ROUTES_ADMIN.add.href,
         path: ROUTES_ADMIN.add.href,
         Component: AddAlbum,
         loader: async () => {
@@ -81,31 +81,31 @@ export const router = createBrowserRouter([
         },
       },
       {
-        id: ROUTE_HREF.TOP_ALBUMS,
         path: ROUTE_HREF.TOP_ALBUMS,
         Component: TopAlbums,
         loader: getFavorites,
       },
       {
-        id: ROUTE_HREF.ARTISTS,
+        path: ROUTE_HREF.ALL_TIME,
+        Component: AllTimeRankings,
+        loader: getAllTimeRankings,
+      },
+      {
         path: ROUTE_HREF.ARTISTS,
         Component: Artists,
         loader: getArtists,
       },
       {
-        id: ROUTE_HREF.NEW_RELEASES,
         path: ROUTE_HREF.NEW_RELEASES,
         Component: NewReleases,
         loader: getReleases,
       },
       {
-        id: '/playlist',
         path: '/playlist',
         Component: Playlist,
         loader: () => ({ title: 'Playlist' }),
       },
       {
-        id: ROUTE_HREF.SIGNIN,
         path: ROUTE_HREF.SIGNIN,
         Component: SignIn,
         loader: async () => {
@@ -119,7 +119,6 @@ export const router = createBrowserRouter([
         },
       },
       {
-        id: ROUTE_HREF.FEATURED_SONGS,
         path: ROUTE_HREF.FEATURED_SONGS,
         Component: FeaturedSongs,
         loader: getSongs,

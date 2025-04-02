@@ -1,8 +1,6 @@
 import { useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 
-import AppLayout from '@/components/app-layout';
-import { Badge } from '@/components/ui/badge';
 // import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import InputClearButton from '@/components/input-clear-button';
@@ -75,78 +73,68 @@ export default function Artists() {
   */
 
   return (
-    <AppLayout
-      title={
-        <div className="flex items-center gap-2">
-          <span>Artists</span>
-          <Badge variant="secondary">
-            {filteredArtists.length.toLocaleString()}
-          </Badge>
-        </div>
-      }
-    >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
-        <div className="flex shrink-0 flex-col gap-4">
-          <div className="relative">
-            <Input
-              autoFocus
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search"
-              ref={searchRef}
-              value={search}
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
+      <div className="flex shrink-0 flex-col gap-4">
+        <div className="relative">
+          <Input
+            autoFocus
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search"
+            ref={searchRef}
+            value={search}
+          />
+          {!fetching && search && (
+            <InputClearButton
+              onClick={() => {
+                setSearch('');
+                searchRef?.current?.focus();
+              }}
             />
-            {!fetching && search && (
-              <InputClearButton
-                onClick={() => {
-                  setSearch('');
-                  searchRef?.current?.focus();
-                }}
-              />
-            )}
-            {fetching && <InputSpinner />}
-          </div>
-          <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
-            <div className="p-4">
-              {filteredArtists.map((a, index) => {
-                // if (user) {
-                //   return (
-                //     <div key={a}>
-                //       <Button
-                //         className={cn(
-                //           'block h-auto px-0 py-0.5 text-left text-sm',
-                //           results.artist === a
-                //             ? 'font-semibold'
-                //             : 'font-normal',
-                //         )}
-                //         disabled={fetching}
-                //         onClick={() => fetchReleases(a)}
-                //         size="sm"
-                //         variant="link"
-                //       >
-                //         {a}
-                //       </Button>
-                //       {index !== filteredArtists.length - 1 && (
-                //         <Separator className="my-2" />
-                //       )}
-                //     </div>
-                //   );
-                // }
-
-                return (
-                  <div key={a}>
-                    <p className="text-sm">{a}</p>
-                    {index !== filteredArtists.length - 1 && (
-                      <Separator className="my-2" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </ScrollArea>
+          )}
+          {fetching && <InputSpinner />}
         </div>
-        <div className="flex shrink-0 flex-col gap-4">
-          <Random artists={artists} />
-          {/* {results.type === 'releases' && results.data.length > 0 && (
+        <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
+          <div className="p-4">
+            {filteredArtists.map((a, index) => {
+              // if (user) {
+              //   return (
+              //     <div key={a}>
+              //       <Button
+              //         className={cn(
+              //           'block h-auto px-0 py-0.5 text-left text-sm',
+              //           results.artist === a
+              //             ? 'font-semibold'
+              //             : 'font-normal',
+              //         )}
+              //         disabled={fetching}
+              //         onClick={() => fetchReleases(a)}
+              //         size="sm"
+              //         variant="link"
+              //       >
+              //         {a}
+              //       </Button>
+              //       {index !== filteredArtists.length - 1 && (
+              //         <Separator className="my-2" />
+              //       )}
+              //     </div>
+              //   );
+              // }
+
+              return (
+                <div key={a}>
+                  <p className="text-sm">{a}</p>
+                  {index !== filteredArtists.length - 1 && (
+                    <Separator className="my-2" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
+      </div>
+      <div className="flex shrink-0 flex-col gap-4">
+        <Random artists={artists} />
+        {/* {results.type === 'releases' && results.data.length > 0 && (
             <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
               <div className="p-4">
                 <h4 className="text-sm font-medium">
@@ -176,7 +164,7 @@ export default function Artists() {
               </div>
             </ScrollArea>
           )} */}
-          {/* {results.type === 'related' && results.data.length > 0 && (
+        {/* {results.type === 'related' && results.data.length > 0 && (
             <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
               <div className="p-4">
                 <h4 className="text-sm font-medium">
@@ -202,8 +190,7 @@ export default function Artists() {
               </div>
             </ScrollArea>
           )} */}
-        </div>
       </div>
-    </AppLayout>
+    </div>
   );
 }

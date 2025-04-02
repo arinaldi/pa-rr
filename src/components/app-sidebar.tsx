@@ -1,6 +1,15 @@
-import { Lock } from 'lucide-react';
+import { Outlet } from 'react-router';
+import { Disc, Lock } from 'lucide-react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import MenuLink from '@/components/menu-link';
+import { Separator } from '@/components/ui/separator';
 import {
   Sidebar,
   SidebarContent,
@@ -8,26 +17,49 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { ROUTES, ROUTES_ADMIN } from '@/lib/constants';
-import { Children } from '@/lib/types';
 import { useSession } from './session-provider';
+import PageTitle from './page-title';
 import UserMenu from './user-menu';
 
-export function AppSidebar({ children }: Children) {
+export function AppSidebar() {
   const session = useSession();
+
   return (
     <SidebarProvider>
       <Sidebar>
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" asChild>
+                <div>
+                  <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                    <Disc className="size-4" />
+                  </div>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">
+                      Perfect Albums
+                    </span>
+                    <span className="text-muted-foreground truncate text-xs">
+                      The best music on the net
+                    </span>
+                  </div>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel className="font-semibold tracking-widest uppercase">
-              Perfect Albums
-            </SidebarGroupLabel>
+            <SidebarGroupLabel>Links</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {ROUTES.map((r) => (
@@ -38,29 +70,55 @@ export function AppSidebar({ children }: Children) {
                     to={r.href}
                   />
                 ))}
-                {session && (
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          {session && (
+            <SidebarGroup>
+              <SidebarGroupLabel>Protected</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
                   <MenuLink
                     icon={Lock}
                     label={ROUTES_ADMIN.base.label}
                     to={ROUTES_ADMIN.base.href}
                   />
-                )}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )}
         </SidebarContent>
         <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <UserMenu />
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <UserMenu />
         </SidebarFooter>
       </Sidebar>
-      <div className="flex w-full flex-col">
-        <SidebarTrigger />
-        {children}
-      </div>
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbPage>Perfect Albums</BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="font-semibold">
+                    <PageTitle />
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <main className="isolate mx-auto max-w-7xl min-w-xs gap-4 p-4 pt-0">
+          <Outlet />
+        </main>
+      </SidebarInset>
     </SidebarProvider>
   );
 }

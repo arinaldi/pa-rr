@@ -2,31 +2,22 @@ import { Fragment } from 'react';
 import { useLoaderData } from 'react-router';
 import { ArrowUpIcon } from 'lucide-react';
 
-import AppLayout from '@/components/app-layout';
-import { Badge } from '@/components/ui/badge';
 import { HEADER_LETTERS } from '@/lib/formatters';
 import { getSongs } from '@/supabase/data';
 import AddSongModal from './add-song-modal';
 import SongActions from './song-actions';
 
 export default function FeaturedSongs() {
-  const { count, songs } = useLoaderData<typeof getSongs>();
+  const { songs } = useLoaderData<typeof getSongs>();
 
   return (
-    <AppLayout
-      title={
-        <div className="flex items-center gap-2">
-          <span>Featured songs</span>
-          <Badge variant="secondary">{count.toLocaleString()}</Badge>
-        </div>
-      }
-      titleAction={<AddSongModal />}
-    >
+    <div className="space-y-4">
+      <AddSongModal />
       <div className="flex flex-wrap gap-1.5">
         {HEADER_LETTERS.map((l, index) => (
           <Fragment key={l}>
             <a
-              className="underline underline-offset-4 hover:text-muted-foreground"
+              className="hover:text-muted-foreground underline underline-offset-4"
               key={l}
               href={`#letter-${l}`}
             >
@@ -57,7 +48,7 @@ export default function FeaturedSongs() {
                           {s.artist} &ndash;
                         </span>{' '}
                         <a
-                          className="underline underline-offset-4 hover:text-muted-foreground"
+                          className="hover:text-muted-foreground underline underline-offset-4"
                           href={s.link}
                           rel="noopener noreferrer"
                           target="_blank"
@@ -75,12 +66,12 @@ export default function FeaturedSongs() {
         })}
       </div>
       <a
-        className="fixed bottom-0 right-0 p-5 text-sm text-muted-foreground"
+        className="text-muted-foreground fixed right-0 bottom-0 p-5 text-sm"
         href="#top"
       >
         <ArrowUpIcon className="mr-1 inline size-4" />
         <span>Top</span>
       </a>
-    </AppLayout>
+    </div>
   );
 }

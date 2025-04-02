@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react';
 

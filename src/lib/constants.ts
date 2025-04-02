@@ -88,7 +88,6 @@ export const MONTHS = [
 
 export const ROUTE_HREF = {
   ARTISTS: '/artists',
-  DASHBOARD: '/dashboard',
   FEATURED_SONGS: '/songs',
   NEW_RELEASES: '/releases',
   SIGNIN: '/signin',
@@ -98,26 +97,25 @@ export const ROUTE_HREF = {
 
 export const ROUTES = [
   {
-    href: ROUTE_HREF.DASHBOARD,
-    icon: LayoutDashboardIcon,
-    label: 'Dashboard',
-  },
-  {
+    id: ROUTE_HREF.TOP_ALBUMS,
     href: ROUTE_HREF.TOP_ALBUMS,
     icon: LayersIcon,
     label: 'Top albums',
   },
   {
+    id: ROUTE_HREF.FEATURED_SONGS,
     href: ROUTE_HREF.FEATURED_SONGS,
     icon: Volume1Icon,
     label: 'Featured songs',
   },
   {
+    id: ROUTE_HREF.NEW_RELEASES,
     href: ROUTE_HREF.NEW_RELEASES,
     icon: CalendarIcon,
     label: 'New releases',
   },
   {
+    id: ROUTE_HREF.ARTISTS,
     href: ROUTE_HREF.ARTISTS,
     icon: UserIcon,
     label: 'Artists',
@@ -128,7 +126,6 @@ export const ROUTES_ADMIN = {
   add: { href: '/admin/add', label: 'Add album' },
   base: { href: '/admin', label: 'Admin' },
   edit: { href: '/admin/edit/:id', label: 'Edit album' },
-  // delete: { href: '/admin/delete', label: 'Delete album' },
 };
 
 export const SPOTIFY_URL = 'https://open.spotify.com/search';

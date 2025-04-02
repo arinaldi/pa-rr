@@ -2,7 +2,6 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import AppLayout from '@/components/app-layout';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
@@ -42,9 +41,5 @@ export default function AddAlbum() {
     successMessage: `${MESSAGES.ALBUM_PREFIX} added`,
   });
 
-  return (
-    <AppLayout className="max-w-sm" title="Add album">
-      <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />
-    </AppLayout>
-  );
+  return <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />;
 }

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router';
-import { ChevronUp, CircleUser } from 'lucide-react';
+import { ChevronsUpDown, LogIn, LogOut, User } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,7 +14,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SidebarMenuButton } from '@/components/ui/sidebar';
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '@/components/ui/sidebar';
 import { useSession } from '@/components/session-provider';
 import { useTheme, type Theme } from '@/components/theme-provider';
 import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
@@ -24,6 +29,7 @@ export default function UserMenu() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const session = useSession();
+  const { isMobile } = useSidebar();
   const { setTheme, theme } = useTheme();
 
   function onValueChange(value: string) {
@@ -44,43 +50,107 @@ export default function UserMenu() {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <SidebarMenuButton>
-          {session ? (
-            <>
-              <Avatar className="size-8">
-                <AvatarImage src="/avatars/02.png" />
-                <AvatarFallback>
-                  {`${session.user.user_metadata.firstName[0]}${session.user.user_metadata.lastName[0]}`}
-                </AvatarFallback>
-              </Avatar>
-              {session.user.user_metadata.name}
-            </>
-          ) : (
-            <CircleUser />
-          )}
-          <ChevronUp className="ml-auto" />
-        </SidebarMenuButton>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-44" forceMount side="top">
-        <DropdownMenuGroup>
-          <DropdownMenuLabel className="font-normal">Theme</DropdownMenuLabel>
-          <DropdownMenuRadioGroup onValueChange={onValueChange} value={theme}>
-            <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        {session ? (
-          <DropdownMenuItem onSelect={signOut}>Sign out</DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem onSelect={() => navigate(ROUTE_HREF.SIGNIN)}>
-            Sign in
-          </DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              {session ? (
+                <>
+                  <Avatar className="size-8 rounded-lg">
+                    <AvatarImage
+                      className="bg-gray-300"
+                      src="/avatars/01.svg"
+                    />
+                    <AvatarFallback className="rounded-lg">
+                      {`${session.user.user_metadata.firstName[0]}${session.user.user_metadata.lastName[0]}`}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">
+                      {session.user.user_metadata.name}
+                    </span>
+                    <span className="truncate text-xs">
+                      {session.user.email}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Avatar className="flex size-8 items-center justify-center rounded-lg bg-gray-300">
+                    <User className="size-5" />
+                  </Avatar>
+                </>
+              )}
+              <ChevronsUpDown className="ml-auto size-4" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            side={isMobile ? 'bottom' : 'right'}
+            align="end"
+            sideOffset={4}
+          >
+            {session && (
+              <>
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="size-8 rounded-lg">
+                      <AvatarImage
+                        className="bg-gray-300"
+                        src="/avatars/01.svg"
+                      />
+                      <AvatarFallback className="rounded-lg">
+                        {`${session.user.user_metadata.firstName[0]}${session.user.user_metadata.lastName[0]}`}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {session.user.user_metadata.name}
+                      </span>
+                      <span className="truncate text-xs">
+                        {session.user.email}
+                      </span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="">Theme</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioGroup
+                onValueChange={onValueChange}
+                value={theme}
+              >
+                <DropdownMenuRadioItem value="light">
+                  Light
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="system">
+                  System
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            {session ? (
+              <DropdownMenuItem onSelect={signOut}>
+                <LogOut />
+                Sign out
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem onSelect={() => navigate(ROUTE_HREF.SIGNIN)}>
+                <LogIn />
+                Sign in
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 }

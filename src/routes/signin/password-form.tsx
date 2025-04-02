@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import AppLayout from '@/components/app-layout';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -57,7 +56,7 @@ export default function PasswordForm({ email, onCancel }: Props) {
   });
 
   return (
-    <AppLayout className="max-w-sm" title="Sign in">
+    <div>
       <Form {...form}>
         <form onSubmit={onSubmit}>
           <FormField
@@ -97,6 +96,6 @@ export default function PasswordForm({ email, onCancel }: Props) {
       >
         Cancel
       </Button>
-    </AppLayout>
+    </div>
   );
 }

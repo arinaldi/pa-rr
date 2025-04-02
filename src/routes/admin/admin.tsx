@@ -1,7 +1,6 @@
 import { Link, useLoaderData, useSearchParams } from 'react-router';
 import { CheckIcon, DiscIcon } from 'lucide-react';
 
-import AppLayout from '@/components/app-layout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,34 +23,27 @@ import { ROUTES_ADMIN } from '@/lib/constants';
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
-  const { albums, cdTotal, total } = useLoaderData<typeof getAdminData>();
+  const { albums, cdCount, count } = useLoaderData<typeof getAdminData>();
 
   return (
-    <AppLayout
-      title={
-        <div className="flex items-center gap-2">
-          <span>Admin</span>
-          <Badge variant="secondary">{total.toLocaleString()}</Badge>
-        </div>
-      }
-      titleAction={
-        <div className="flex items-center gap-4 dark:text-white">
-          <code className="text-xs">{__APP_VERSION__}</code>
-          <span className="flex items-center gap-0.5">
-            <Badge variant="secondary">{cdTotal.toLocaleString()}</Badge>
-            <span className="text-sm leading-7">
-              CD{cdTotal === 1 ? '' : 's'}
-            </span>
-          </span>
-        </div>
-      }
-    >
-      <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <Search autoFocus type="artist" />
-        <Search type="title" />
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-2">
         <Link to={`${ROUTES_ADMIN.add.href}?${searchParams.toString()}`}>
           <Button type="button">Add album</Button>
         </Link>
+        <div className="flex items-center gap-4 dark:text-white">
+          <code className="text-xs">{__APP_VERSION__}</code>
+          <span className="flex items-center gap-0.5">
+            <Badge variant="secondary">{cdCount.toLocaleString()}</Badge>
+            <span className="text-sm leading-7">
+              CD{cdCount === 1 ? '' : 's'}
+            </span>
+          </span>
+        </div>
+      </div>
+      <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+        <Search autoFocus type="artist" />
+        <Search type="title" />
       </div>
 
       {albums?.length === 0 ? (
@@ -61,7 +53,7 @@ export default function Admin() {
       ) : (
         <Table>
           <TableHeader>
-            <TableRow className="text-xs uppercase tracking-wider">
+            <TableRow className="text-xs tracking-wider uppercase">
               <SortableColumn prop="artist">Artist</SortableColumn>
               <SortableColumn prop="title">Title</SortableColumn>
               <SortableColumn prop="year">Year</SortableColumn>
@@ -73,11 +65,11 @@ export default function Admin() {
               <TableRow key={a.id}>
                 <TableCell>{a.artist}</TableCell>
                 <TableCell>
-                  {a.cd && <DiscIcon className="mb-0.5 mr-1 inline size-4" />}
+                  {a.cd && <DiscIcon className="mr-1 mb-0.5 inline size-4" />}
                   <span
                     className={cn(
                       a.studio ? 'font-medium' : 'font-light',
-                      a.favorite ? 'italic' : ''
+                      a.favorite ? 'italic' : '',
                     )}
                   >
                     {a.title}
@@ -96,12 +88,12 @@ export default function Admin() {
           <TableFooter>
             <TableRow>
               <TableCell colSpan={5}>
-                <Paginate total={total} />
+                <Paginate total={count} />
               </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
       )}
-    </AppLayout>
+    </div>
   );
 }

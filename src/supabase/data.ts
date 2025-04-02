@@ -23,7 +23,10 @@ export async function getAlbum({ params }: LoaderFunctionArgs<any>) {
     throw new Error(MESSAGES.NO_DATA);
   }
 
-  return { album: data as Album };
+  return {
+    album: data as Album,
+    title: 'Edit album',
+  };
 }
 
 async function getAlbums({ request }: LoaderFunctionArgs<any>) {
@@ -66,7 +69,7 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
 
   return {
     albums: (data as Album[]) ?? [],
-    total: count ?? 0,
+    count: count ?? 0,
   };
 }
 
@@ -92,12 +95,17 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
 }
 
 export async function getAdminData(args: LoaderFunctionArgs<any>) {
-  const [{ albums, total }, cdTotal] = await Promise.all([
+  const [{ albums, count }, cdCount] = await Promise.all([
     getAlbums(args),
     getCdCount(args),
   ]);
 
-  return { albums, cdTotal, total };
+  return {
+    albums,
+    cdCount,
+    count,
+    title: 'Admin',
+  };
 }
 
 interface Artist {
@@ -111,6 +119,7 @@ export async function getArtists() {
   return {
     artists: artists.map((a) => a.artist),
     count: artists.length,
+    title: 'Artists',
   };
 }
 
@@ -131,7 +140,7 @@ export async function getFavorites() {
         ranking:rankings (
           position
       )
-      `
+      `,
     )
     .eq('favorite', true)
     .order('artist', { ascending: true });
@@ -139,6 +148,7 @@ export async function getFavorites() {
   return {
     count: data?.length ?? 0,
     favorites: formatFavorites(data ?? []),
+    title: 'Top albums',
   };
 }
 
@@ -148,6 +158,7 @@ export async function getReleases() {
   return {
     count: data?.length ?? 0,
     releases: formatReleases(data ?? []),
+    title: 'New releases',
   };
 }
 
@@ -157,5 +168,6 @@ export async function getSongs() {
   return {
     count: data?.length ?? 0,
     songs: formatSongs(data ?? []),
+    title: 'Featured songs',
   };
 }

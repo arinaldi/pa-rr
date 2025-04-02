@@ -1,8 +1,6 @@
 import { useLoaderData } from 'react-router';
 import { ArrowUpIcon } from 'lucide-react';
 
-import AppLayout from '@/components/app-layout';
-import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
@@ -15,17 +13,10 @@ import { capitalizeFirstLetter } from '@/lib/utils';
 import { getFavorites } from '@/supabase/data';
 
 export default function TopAlbums() {
-  const { count, favorites } = useLoaderData<typeof getFavorites>();
+  const { favorites } = useLoaderData<typeof getFavorites>();
 
   return (
-    <AppLayout
-      title={
-        <div className="flex items-center gap-2">
-          <span className="text-nowrap">Top albums</span>
-          <Badge variant="secondary">{count.toLocaleString()}</Badge>
-        </div>
-      }
-    >
+    <div>
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {Object.entries(favorites)
           .sort((a, b) => Number(b[0]) - Number(a[0]))
@@ -34,6 +25,7 @@ export default function TopAlbums() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle id={year}>{capitalizeFirstLetter(year)}</CardTitle>
+                  {/* TODO */}
                   {/* <RankingLink year={year} /> */}
                 </div>
                 <CardDescription>
@@ -56,11 +48,11 @@ export default function TopAlbums() {
                       return (
                         <li
                           key={index}
-                          className="text-sm text-muted-foreground"
+                          className="text-muted-foreground text-sm"
                         >
                           <span>{f.artist} &ndash;</span>{' '}
                           <a
-                            className="text-foreground underline underline-offset-4 hover:text-muted-foreground"
+                            className="text-foreground hover:text-muted-foreground underline underline-offset-4"
                             href={url}
                             rel="noopener noreferrer"
                             target="_blank"
@@ -76,12 +68,12 @@ export default function TopAlbums() {
           ))}
       </div>
       <a
-        className="fixed bottom-0 right-0 p-5 text-sm text-muted-foreground"
+        className="text-muted-foreground fixed right-0 bottom-0 p-5 text-sm"
         href="#top"
       >
         <ArrowUpIcon className="mr-1 inline size-4" />
         <span>Top</span>
       </a>
-    </AppLayout>
+    </div>
   );
 }

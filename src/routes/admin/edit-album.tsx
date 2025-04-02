@@ -7,7 +7,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import AppLayout from '@/components/app-layout';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
@@ -77,9 +76,9 @@ export default function EditAlbum() {
   });
 
   return (
-    <AppLayout className="max-w-sm" title="Edit album">
+    <div>
       <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />
       <DeleteAlbumModal album={album} className="mt-2 w-full sm:w-auto" />
-    </AppLayout>
+    </div>
   );
 }

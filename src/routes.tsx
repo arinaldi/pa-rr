@@ -1,7 +1,6 @@
 import { createBrowserRouter, redirect } from 'react-router';
 
 import { Fallback } from '@/components/fallback';
-import Test from '@/components/test';
 import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
 import AddAlbum from '@/routes/admin/add-album';
 import Admin from '@/routes/admin/admin';
@@ -40,6 +39,7 @@ export const router = createBrowserRouter([
     HydrateFallback: Fallback,
     children: [
       {
+        id: ROUTES_ADMIN.base.href,
         path: ROUTES_ADMIN.base.href,
         Component: Admin,
         loader: async (args) => {
@@ -53,6 +53,7 @@ export const router = createBrowserRouter([
         },
       },
       {
+        id: ROUTES_ADMIN.add.href,
         path: ROUTES_ADMIN.add.href,
         Component: AddAlbum,
         loader: async () => {
@@ -61,9 +62,12 @@ export const router = createBrowserRouter([
           if (!session) {
             return redirect(ROUTE_HREF.TOP_ALBUMS);
           }
+
+          return { title: 'Add album' };
         },
       },
       {
+        id: ROUTES_ADMIN.edit.href,
         path: ROUTES_ADMIN.edit.href,
         Component: EditAlbum,
         loader: async (args) => {
@@ -77,29 +81,31 @@ export const router = createBrowserRouter([
         },
       },
       {
+        id: ROUTE_HREF.TOP_ALBUMS,
         path: ROUTE_HREF.TOP_ALBUMS,
         Component: TopAlbums,
         loader: getFavorites,
       },
       {
+        id: ROUTE_HREF.ARTISTS,
         path: ROUTE_HREF.ARTISTS,
         Component: Artists,
         loader: getArtists,
       },
       {
-        path: ROUTE_HREF.DASHBOARD,
-        Component: Test,
-      },
-      {
+        id: ROUTE_HREF.NEW_RELEASES,
         path: ROUTE_HREF.NEW_RELEASES,
         Component: NewReleases,
         loader: getReleases,
       },
       {
+        id: '/playlist',
         path: '/playlist',
         Component: Playlist,
+        loader: () => ({ title: 'Playlist' }),
       },
       {
+        id: ROUTE_HREF.SIGNIN,
         path: ROUTE_HREF.SIGNIN,
         Component: SignIn,
         loader: async () => {
@@ -108,10 +114,13 @@ export const router = createBrowserRouter([
           if (session) {
             return redirect(ROUTES_ADMIN.base.href);
           }
+
+          return { title: 'Sign in' };
         },
       },
       {
-        path: '/songs',
+        id: ROUTE_HREF.FEATURED_SONGS,
+        path: ROUTE_HREF.FEATURED_SONGS,
         Component: FeaturedSongs,
         loader: getSongs,
       },

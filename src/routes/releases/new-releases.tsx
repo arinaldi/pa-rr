@@ -1,7 +1,5 @@
 import { useLoaderData } from 'react-router';
 
-import AppLayout from '@/components/app-layout';
-import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
@@ -14,18 +12,11 @@ import AddReleaseModal from './add-release-modal';
 import ReleaseActions from './release-actions';
 
 export default function NewReleases() {
-  const { count, releases } = useLoaderData<typeof getReleases>();
+  const { releases } = useLoaderData<typeof getReleases>();
 
   return (
-    <AppLayout
-      title={
-        <div className="flex items-center gap-2">
-          <span>New releases</span>
-          <Badge variant="secondary">{count.toLocaleString()}</Badge>
-        </div>
-      }
-      titleAction={<AddReleaseModal />}
-    >
+    <div className="space-y-4">
+      <AddReleaseModal />
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {Object.entries(releases)
           .sort((a, b) => {
@@ -65,6 +56,7 @@ export default function NewReleases() {
             </Card>
           ))}
       </div>
-    </AppLayout>
+      {/* </AppLayout> */}
+    </div>
   );
 }

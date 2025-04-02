@@ -1,7 +1,6 @@
 import { UseFormReturn } from 'react-hook-form';
 import { LockIcon, SendHorizontalIcon } from 'lucide-react';
 
-import AppLayout from '@/components/app-layout';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -52,7 +51,7 @@ export default function EmailForm({
   });
 
   return (
-    <AppLayout className="max-w-sm" title="Sign in">
+    <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(setViewPassword)}>
           <FormField
@@ -89,8 +88,8 @@ export default function EmailForm({
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase tracking-wider">
-          <span className="bg-background px-2 text-muted-foreground">
+        <div className="relative flex justify-center text-xs tracking-wider uppercase">
+          <span className="bg-background text-muted-foreground px-2">
             or continue with
           </span>
         </div>
@@ -107,6 +106,6 @@ export default function EmailForm({
           </SubmitButton>
         </form>
       </Form>
-    </AppLayout>
+    </div>
   );
 }

@@ -1,10 +1,4 @@
-import {
-  CalendarIcon,
-  LayersIcon,
-  LayoutDashboardIcon,
-  UserIcon,
-  Volume1Icon,
-} from 'lucide-react';
+import { CalendarIcon, LayersIcon, UserIcon, Volume1Icon } from 'lucide-react';
 
 /* ENUM */
 

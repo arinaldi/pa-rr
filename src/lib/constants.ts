@@ -91,25 +91,21 @@ export const ROUTE_HREF = {
 
 export const ROUTES = [
   {
-    id: ROUTE_HREF.TOP_ALBUMS,
     href: ROUTE_HREF.TOP_ALBUMS,
     icon: LayersIcon,
     label: 'Top albums',
   },
   {
-    id: ROUTE_HREF.FEATURED_SONGS,
     href: ROUTE_HREF.FEATURED_SONGS,
     icon: Volume1Icon,
     label: 'Featured songs',
   },
   {
-    id: ROUTE_HREF.NEW_RELEASES,
     href: ROUTE_HREF.NEW_RELEASES,
     icon: CalendarIcon,
     label: 'New releases',
   },
   {
-    id: ROUTE_HREF.ARTISTS,
     href: ROUTE_HREF.ARTISTS,
     icon: UserIcon,
     label: 'Artists',

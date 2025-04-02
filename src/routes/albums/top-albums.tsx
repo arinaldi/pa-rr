@@ -11,12 +11,14 @@ import {
 import { SPOTIFY_URL } from '@/lib/constants';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { getFavorites } from '@/supabase/data';
+import { DecadeSelect } from './decade-select';
 
 export default function TopAlbums() {
   const { favorites } = useLoaderData<typeof getFavorites>();
 
   return (
-    <div>
+    <div className="space-y-4">
+      <DecadeSelect />
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {Object.entries(favorites)
           .sort((a, b) => Number(b[0]) - Number(a[0]))

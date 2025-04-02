@@ -30,14 +30,14 @@ export default function MenuLink(props: Props) {
             <>
               <props.icon
                 className={cn(
-                  'group-hover/link:text-primary',
+                  'group-hover/link:text-primary group-hover/link:font-medium',
                   isActive ? '' : 'text-muted-foreground',
                 )}
               />
               <span
                 className={cn(
-                  'group-hover/link:text-primary',
-                  isActive ? '' : 'text-muted-foreground',
+                  'group-hover/link:text-primary group-hover/link:font-medium',
+                  isActive ? 'font-medium' : 'text-muted-foreground',
                 )}
               >
                 {label}

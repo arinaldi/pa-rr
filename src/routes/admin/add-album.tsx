@@ -41,5 +41,9 @@ export default function AddAlbum() {
     successMessage: `${MESSAGES.ALBUM_PREFIX} added`,
   });
 
-  return <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />;
+  return (
+    <div className="max-w-sm">
+      <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />
+    </div>
+  );
 }

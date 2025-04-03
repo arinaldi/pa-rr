@@ -29,7 +29,7 @@ export default function ReleaseForm({
 }: Props) {
   return (
     <Form {...form}>
-      <form className={cn('space-y-8', className)} onSubmit={onSubmit}>
+      <form className={cn('space-y-6', className)} onSubmit={onSubmit}>
         <FormField
           control={form.control}
           name="artist"

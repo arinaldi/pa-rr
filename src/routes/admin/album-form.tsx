@@ -24,7 +24,7 @@ interface Props {
 export default function AlbumForm({ form, onSubmit, submitting }: Props) {
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={onSubmit}>
+      <form className="space-y-6" onSubmit={onSubmit}>
         <FormField
           control={form.control}
           name="artist"
@@ -68,7 +68,7 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           control={form.control}
           name="studio"
           render={({ field }) => (
-            <FormItem className="flex space-x-3 space-y-0">
+            <FormItem className="flex space-y-0 space-x-3">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -87,7 +87,7 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           control={form.control}
           name="cd"
           render={({ field }) => (
-            <FormItem className="flex space-x-3 space-y-0">
+            <FormItem className="flex space-y-0 space-x-3">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -106,7 +106,7 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           control={form.control}
           name="favorite"
           render={({ field }) => (
-            <FormItem className="flex space-x-3 space-y-0">
+            <FormItem className="flex space-y-0 space-x-3">
               <FormControl>
                 <Checkbox
                   checked={field.value}

@@ -76,7 +76,7 @@ export default function EditAlbum() {
   });
 
   return (
-    <div>
+    <div className="max-w-sm">
       <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />
       <DeleteAlbumModal album={album} className="mt-2 w-full sm:w-auto" />
     </div>

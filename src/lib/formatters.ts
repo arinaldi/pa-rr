@@ -1,5 +1,5 @@
 import { MONTHS } from './constants';
-import { Album, Ranking, Release, Song } from './types';
+import { Album, Release, Song } from './types';
 
 function addZeroPrefix(value: number) {
   return value < 10 ? `0${value}` : value;

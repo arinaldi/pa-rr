@@ -63,7 +63,7 @@ export default function UserMenu() {
                   <Avatar className="size-8 rounded-lg">
                     <AvatarImage
                       className="bg-gray-300"
-                      src="/avatars/01.svg"
+                      src="/avatars/03.png"
                     />
                     <AvatarFallback className="rounded-lg">
                       {`${session.user.user_metadata.firstName[0]}${session.user.user_metadata.lastName[0]}`}
@@ -101,7 +101,7 @@ export default function UserMenu() {
                     <Avatar className="size-8 rounded-lg">
                       <AvatarImage
                         className="bg-gray-300"
-                        src="/avatars/01.svg"
+                        src="/avatars/03.png"
                       />
                       <AvatarFallback className="rounded-lg">
                         {`${session.user.user_metadata.firstName[0]}${session.user.user_metadata.lastName[0]}`}

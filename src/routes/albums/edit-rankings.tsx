@@ -61,7 +61,7 @@ export default function EditRankings() {
   });
 
   return (
-    <form className="max-w-md min-w-sm space-y-4" onSubmit={onSubmit}>
+    <form className="max-w-md space-y-4 sm:min-w-sm" onSubmit={onSubmit}>
       <Reorder.Group axis="y" onReorder={setItems} values={items}>
         <div className="space-y-2">
           {items.map((item, index) => (

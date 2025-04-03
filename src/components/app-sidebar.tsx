@@ -23,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { ROUTES, ROUTES_ADMIN } from '@/lib/constants';
@@ -91,6 +92,7 @@ export function AppSidebar() {
         <SidebarFooter>
           <UserMenu />
         </SidebarFooter>
+        <SidebarRail />
       </Sidebar>
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -115,7 +117,7 @@ export function AppSidebar() {
             </Breadcrumb>
           </div>
         </header>
-        <main className="isolate mx-auto max-w-7xl min-w-xs gap-4 p-4 pt-0">
+        <main className="isolate max-w-7xl min-w-xs gap-4 p-4 pt-0 sm:mx-auto">
           <Outlet />
         </main>
       </SidebarInset>

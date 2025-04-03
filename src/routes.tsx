@@ -11,6 +11,7 @@ import EditAllTimeRankings from '@/routes/albums/edit-all-time-rankings';
 import EditRankings from '@/routes/albums/edit-rankings';
 import FeaturedSongs from '@/routes/songs/featured-songs';
 import NewReleases from '@/routes/releases/new-releases';
+import NotFound from '@/routes/not-found';
 import Playlist from '@/routes/playlist/playlist';
 import Root from '@/routes/root';
 import SignIn from '@/routes/signin/signin';
@@ -153,6 +154,11 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.FEATURED_SONGS,
         Component: FeaturedSongs,
         loader: getSongs,
+      },
+      {
+        path: '*',
+        Component: NotFound,
+        loader: () => ({ title: 'Not found' }),
       },
     ],
   },

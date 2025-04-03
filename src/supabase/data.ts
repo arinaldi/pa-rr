@@ -1,7 +1,6 @@
 import { type LoaderFunctionArgs } from 'react-router';
 
 import {
-  type AllTimeListItem,
   formatFavorites,
   formatRankingsAllTime,
   formatRankingsByYear,

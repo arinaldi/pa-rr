@@ -30,12 +30,16 @@ import {
 } from '@/supabase/data';
 import ErrorPage from './error-page';
 
-async function getSession() {
+async function validateSession() {
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  return session;
+  if (!session) {
+    throw redirect(ROUTE_HREF.TOP_ALBUMS);
+  }
+
+  return true;
 }
 
 export const router = createBrowserRouter([
@@ -50,11 +54,7 @@ export const router = createBrowserRouter([
         path: ROUTES_ADMIN.base.href,
         Component: Admin,
         loader: async (args) => {
-          const session = await getSession();
-
-          if (!session) {
-            return redirect(ROUTE_HREF.TOP_ALBUMS);
-          }
+          await validateSession();
 
           return getAdminData(args);
         },
@@ -63,11 +63,7 @@ export const router = createBrowserRouter([
         path: ROUTES_ADMIN.add.href,
         Component: AddAlbum,
         loader: async () => {
-          const session = await getSession();
-
-          if (!session) {
-            return redirect(ROUTE_HREF.TOP_ALBUMS);
-          }
+          await validateSession();
 
           return { title: 'Add album' };
         },
@@ -77,11 +73,7 @@ export const router = createBrowserRouter([
         path: ROUTES_ADMIN.edit.href,
         Component: EditAlbum,
         loader: async (args) => {
-          const session = await getSession();
-
-          if (!session) {
-            return redirect(ROUTE_HREF.TOP_ALBUMS);
-          }
+          await validateSession();
 
           return getAlbum(args);
         },
@@ -100,11 +92,7 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.ALL_TIME_EDIT,
         Component: EditAllTimeRankings,
         loader: async (args) => {
-          const session = await getSession();
-
-          if (!session) {
-            return redirect(ROUTE_HREF.TOP_ALBUMS);
-          }
+          await validateSession();
 
           return getAllTimeData(args);
         },
@@ -113,11 +101,7 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.EDIT_RANKINGS,
         Component: EditRankings,
         loader: async (args) => {
-          const session = await getSession();
-
-          if (!session) {
-            return redirect(ROUTE_HREF.TOP_ALBUMS);
-          }
+          await validateSession();
 
           return getRankingsByYear(args);
         },
@@ -133,7 +117,7 @@ export const router = createBrowserRouter([
         loader: getReleases,
       },
       {
-        path: '/playlist',
+        path: ROUTE_HREF.PLAYLIST,
         Component: Playlist,
         loader: () => ({ title: 'Playlist' }),
       },
@@ -141,7 +125,9 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.SIGNIN,
         Component: SignIn,
         loader: async () => {
-          const session = await getSession();
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
 
           if (session) {
             return redirect(ROUTES_ADMIN.base.href);

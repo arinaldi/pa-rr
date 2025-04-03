@@ -7,6 +7,7 @@ import Admin from '@/routes/admin/admin';
 import AllTimeRankings from '@/routes/albums/all-time-rankings';
 import Artists from '@/routes/artists/artists';
 import EditAlbum from '@/routes/admin/edit-album';
+import EditRankings from '@/routes/albums/edit-rankings';
 import FeaturedSongs from '@/routes/songs/featured-songs';
 import NewReleases from '@/routes/releases/new-releases';
 import Playlist from '@/routes/playlist/playlist';
@@ -20,6 +21,7 @@ import {
   getAllTimeRankings,
   getArtists,
   getFavorites,
+  getRankingsByYear,
   getReleases,
   getSongs,
 } from '@/supabase/data';
@@ -39,6 +41,7 @@ export const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     HydrateFallback: Fallback,
+    loader: () => ({ title: 'Home' }),
     children: [
       {
         path: ROUTES_ADMIN.base.href,
@@ -89,6 +92,19 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.ALL_TIME,
         Component: AllTimeRankings,
         loader: getAllTimeRankings,
+      },
+      {
+        path: ROUTE_HREF.EDIT_RANKINGS,
+        Component: EditRankings,
+        loader: async (args) => {
+          const session = await getSession();
+
+          if (!session) {
+            return redirect(ROUTE_HREF.TOP_ALBUMS);
+          }
+
+          return getRankingsByYear(args);
+        },
       },
       {
         path: ROUTE_HREF.ARTISTS,

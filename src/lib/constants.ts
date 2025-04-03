@@ -83,6 +83,7 @@ export const MONTHS = [
 export const ROUTE_HREF = {
   ALL_TIME: '/albums/all-time',
   ARTISTS: '/artists',
+  EDIT_RANKINGS: '/albums/:year',
   FEATURED_SONGS: '/songs',
   NEW_RELEASES: '/releases',
   SIGNIN: '/signin',

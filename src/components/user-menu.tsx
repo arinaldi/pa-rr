@@ -80,7 +80,7 @@ export default function UserMenu() {
                 </>
               ) : (
                 <>
-                  <Avatar className="flex size-8 items-center justify-center rounded-lg bg-gray-300">
+                  <Avatar className="flex size-8 items-center justify-center rounded-lg bg-gray-200">
                     <User className="size-5" />
                   </Avatar>
                 </>
@@ -121,7 +121,7 @@ export default function UserMenu() {
               </>
             )}
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="">Theme</DropdownMenuLabel>
+              <DropdownMenuLabel>Theme</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup
                 onValueChange={onValueChange}

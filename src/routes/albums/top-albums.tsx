@@ -1,6 +1,7 @@
 import { Link, useLoaderData } from 'react-router';
-import { ArrowUpIcon } from 'lucide-react';
+import { ArrowUp, Pencil } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useSession } from '@/components/session-provider';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { getFavorites } from '@/supabase/data';
@@ -15,6 +17,7 @@ import { DecadeSelect } from './decade-select';
 
 export default function TopAlbums() {
   const { favorites } = useLoaderData<typeof getFavorites>();
+  const session = useSession();
 
   return (
     <div className="space-y-4">
@@ -35,8 +38,13 @@ export default function TopAlbums() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle id={year}>{capitalizeFirstLetter(year)}</CardTitle>
-                  {/* TODO */}
-                  {/* <RankingLink year={year} /> */}
+                  {session && (
+                    <Link to={ROUTE_HREF.EDIT_RANKINGS.replace(':year', year)}>
+                      <Button size="icon" variant="outline">
+                        <Pencil className="size-4" />
+                      </Button>
+                    </Link>
+                  )}
                 </div>
                 <CardDescription>
                   {favorites.length.toLocaleString()} album
@@ -81,7 +89,7 @@ export default function TopAlbums() {
         className="text-muted-foreground fixed right-0 bottom-0 p-5 text-sm"
         href="#top"
       >
-        <ArrowUpIcon className="mr-1 inline size-4" />
+        <ArrowUp className="mr-1 inline size-4" />
         <span>Top</span>
       </a>
     </div>

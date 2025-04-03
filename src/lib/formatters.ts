@@ -1,5 +1,5 @@
 import { MONTHS } from './constants';
-import { Album, Release, Song } from './types';
+import { Album, Ranking, Release, Song } from './types';
 
 function addZeroPrefix(value: number) {
   return value < 10 ? `0${value}` : value;
@@ -28,8 +28,15 @@ export interface FavoriteResults {
   [key: string]: ListItem[];
 }
 
+export interface AllTimeListItem extends ListItem {
+  allTimeRanking: number | null;
+  rankingId: number;
+}
+
 interface RankedAlbum extends Album {
   ranking: {
+    all_time_position?: number | null;
+    id?: number;
     position: number;
   } | null;
 }
@@ -87,7 +94,7 @@ export function formatReleases(releases: Release[]): ReleaseResults {
 
 const NUMBER_SIGN = '#';
 const ALPHABET = Array.from(Array(26)).map((_, i) =>
-  String.fromCharCode(i + 65)
+  String.fromCharCode(i + 65),
 );
 export const HEADER_LETTERS = [NUMBER_SIGN, ...ALPHABET];
 
@@ -149,4 +156,51 @@ export function formatSongs(songs: Song[]): SongResults {
   });
 
   return results;
+}
+
+interface RankedAlbumByYear {
+  artist: string;
+  id: number;
+  title: string;
+  year: string;
+  ranking: {
+    all_time_position: number | null;
+    id: number;
+    position: number;
+  } | null;
+}
+
+export function formatRankingsByYear(
+  rankings: RankedAlbumByYear[],
+): AllTimeListItem[] {
+  return rankings.map((r) => ({
+    allTimeRanking: r.ranking?.all_time_position ?? 0,
+    artist: r.artist,
+    id: r.id,
+    ranking: r.ranking?.position ?? 0,
+    rankingId: r.ranking?.id ?? 0,
+    title: r.title,
+    year: r.year,
+  }));
+}
+
+interface RankedAlbumAllTime {
+  all_time_position: number | null;
+  id: number;
+  position: number;
+  album?: Partial<Album>;
+}
+
+export function formatRankingsAllTime(
+  rankings: RankedAlbumAllTime[],
+): AllTimeListItem[] {
+  return rankings.map((r) => ({
+    allTimeRanking: r.all_time_position,
+    artist: r.album?.artist ?? '',
+    id: r.album?.id ?? 0,
+    ranking: r.position,
+    rankingId: r.id,
+    title: r.album?.title ?? '',
+    year: r.album?.year ?? '',
+  }));
 }

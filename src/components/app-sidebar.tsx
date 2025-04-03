@@ -117,9 +117,9 @@ export function AppSidebar() {
             </Breadcrumb>
           </div>
         </header>
-        <main className="isolate max-w-7xl min-w-xs gap-4 p-4 pt-0 sm:mx-auto">
+        <div className="isolate p-4 pt-0">
           <Outlet />
-        </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

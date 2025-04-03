@@ -1,6 +1,7 @@
 import { type LoaderFunctionArgs } from 'react-router';
 
 import {
+  type AllTimeListItem,
   formatFavorites,
   formatRankingsAllTime,
   formatRankingsByYear,
@@ -137,6 +138,64 @@ export async function getAllTimeRankings() {
     count: data?.length ?? 0,
     favorites: formatRankingsAllTime(data ?? []),
     title: 'All-time albums',
+  };
+}
+
+export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+  const searchParams = Object.fromEntries(params.entries());
+  const { sort, title } = parseAdminQuery(searchParams);
+  const [sortProp, desc] = sort.split(':') ?? [];
+  const direction = desc ? DESC : ASC;
+  let candidates: AllTimeListItem[] = [];
+
+  if (title) {
+    let query = supabase
+      .from('albums')
+      .select(
+        `
+          artist,
+          id,
+          title,
+          year,
+          ranking:rankings!inner(
+            all_time_position,
+            id,
+            position
+          )
+        `,
+      )
+      .gte('rankings.position', 1)
+      .ilike('title', `%${title}%`)
+      .range(0, 24)
+      .order('artist', { ascending: direction === ASC });
+
+    if (sortProp) {
+      query = query.order(sortProp, { ascending: direction === ASC });
+    }
+
+    const { data } = await query;
+
+    if (data) {
+      candidates = formatRankingsByYear(data);
+    }
+  }
+
+  return { candidates };
+}
+
+export async function getAllTimeData(args: LoaderFunctionArgs<any>) {
+  const [{ favorites }, { candidates }] = await Promise.all([
+    getAllTimeRankings(),
+    getCandidates(args),
+  ]);
+
+  return {
+    candidates,
+    count: favorites.length,
+    favorites,
+    title: 'Edit all-time rankings',
   };
 }
 

@@ -7,6 +7,7 @@ import Admin from '@/routes/admin/admin';
 import AllTimeRankings from '@/routes/albums/all-time-rankings';
 import Artists from '@/routes/artists/artists';
 import EditAlbum from '@/routes/admin/edit-album';
+import EditAllTimeRankings from '@/routes/albums/edit-all-time-rankings';
 import EditRankings from '@/routes/albums/edit-rankings';
 import FeaturedSongs from '@/routes/songs/featured-songs';
 import NewReleases from '@/routes/releases/new-releases';
@@ -18,6 +19,7 @@ import { supabase } from '@/supabase/client';
 import {
   getAdminData,
   getAlbum,
+  getAllTimeData,
   getAllTimeRankings,
   getArtists,
   getFavorites,
@@ -92,6 +94,19 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.ALL_TIME,
         Component: AllTimeRankings,
         loader: getAllTimeRankings,
+      },
+      {
+        path: ROUTE_HREF.ALL_TIME_EDIT,
+        Component: EditAllTimeRankings,
+        loader: async (args) => {
+          const session = await getSession();
+
+          if (!session) {
+            return redirect(ROUTE_HREF.TOP_ALBUMS);
+          }
+
+          return getAllTimeData(args);
+        },
       },
       {
         path: ROUTE_HREF.EDIT_RANKINGS,

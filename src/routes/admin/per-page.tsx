@@ -17,9 +17,9 @@ interface Props {
 const { SMALL, MEDIUM, LARGE } = PER_PAGE;
 
 export default function PerPage({ perPage }: Props) {
-  const [_, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [optimisticPerPage, setOptimisticPerPage] = useOptimistic(
-    perPage.toString()
+    perPage.toString(),
   );
 
   function onValueChange(value: string) {

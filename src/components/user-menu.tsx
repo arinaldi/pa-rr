@@ -29,7 +29,7 @@ export default function UserMenu() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const session = useSession();
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
   const { setTheme, theme } = useTheme();
 
   function onValueChange(value: string) {
@@ -143,7 +143,12 @@ export default function UserMenu() {
                 Sign out
               </DropdownMenuItem>
             ) : (
-              <DropdownMenuItem onSelect={() => navigate(ROUTE_HREF.SIGNIN)}>
+              <DropdownMenuItem
+                onSelect={() => {
+                  setOpenMobile(false);
+                  navigate(ROUTE_HREF.SIGNIN);
+                }}
+              >
                 <LogIn />
                 Sign in
               </DropdownMenuItem>

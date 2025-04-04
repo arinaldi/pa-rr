@@ -1,33 +1,47 @@
 import { useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
+import { toast } from 'sonner';
 
-// import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import InputClearButton from '@/components/input-clear-button';
 import InputSpinner from '@/components/input-spinner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-// import { cn } from '@/lib/utils';
+import { useSession } from '@/components/session-provider';
+import { MESSAGES } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 import { getArtists } from '@/supabase/data';
-// import { MESSAGES } from '@/utils/constants';
+import {
+  getAccessToken,
+  getArtistAlbums,
+  getArtistId,
+  sortByDateDesc,
+  type Result,
+} from './helpers';
 import Random from './random';
 
+interface State {
+  artist: string;
+  data: Result[];
+  token: string;
+}
+
 export default function Artists() {
+  const session = useSession();
   const { artists } = useLoaderData<typeof getArtists>();
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
-  const [fetching] = useState(false);
-  // const [results, setResults] = useState<State>({
-  //   artist: '',
-  //   data: [],
-  //   token: '',
-  //   type: 'releases',
-  // });
+  const [fetching, setFetching] = useState(false);
+  const [results, setResults] = useState<State>({
+    artist: '',
+    data: [],
+    token: '',
+  });
   const filteredArtists = search
     ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
     : artists;
 
-  /*
   async function fetchReleases(artist: string) {
     let { token } = results;
     setFetching(true);
@@ -57,7 +71,6 @@ export default function Artists() {
         artist,
         data: data.sort(sortByDateDesc),
         token,
-        type: 'releases',
       });
     } catch (error) {
       const message =
@@ -70,7 +83,6 @@ export default function Artists() {
 
     setFetching(false);
   }
-  */
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
@@ -96,29 +108,27 @@ export default function Artists() {
         <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
           <div className="p-4">
             {filteredArtists.map((a, index) => {
-              // if (user) {
-              //   return (
-              //     <div key={a}>
-              //       <Button
-              //         className={cn(
-              //           'block h-auto px-0 py-0.5 text-left text-sm',
-              //           results.artist === a
-              //             ? 'font-semibold'
-              //             : 'font-normal',
-              //         )}
-              //         disabled={fetching}
-              //         onClick={() => fetchReleases(a)}
-              //         size="sm"
-              //         variant="link"
-              //       >
-              //         {a}
-              //       </Button>
-              //       {index !== filteredArtists.length - 1 && (
-              //         <Separator className="my-2" />
-              //       )}
-              //     </div>
-              //   );
-              // }
+              if (session) {
+                return (
+                  <div key={a}>
+                    <Button
+                      className={cn(
+                        'text-foreground block h-auto px-0 py-0.5 text-left text-sm',
+                        results.artist === a ? 'font-semibold' : 'font-normal',
+                      )}
+                      disabled={fetching}
+                      onClick={() => fetchReleases(a)}
+                      size="sm"
+                      variant="link"
+                    >
+                      {a}
+                    </Button>
+                    {index !== filteredArtists.length - 1 && (
+                      <Separator className="my-2" />
+                    )}
+                  </div>
+                );
+              }
 
               return (
                 <div key={a}>
@@ -134,62 +144,36 @@ export default function Artists() {
       </div>
       <div className="flex shrink-0 flex-col gap-4">
         <Random artists={artists} />
-        {/* {results.type === 'releases' && results.data.length > 0 && (
-            <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
-              <div className="p-4">
-                <h4 className="text-sm font-medium">
-                  {results.data.length.toLocaleString()}{' '}
-                  {results.data.length === 1 ? 'release' : 'releases'}
-                </h4>
-                <ul className="mt-4 space-y-4">
-                  {results.data.map((item) => (
-                    <li className="space-y-1 text-sm" key={item.id}>
-                      <a
-                        className={cn(
-                          'block underline underline-offset-4 hover:text-muted-foreground',
-                          item.type === 'album' ? 'font-medium' : 'font-light',
-                        )}
-                        href={item.href}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {item.name}
-                      </a>
-                      <p className="font-light text-muted-foreground">
-                        {item.date}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </ScrollArea>
-          )} */}
-        {/* {results.type === 'related' && results.data.length > 0 && (
-            <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
-              <div className="p-4">
-                <h4 className="text-sm font-medium">
-                  {results.data.length.toLocaleString()}{' '}
-                  {results.data.length === 1
-                    ? 'related artist'
-                    : 'related artists'}
-                </h4>
-                <ul className="mt-4 space-y-4">
-                  {results.data.map((item) => (
-                    <li className="text-sm" key={item.id}>
-                      <a
-                        className="block underline underline-offset-4 hover:text-muted-foreground"
-                        href={item.href}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </ScrollArea>
-          )} */}
+        {results.data.length > 0 && (
+          <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
+            <div className="p-4">
+              <h4 className="text-sm font-medium">
+                {results.data.length.toLocaleString()}{' '}
+                {results.data.length === 1 ? 'release' : 'releases'}
+              </h4>
+              <ul className="mt-4 space-y-4">
+                {results.data.map((item) => (
+                  <li className="space-y-1 text-sm" key={item.id}>
+                    <a
+                      className={cn(
+                        'hover:text-muted-foreground block underline underline-offset-4',
+                        item.type === 'album' ? 'font-medium' : 'font-light',
+                      )}
+                      href={item.href}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {item.name}
+                    </a>
+                    <p className="text-muted-foreground font-light">
+                      {item.date}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </ScrollArea>
+        )}
       </div>
     </div>
   );

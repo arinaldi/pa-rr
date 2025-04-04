@@ -4,9 +4,8 @@ import { Disc, Lock } from 'lucide-react';
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import MenuLink from '@/components/menu-link';
 import { Separator } from '@/components/ui/separator';
@@ -105,14 +104,9 @@ export function AppSidebar() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbPage>Perfect Albums</BreadcrumbPage>
+                  <BreadcrumbLink to="/">Home</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="font-semibold">
-                    <PageTitle />
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
+                <PageTitle />
               </BreadcrumbList>
             </Breadcrumb>
           </div>

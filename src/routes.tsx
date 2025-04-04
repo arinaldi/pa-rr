@@ -48,7 +48,6 @@ export const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     HydrateFallback: Fallback,
-    loader: () => ({ title: 'Home' }),
     children: [
       {
         path: ROUTES_ADMIN.base.href,
@@ -71,7 +70,12 @@ export const router = createBrowserRouter([
           await validateSession();
 
           return {
-            parent: {}, // TODO
+            parents: [
+              {
+                href: ROUTES_ADMIN.base.href,
+                title: 'Admin',
+              },
+            ],
             title: 'Add album',
           };
         },
@@ -87,6 +91,12 @@ export const router = createBrowserRouter([
 
           return {
             ...data,
+            parents: [
+              {
+                href: ROUTES_ADMIN.base.href,
+                title: 'Admin',
+              },
+            ],
             title: 'Edit album',
           };
         },
@@ -111,6 +121,12 @@ export const router = createBrowserRouter([
 
           return {
             ...data,
+            parents: [
+              {
+                href: ROUTE_HREF.TOP_ALBUMS,
+                title: 'Top albums',
+              },
+            ],
             title: 'All-time albums',
           };
         },
@@ -125,6 +141,16 @@ export const router = createBrowserRouter([
 
           return {
             ...data,
+            parents: [
+              {
+                href: ROUTE_HREF.TOP_ALBUMS,
+                title: 'Top albums',
+              },
+              {
+                href: ROUTE_HREF.ALL_TIME,
+                title: 'All-time albums',
+              },
+            ],
             title: 'Edit all-time rankings',
           };
         },
@@ -139,6 +165,12 @@ export const router = createBrowserRouter([
 
           return {
             ...data,
+            parents: [
+              {
+                href: ROUTE_HREF.TOP_ALBUMS,
+                title: 'Top albums',
+              },
+            ],
             title: `Rankings for ${args.params.year}`,
           };
         },

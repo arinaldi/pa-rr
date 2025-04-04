@@ -1,3 +1,4 @@
+import { Fragment } from 'react/jsx-runtime';
 import { Link, useLocation, useMatches } from 'react-router';
 
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useMobile } from '@/hooks/use-mobile';
 
 type LoaderData = {
   count: number;
@@ -25,6 +27,7 @@ type LoaderData = {
 };
 
 export default function PageTitle() {
+  const mobile = useMobile();
   const { pathname } = useLocation();
   const matches = useMatches();
   const match = matches.find((m) => m.pathname === pathname);
@@ -34,30 +37,35 @@ export default function PageTitle() {
 
   return (
     <>
-      <BreadcrumbSeparator className="hidden md:block" />
-      {data.parents && (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className="flex items-center gap-1 md:hidden"
-            aria-label="Toggle menu"
-          >
-            <BreadcrumbEllipsis className="h-4 w-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {data.parents.map((p) => (
-              <DropdownMenuItem key={p.href}>
-                <Link to={p.href}>{p.title}</Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      {mobile && data.parents && (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              className="flex items-center gap-1 md:hidden"
+              aria-label="Toggle menu"
+            >
+              <BreadcrumbEllipsis className="size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {data.parents.map((p) => (
+                <DropdownMenuItem key={p.href}>
+                  <Link to={p.href}>{p.title}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <BreadcrumbSeparator />
+        </>
       )}
-      {data.parents?.map((p) => (
-        <BreadcrumbItem className="hidden md:block" key={p.href}>
-          <BreadcrumbLink to={p.href}>{p.title}</BreadcrumbLink>
-        </BreadcrumbItem>
-      ))}
-      {data.parents && <BreadcrumbSeparator />}
+      {!mobile &&
+        data.parents?.map((p) => (
+          <Fragment key={p.href}>
+            <BreadcrumbItem>
+              <BreadcrumbLink to={p.href}>{p.title}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+          </Fragment>
+        ))}
       <BreadcrumbItem>
         <BreadcrumbPage>
           <span className="flex items-center gap-2">

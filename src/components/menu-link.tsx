@@ -18,14 +18,14 @@ export default function MenuLink(props: Props) {
   const { label, to } = props;
   const { setOpenMobile } = useSidebar();
 
-  function onClose() {
-    setOpenMobile(false);
-  }
-
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild>
-        <NavLink className="group/link" onClick={onClose} to={to}>
+        <NavLink
+          className="group/link"
+          onClick={() => setOpenMobile(false)}
+          to={to}
+        >
           {({ isActive }) => (
             <>
               <props.icon

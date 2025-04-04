@@ -1,5 +1,5 @@
 import { Fragment } from 'react/jsx-runtime';
-import { Link, useLocation, useMatches } from 'react-router';
+import { useLocation, useMatches, useNavigate } from 'react-router';
 
 import { Badge } from '@/components/ui/badge';
 import {
@@ -30,6 +30,7 @@ export default function PageTitle() {
   const mobile = useMobile();
   const { pathname } = useLocation();
   const matches = useMatches();
+  const navigate = useNavigate();
   const match = matches.find((m) => m.pathname === pathname);
   const data = match?.data as LoaderData;
 
@@ -48,8 +49,11 @@ export default function PageTitle() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               {data.parents.map((p) => (
-                <DropdownMenuItem key={p.href}>
-                  <Link to={p.href}>{p.title}</Link>
+                <DropdownMenuItem
+                  key={p.href}
+                  onSelect={() => navigate(p.href)}
+                >
+                  {p.title}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

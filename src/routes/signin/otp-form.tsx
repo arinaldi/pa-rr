@@ -62,7 +62,7 @@ export default function OtpForm({ email, onCancel }: Props) {
   });
 
   return (
-    <div>
+    <div className="max-w-sm">
       <Form {...form}>
         <form onSubmit={onSubmit}>
           <FormField

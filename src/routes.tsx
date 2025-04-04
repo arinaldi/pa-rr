@@ -15,6 +15,7 @@ import NotFound from '@/routes/not-found';
 import Playlist from '@/routes/playlist/playlist';
 import Root from '@/routes/root';
 import SignIn from '@/routes/signin/signin';
+import SignOut from '@/routes/signout/signout';
 import TopAlbums from '@/routes/albums/top-albums';
 import { supabase } from '@/supabase/client';
 import {
@@ -218,6 +219,11 @@ export const router = createBrowserRouter([
 
           return { title: 'Sign in' };
         },
+      },
+      {
+        path: ROUTE_HREF.SIGNOUT,
+        Component: SignOut,
+        loader: () => ({ title: 'Sign out' }),
       },
       {
         path: ROUTE_HREF.FEATURED_SONGS,

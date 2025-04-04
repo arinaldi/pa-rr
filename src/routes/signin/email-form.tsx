@@ -51,7 +51,7 @@ export default function EmailForm({
   });
 
   return (
-    <div>
+    <div className="max-w-sm">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(setViewPassword)}>
           <FormField

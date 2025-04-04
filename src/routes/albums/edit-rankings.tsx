@@ -2,7 +2,6 @@ import { FormEvent, useState } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router';
 import { Reorder } from 'framer-motion';
 
-import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
 import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
@@ -24,12 +23,8 @@ export default function EditRankings() {
     }),
   );
 
-  function goBack() {
-    navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`);
-  }
-
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [goBack],
+    callbacks: [() => navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`)],
     submitFn: async (event: FormEvent) => {
       event.preventDefault();
 
@@ -69,19 +64,9 @@ export default function EditRankings() {
           ))}
         </div>
       </Reorder.Group>
-      <div className="flex flex-col items-center gap-2 sm:flex-row">
-        <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
-          Save
-        </SubmitButton>
-        <Button
-          className="w-full sm:w-auto"
-          onClick={goBack}
-          type="button"
-          variant="outline"
-        >
-          Cancel
-        </Button>
-      </div>
+      <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
+        Save
+      </SubmitButton>
     </form>
   );
 }

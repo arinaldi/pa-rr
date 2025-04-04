@@ -6,7 +6,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import MenuLink from '@/components/menu-link';
 import { Separator } from '@/components/ui/separator';
@@ -107,7 +106,6 @@ export function AppSidebar() {
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink to="/">Home</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
                 <PageTitle />
               </BreadcrumbList>
             </Breadcrumb>

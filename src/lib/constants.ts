@@ -1,4 +1,4 @@
-import { CalendarIcon, LayersIcon, UserIcon, Volume1Icon } from 'lucide-react';
+import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 
 /* ENUM */
 
@@ -33,34 +33,16 @@ export enum SORT_VALUE {
 
 /* CONST */
 
-export const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3006'
-    : 'https://perfect-albums.vercel.app';
+export const APP_NAME = 'Perfect Albums';
 
 export const DEBOUNCE_IN_MS = 500;
 
 export const DECADES = [
-  {
-    id: '2019',
-    label: '10s',
-  },
-  {
-    id: '2009',
-    label: '00s',
-  },
-  {
-    id: '1999',
-    label: '90s',
-  },
-  {
-    id: '1989',
-    label: '80s',
-  },
-  {
-    id: '1977',
-    label: '70s',
-  },
+  { id: '2019', label: '10s' },
+  { id: '2009', label: '00s' },
+  { id: '1999', label: '90s' },
+  { id: '1989', label: '80s' },
+  { id: '1977', label: '70s' },
 ];
 
 export const EMAIL = import.meta.env.VITE_EMAIL;
@@ -96,22 +78,22 @@ export const ROUTE_HREF = {
 export const ROUTES = [
   {
     href: ROUTE_HREF.TOP_ALBUMS,
-    icon: LayersIcon,
+    icon: Layers,
     label: 'Top albums',
   },
   {
     href: ROUTE_HREF.FEATURED_SONGS,
-    icon: Volume1Icon,
+    icon: Volume1,
     label: 'Featured songs',
   },
   {
     href: ROUTE_HREF.NEW_RELEASES,
-    icon: CalendarIcon,
+    icon: Calendar,
     label: 'New releases',
   },
   {
     href: ROUTE_HREF.ARTISTS,
-    icon: UserIcon,
+    icon: User,
     label: 'Artists',
   },
 ];

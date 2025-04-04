@@ -56,7 +56,12 @@ export const router = createBrowserRouter([
         loader: async (args) => {
           await validateSession();
 
-          return getAdminData(args);
+          const data = await getAdminData(args);
+
+          return {
+            ...data,
+            title: 'Admin',
+          };
         },
       },
       {
@@ -65,7 +70,10 @@ export const router = createBrowserRouter([
         loader: async () => {
           await validateSession();
 
-          return { title: 'Add album' };
+          return {
+            parent: {}, // TODO
+            title: 'Add album',
+          };
         },
       },
       {
@@ -75,18 +83,37 @@ export const router = createBrowserRouter([
         loader: async (args) => {
           await validateSession();
 
-          return getAlbum(args);
+          const data = await getAlbum(args);
+
+          return {
+            ...data,
+            title: 'Edit album',
+          };
         },
       },
       {
         path: ROUTE_HREF.TOP_ALBUMS,
         Component: TopAlbums,
-        loader: getFavorites,
+        loader: async () => {
+          const data = await getFavorites();
+
+          return {
+            ...data,
+            title: 'Top albums',
+          };
+        },
       },
       {
         path: ROUTE_HREF.ALL_TIME,
         Component: AllTimeRankings,
-        loader: getAllTimeRankings,
+        loader: async () => {
+          const data = await getAllTimeRankings();
+
+          return {
+            ...data,
+            title: 'All-time albums',
+          };
+        },
       },
       {
         path: ROUTE_HREF.ALL_TIME_EDIT,
@@ -94,7 +121,12 @@ export const router = createBrowserRouter([
         loader: async (args) => {
           await validateSession();
 
-          return getAllTimeData(args);
+          const data = await getAllTimeData(args);
+
+          return {
+            ...data,
+            title: 'Edit all-time rankings',
+          };
         },
       },
       {
@@ -103,18 +135,37 @@ export const router = createBrowserRouter([
         loader: async (args) => {
           await validateSession();
 
-          return getRankingsByYear(args);
+          const data = await getRankingsByYear(args);
+
+          return {
+            ...data,
+            title: `Rankings for ${args.params.year}`,
+          };
         },
       },
       {
         path: ROUTE_HREF.ARTISTS,
         Component: Artists,
-        loader: getArtists,
+        loader: async () => {
+          const data = await getArtists();
+
+          return {
+            ...data,
+            title: 'Artists',
+          };
+        },
       },
       {
         path: ROUTE_HREF.NEW_RELEASES,
         Component: NewReleases,
-        loader: getReleases,
+        loader: async () => {
+          const data = await getReleases();
+
+          return {
+            ...data,
+            title: 'New releases',
+          };
+        },
       },
       {
         path: ROUTE_HREF.PLAYLIST,
@@ -139,7 +190,14 @@ export const router = createBrowserRouter([
       {
         path: ROUTE_HREF.FEATURED_SONGS,
         Component: FeaturedSongs,
-        loader: getSongs,
+        loader: async () => {
+          const data = await getSongs();
+
+          return {
+            ...data,
+            title: 'Featured songs',
+          };
+        },
       },
       {
         path: '*',

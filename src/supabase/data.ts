@@ -32,7 +32,6 @@ export async function getAlbum({ params }: LoaderFunctionArgs<any>) {
 
   return {
     album: data as Album,
-    title: 'Edit album',
   };
 }
 
@@ -111,7 +110,6 @@ export async function getAdminData(args: LoaderFunctionArgs<any>) {
     albums,
     cdCount,
     count,
-    title: 'Admin',
   };
 }
 
@@ -137,7 +135,6 @@ export async function getAllTimeRankings() {
   return {
     count: data?.length ?? 0,
     favorites: formatRankingsAllTime(data ?? []),
-    title: 'All-time albums',
   };
 }
 
@@ -195,7 +192,6 @@ export async function getAllTimeData(args: LoaderFunctionArgs<any>) {
     candidates,
     count: favorites.length,
     favorites,
-    title: 'Edit all-time rankings',
   };
 }
 
@@ -210,7 +206,6 @@ export async function getArtists() {
   return {
     artists: artists.map((a) => a.artist),
     count: artists.length,
-    title: 'Artists',
   };
 }
 
@@ -239,7 +234,6 @@ export async function getFavorites() {
   return {
     count: data?.length ?? 0,
     favorites: formatFavorites(data ?? []),
-    title: 'Top albums',
   };
 }
 
@@ -268,7 +262,6 @@ export async function getRankingsByYear({ params }: LoaderFunctionArgs<any>) {
   return {
     count: data?.length ?? 0,
     favorites: formatRankingsByYear(data ?? []),
-    title: `Rankings for ${params.year}`,
   };
 }
 
@@ -278,7 +271,6 @@ export async function getReleases() {
   return {
     count: data?.length ?? 0,
     releases: formatReleases(data ?? []),
-    title: 'New releases',
   };
 }
 
@@ -288,6 +280,5 @@ export async function getSongs() {
   return {
     count: data?.length ?? 0,
     songs: formatSongs(data ?? []),
-    title: 'Featured songs',
   };
 }

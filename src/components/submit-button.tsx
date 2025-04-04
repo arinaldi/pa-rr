@@ -24,7 +24,7 @@ export default function SubmitButton({
     <Button
       {...props}
       className={cn(className, 'relative')}
-      disabled={props.disabled || loading}
+      disabled={props.disabled ?? loading}
       size={mobile ? 'lg' : 'default'}
       type="submit"
     >

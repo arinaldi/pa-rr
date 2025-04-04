@@ -9,10 +9,10 @@ interface ThemeProviderProps extends Children {
   storageKey?: string;
 }
 
-type ThemeProviderState = {
+interface ThemeProviderState {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-};
+}
 
 const initialState: ThemeProviderState = {
   theme: 'system',

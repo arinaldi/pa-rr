@@ -18,14 +18,14 @@ import {
 import { useMobile } from '@/hooks/use-mobile';
 import { usePageTitle } from '@/hooks/use-page-title';
 
-type LoaderData = {
+interface LoaderData {
   count: number;
   parents?: {
     href: string;
     title: string;
   }[];
   title: string;
-};
+}
 
 export default function PageTitle() {
   const mobile = useMobile();

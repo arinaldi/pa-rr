@@ -24,9 +24,7 @@ export interface ListItem {
   year: string;
 }
 
-export interface FavoriteResults {
-  [key: string]: ListItem[];
-}
+export type FavoriteResults = Record<string, ListItem[]>;
 
 export interface AllTimeListItem extends ListItem {
   allTimeRanking: number | null;
@@ -72,9 +70,7 @@ function formatReleaseDate(isoString: string) {
   return `${date} ${MONTHS[month]} ${year}`;
 }
 
-export interface ReleaseResults {
-  [key: string]: Release[];
-}
+export type ReleaseResults = Record<string, Release[]>;
 
 export function formatReleases(releases: Release[]): ReleaseResults {
   const results: ReleaseResults = {};
@@ -98,9 +94,7 @@ const ALPHABET = Array.from(Array(26)).map((_, i) =>
 );
 export const HEADER_LETTERS = [NUMBER_SIGN, ...ALPHABET];
 
-interface SongResults {
-  [key: string]: Song[];
-}
+type SongResults = Record<string, Song[]>;
 
 export function formatSongs(songs: Song[]): SongResults {
   const results: SongResults = {};

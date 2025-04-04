@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 
 import {
   SidebarMenuButton,
@@ -16,11 +16,13 @@ interface Props {
 
 export default function MenuLink(props: Props) {
   const { label, to } = props;
+  const { pathname } = useLocation();
   const { setOpenMobile } = useSidebar();
+  const active = pathname.startsWith(to);
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild>
+      <SidebarMenuButton asChild isActive={active}>
         <NavLink
           className="group/link"
           onClick={() => setOpenMobile(false)}

@@ -25,7 +25,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { ROUTES, ROUTES_ADMIN } from '@/lib/constants';
+import { APP_NAME, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
 import { useSession } from './session-provider';
 import PageTitle from './page-title';
 import UserMenu from './user-menu';
@@ -45,9 +45,7 @@ export function AppSidebar() {
                     <Disc className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      Perfect Albums
-                    </span>
+                    <span className="truncate font-semibold">{APP_NAME}</span>
                     <span className="text-muted-foreground truncate text-xs">
                       The best music on the net
                     </span>

@@ -172,7 +172,9 @@ export const router = createBrowserRouter([
                 title: 'Top albums',
               },
             ],
-            title: `Rankings for ${args.params.year}`,
+            title: args.params.year
+              ? `Rankings for ${args.params.year}`
+              : 'Rankings',
           };
         },
       },

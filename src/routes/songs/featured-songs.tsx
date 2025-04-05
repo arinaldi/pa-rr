@@ -1,14 +1,15 @@
 import { Fragment } from 'react';
-import { useLoaderData } from 'react-router';
 import { ArrowUpIcon } from 'lucide-react';
 
+import { useFeaturedSongs } from '@/hooks/use-data';
 import { HEADER_LETTERS } from '@/lib/formatters';
-import { getSongs } from '@/supabase/data';
 import AddSongModal from './add-song-modal';
 import SongActions from './song-actions';
 
 export default function FeaturedSongs() {
-  const { songs } = useLoaderData<typeof getSongs>();
+  const {
+    data: { songs },
+  } = useFeaturedSongs();
 
   return (
     <div className="space-y-4">

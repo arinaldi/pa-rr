@@ -241,7 +241,12 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.FEATURED_SONGS,
         Component: FeaturedSongs,
         loader: async () => {
-          const data = await getSongs();
+          let data = getCache(ROUTE_HREF.FEATURED_SONGS);
+
+          if (!data) {
+            data = await getSongs();
+            mutate(ROUTE_HREF.FEATURED_SONGS, data);
+          }
 
           return {
             ...data,

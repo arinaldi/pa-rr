@@ -1,16 +1,16 @@
-import { useRevalidator } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES } from '@/lib/constants';
-import { Song } from '@/lib/types';
 import {
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useFeaturedSongs } from '@/hooks/use-data';
+import { useSubmit } from '@/hooks/use-submit';
+import { Song } from '@/lib/types';
+import { MESSAGES } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { songSchema, type SongInput } from './schema';
 import SongForm from './song-form';
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function EditSongModal({ onClose, song }: Props) {
-  const { revalidate } = useRevalidator();
+  const { mutate } = useFeaturedSongs();
   const form = useForm<SongInput>({
     defaultValues: {
       artist: song.artist,
@@ -32,7 +32,7 @@ export default function EditSongModal({ onClose, song }: Props) {
   });
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, revalidate],
+    callbacks: [onClose, mutate],
     handleSubmit: form.handleSubmit,
     submitFn: async (data: SongInput) => {
       const { error } = await supabase

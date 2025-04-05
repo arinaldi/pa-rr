@@ -1,10 +1,6 @@
-import { useRevalidator } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useSubmit } from '@/hooks/use-submit';
-import { formatDate } from '@/lib/formatters';
-import { MESSAGES } from '@/lib/constants';
 import { Release } from '@/lib/types';
 import {
   DialogContent,
@@ -12,6 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useNewReleases } from '@/hooks/use-data';
+import { useSubmit } from '@/hooks/use-submit';
+import { MESSAGES } from '@/lib/constants';
+import { formatDate } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 import { releaseSchema, type ReleaseInput } from './schema';
 import ReleaseForm from './release-form';
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function EditReleaseModal({ onClose, release }: Props) {
-  const { revalidate } = useRevalidator();
+  const { mutate } = useNewReleases();
   const form = useForm<ReleaseInput>({
     defaultValues: {
       artist: release.artist,
@@ -33,7 +33,7 @@ export default function EditReleaseModal({ onClose, release }: Props) {
   });
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, revalidate],
+    callbacks: [onClose, mutate],
     handleSubmit: form.handleSubmit,
     submitFn: async (data: ReleaseInput) => {
       const { error } = await supabase

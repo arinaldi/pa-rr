@@ -1,5 +1,3 @@
-import { useLoaderData } from 'react-router';
-
 import {
   Card,
   CardContent,
@@ -7,12 +5,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getReleases } from '@/supabase/data';
+import { useNewReleases } from '@/hooks/use-data';
 import AddReleaseModal from './add-release-modal';
 import ReleaseActions from './release-actions';
 
 export default function NewReleases() {
-  const { releases } = useLoaderData<typeof getReleases>();
+  const {
+    data: { releases },
+  } = useNewReleases();
 
   return (
     <div className="space-y-4">
@@ -56,7 +56,6 @@ export default function NewReleases() {
             </Card>
           ))}
       </div>
-      {/* </AppLayout> */}
     </div>
   );
 }

@@ -1,9 +1,5 @@
 import { FormEvent } from 'react';
-import { useRevalidator } from 'react-router';
 
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES } from '@/lib/constants';
-import { Release } from '@/lib/types';
 import {
   DialogContent,
   DialogDescription,
@@ -12,6 +8,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import SubmitButton from '@/components/submit-button';
+import { useNewReleases } from '@/hooks/use-data';
+import { useSubmit } from '@/hooks/use-submit';
+import { MESSAGES } from '@/lib/constants';
+import { Release } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
 interface Props {
@@ -20,9 +20,9 @@ interface Props {
 }
 
 export default function DeleteReleaseModal({ onClose, release }: Props) {
-  const { revalidate } = useRevalidator();
+  const { mutate } = useNewReleases();
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, revalidate],
+    callbacks: [onClose, mutate],
     submitFn: async (event: FormEvent) => {
       event.preventDefault();
 

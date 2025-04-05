@@ -10,7 +10,6 @@ import {
 } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 import { MESSAGES, SORT_DIRECTION } from '@/lib/constants';
-import { type Album } from '@/lib/types';
 import { parseAdminQuery } from '@/lib/utils';
 
 const { ASC, DESC } = SORT_DIRECTION;
@@ -20,19 +19,15 @@ export async function getAlbum({ params }: LoaderFunctionArgs<any>) {
     throw new Error(MESSAGES.NO_DATA);
   }
 
-  const { data } = await supabase
+  const { data: album, error } = await supabase
     .from('albums')
     .select('*')
     .eq('id', parseInt(params.id, 10))
     .single();
 
-  if (!data) {
-    throw new Error(MESSAGES.NO_DATA);
-  }
+  if (error) throw new Error(error.message);
 
-  return {
-    album: data as Album,
-  };
+  return { album };
 }
 
 async function getAlbums({ request }: LoaderFunctionArgs<any>) {
@@ -71,10 +66,12 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
     query = query.order('artist', { ascending: direction === ASC });
   }
 
-  const { data, count } = await query;
+  const { count, data: albums, error } = await query;
+
+  if (error) throw new Error(error.message);
 
   return {
-    albums: (data as Album[]) ?? [],
+    albums,
     count: count ?? 0,
   };
 }
@@ -95,7 +92,9 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
     query = query.eq('studio', true);
   }
 
-  const { count } = await query;
+  const { count, error } = await query;
+
+  if (error) throw new Error(error.message);
 
   return count ?? 0;
 }
@@ -114,7 +113,7 @@ export async function getAdminData(args: LoaderFunctionArgs<any>) {
 }
 
 export async function getAllTimeRankings() {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('rankings')
     .select(
       `
@@ -132,9 +131,11 @@ export async function getAllTimeRankings() {
     .gte('all_time_position', 1)
     .order('all_time_position', { ascending: true });
 
+  if (error) throw new Error(error.message);
+
   return {
-    count: data?.length ?? 0,
-    favorites: formatRankingsAllTime(data ?? []),
+    count: data.length,
+    favorites: formatRankingsAllTime(data),
   };
 }
 
@@ -172,11 +173,11 @@ export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
       query = query.order(sortProp, { ascending: direction === ASC });
     }
 
-    const { data } = await query;
+    const { data, error } = await query;
 
-    if (data) {
-      candidates = formatRankingsByYear(data);
-    }
+    if (error) throw new Error(error.message);
+
+    candidates = formatRankingsByYear(data);
   }
 
   return { candidates };
@@ -200,8 +201,11 @@ interface Artist {
 }
 
 export async function getArtists() {
-  const { data } = await supabase.rpc('get_artists');
-  const artists = (data as unknown as Artist[]) ?? [];
+  const { data, error } = await supabase.rpc('get_artists');
+
+  if (error) throw new Error(error.message);
+
+  const artists = data as unknown as Artist[];
 
   return {
     artists: artists.map((a) => a.artist),
@@ -210,7 +214,7 @@ export async function getArtists() {
 }
 
 export async function getFavorites() {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('albums')
     .select(
       `
@@ -231,9 +235,11 @@ export async function getFavorites() {
     .eq('favorite', true)
     .order('artist', { ascending: true });
 
+  if (error) throw new Error(error.message);
+
   return {
-    count: data?.length ?? 0,
-    favorites: formatFavorites(data ?? []),
+    count: data.length,
+    favorites: formatFavorites(data),
   };
 }
 
@@ -242,7 +248,7 @@ export async function getRankingsByYear({ params }: LoaderFunctionArgs<any>) {
     throw new Error(MESSAGES.NO_DATA);
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('albums')
     .select(
       `
@@ -259,26 +265,38 @@ export async function getRankingsByYear({ params }: LoaderFunctionArgs<any>) {
     )
     .match({ favorite: true, year: params.year });
 
+  if (error) throw new Error(error.message);
+
   return {
-    count: data?.length ?? 0,
-    favorites: formatRankingsByYear(data ?? []),
+    count: data.length,
+    favorites: formatRankingsByYear(data),
   };
 }
 
 export async function getReleases() {
-  const { data } = await supabase.from('releases').select('*').order('artist');
+  const { data, error } = await supabase
+    .from('releases')
+    .select('*')
+    .order('artist');
+
+  if (error) throw new Error(error.message);
 
   return {
-    count: data?.length ?? 0,
-    releases: formatReleases(data ?? []),
+    count: data.length,
+    releases: formatReleases(data),
   };
 }
 
 export async function getSongs() {
-  const { data } = await supabase.from('songs').select('*').order('artist');
+  const { data, error } = await supabase
+    .from('songs')
+    .select('*')
+    .order('artist');
+
+  if (error) throw new Error(error.message);
 
   return {
-    count: data?.length ?? 0,
-    songs: formatSongs(data ?? []),
+    count: data.length,
+    songs: formatSongs(data),
   };
 }

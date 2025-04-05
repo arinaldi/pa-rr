@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { useRevalidator } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,6 +12,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useSession } from '@/components/session-provider';
+import { useNewReleases } from '@/hooks/use-data';
+import { useSubmit } from '@/hooks/use-submit';
+import { MESSAGES } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { releaseSchema, type ReleaseInput } from './schema';
 import ReleaseForm from './release-form';
@@ -26,7 +26,7 @@ const defaultValues = {
 };
 
 export default function AddReleaseModal() {
-  const { revalidate } = useRevalidator();
+  const { mutate } = useNewReleases();
   const [open, setOpen] = useState(false);
   const form = useForm<ReleaseInput>({
     defaultValues,
@@ -40,7 +40,7 @@ export default function AddReleaseModal() {
   }
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, revalidate],
+    callbacks: [onClose, mutate],
     handleSubmit: form.handleSubmit,
     submitFn: async (data: ReleaseInput) => {
       const { error } = await supabase.from('releases').insert({

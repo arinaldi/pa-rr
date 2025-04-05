@@ -1,4 +1,5 @@
 import { createBrowserRouter, redirect } from 'react-router';
+import { mutate, SWRConfig } from 'swr';
 
 import { Fallback } from '@/components/fallback';
 import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
@@ -41,6 +42,10 @@ async function validateSession() {
   }
 
   return true;
+}
+
+function getCache(key: string) {
+  return SWRConfig.defaultValue.cache.get(key)?.data;
 }
 
 export const router = createBrowserRouter([
@@ -194,7 +199,12 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.NEW_RELEASES,
         Component: NewReleases,
         loader: async () => {
-          const data = await getReleases();
+          let data = getCache(ROUTE_HREF.NEW_RELEASES);
+
+          if (!data) {
+            data = await getReleases();
+            mutate(ROUTE_HREF.NEW_RELEASES, data);
+          }
 
           return {
             ...data,

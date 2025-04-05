@@ -70,7 +70,10 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
 
   if (error) throw new Error(error.message);
 
-  return { albums, count };
+  return {
+    albums,
+    count: count ?? 0,
+  };
 }
 
 async function getCdCount({ request }: LoaderFunctionArgs<any>) {
@@ -93,7 +96,7 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
 
   if (error) throw new Error(error.message);
 
-  return count;
+  return count ?? 0;
 }
 
 export async function getAdminData(args: LoaderFunctionArgs<any>) {

@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { useLoaderData } from 'react-router';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -9,9 +8,9 @@ import InputSpinner from '@/components/input-spinner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useSession } from '@/components/session-provider';
+import { useArtists } from '@/hooks/use-data';
 import { MESSAGES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { getArtists } from '@/supabase/data';
 import {
   getAccessToken,
   getArtistAlbums,
@@ -29,7 +28,9 @@ interface State {
 
 export default function Artists() {
   const session = useSession();
-  const { artists } = useLoaderData<typeof getArtists>();
+  const {
+    data: { artists },
+  } = useArtists();
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
   const [fetching, setFetching] = useState(false);

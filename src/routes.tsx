@@ -187,7 +187,12 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.ARTISTS,
         Component: Artists,
         loader: async () => {
-          const data = await getArtists();
+          let data = getCache(ROUTE_HREF.ARTISTS);
+
+          if (!data) {
+            data = await getArtists();
+            mutate(ROUTE_HREF.ARTISTS, data);
+          }
 
           return {
             ...data,

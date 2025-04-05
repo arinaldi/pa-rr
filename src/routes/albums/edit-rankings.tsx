@@ -4,6 +4,7 @@ import { Reorder } from 'framer-motion';
 
 import SubmitButton from '@/components/submit-button';
 import { useSubmit } from '@/hooks/use-submit';
+import { useTopAlbums } from '@/hooks/use-data';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
@@ -12,6 +13,7 @@ import AlbumCard from './album-card';
 
 export default function EditRankings() {
   const { favorites } = useLoaderData<typeof getRankingsByYear>();
+  const { mutate } = useTopAlbums();
   const navigate = useNavigate();
   const params = useParams();
   const year = parseQuery(params?.year);
@@ -24,7 +26,7 @@ export default function EditRankings() {
   );
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [() => navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`)],
+    callbacks: [() => navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`), mutate],
     submitFn: async (event: FormEvent) => {
       event.preventDefault();
 

@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from 'react-router';
+import { Link } from 'react-router';
 import { ArrowUp, Pencil } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -10,13 +10,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useSession } from '@/components/session-provider';
+import { useTopAlbums } from '@/hooks/use-data';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { capitalizeFirstLetter } from '@/lib/utils';
-import { getFavorites } from '@/supabase/data';
 import { DecadeSelect } from './decade-select';
 
 export default function TopAlbums() {
-  const { favorites } = useLoaderData<typeof getFavorites>();
+  const {
+    data: { favorites },
+  } = useTopAlbums();
   const session = useSession();
 
   return (

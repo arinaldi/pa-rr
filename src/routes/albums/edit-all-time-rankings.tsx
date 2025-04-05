@@ -4,6 +4,7 @@ import { Reorder } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
+import { useAllTimeRankings } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
@@ -15,21 +16,18 @@ import AlbumCard from './album-card';
 
 export default function EditAllTimeRankings() {
   const { candidates, favorites } = useLoaderData<typeof getAllTimeData>();
+  const { mutate } = useAllTimeRankings();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const title = parseQuery(searchParams.get('title'));
   const [items, setItems] = useState(favorites);
-
-  function goBack() {
-    navigate(ROUTE_HREF.ALL_TIME);
-  }
 
   function removeItem(id: number) {
     setItems((prev) => prev.filter((item) => item.id !== id));
   }
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [goBack],
+    callbacks: [() => navigate(ROUTE_HREF.ALL_TIME), mutate],
     submitFn: async (event: FormEvent) => {
       event.preventDefault();
 
@@ -100,19 +98,9 @@ export default function EditAllTimeRankings() {
               ))}
             </div>
           </Reorder.Group>
-          <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
-              Save
-            </SubmitButton>
-            <Button
-              className="w-full sm:w-auto"
-              onClick={goBack}
-              type="button"
-              variant="outline"
-            >
-              Cancel
-            </Button>
-          </div>
+          <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
+            Save
+          </SubmitButton>
         </form>
       </div>
     </div>

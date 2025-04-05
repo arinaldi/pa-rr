@@ -1,16 +1,18 @@
 import { Fragment } from 'react';
-import { Link, useLoaderData } from 'react-router';
+import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useSession } from '@/components/session-provider';
+import { useAllTimeRankings } from '@/hooks/use-data';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { getAllTimeRankings } from '@/supabase/data';
 
 export default function AllTimeRankings() {
-  const { favorites } = useLoaderData<typeof getAllTimeRankings>();
+  const {
+    data: { favorites },
+  } = useAllTimeRankings();
   const session = useSession();
 
   return (

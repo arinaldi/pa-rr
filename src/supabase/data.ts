@@ -243,11 +243,7 @@ export async function getFavorites() {
   };
 }
 
-export async function getRankingsByYear({ params }: LoaderFunctionArgs<any>) {
-  if (!params.year) {
-    throw new Error(MESSAGES.NO_DATA);
-  }
-
+export async function getRankingsByYear(year: string) {
   const { data, error } = await supabase
     .from('albums')
     .select(
@@ -263,7 +259,7 @@ export async function getRankingsByYear({ params }: LoaderFunctionArgs<any>) {
       )
     `,
     )
-    .match({ favorite: true, year: params.year });
+    .match({ favorite: true, year });
 
   if (error) throw new Error(error.message);
 

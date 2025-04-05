@@ -3,6 +3,7 @@ import { mutate, SWRConfig } from 'swr';
 
 import { Fallback } from '@/components/fallback';
 import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
+import { parseQuery } from '@/lib/utils';
 import AddAlbum from '@/routes/admin/add-album';
 import Admin from '@/routes/admin/admin';
 import AllTimeRankings from '@/routes/albums/all-time-rankings';
@@ -111,7 +112,12 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.TOP_ALBUMS,
         Component: TopAlbums,
         loader: async () => {
-          const data = await getFavorites();
+          let data = getCache(ROUTE_HREF.TOP_ALBUMS);
+
+          if (!data) {
+            data = await getFavorites();
+            mutate(ROUTE_HREF.TOP_ALBUMS, data);
+          }
 
           return {
             ...data,
@@ -123,7 +129,12 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.ALL_TIME,
         Component: AllTimeRankings,
         loader: async () => {
-          const data = await getAllTimeRankings();
+          let data = getCache(ROUTE_HREF.ALL_TIME);
+
+          if (!data) {
+            data = await getAllTimeRankings();
+            mutate(ROUTE_HREF.ALL_TIME, data);
+          }
 
           return {
             ...data,
@@ -167,7 +178,8 @@ export const router = createBrowserRouter([
         loader: async (args) => {
           await validateSession();
 
-          const data = await getRankingsByYear(args);
+          const year = parseQuery(args.params.year);
+          const data = await getRankingsByYear(year);
 
           return {
             ...data,
@@ -177,9 +189,7 @@ export const router = createBrowserRouter([
                 title: 'Top albums',
               },
             ],
-            title: args.params.year
-              ? `Rankings for ${args.params.year}`
-              : 'Rankings',
+            title: `Rankings for ${year}`,
           };
         },
       },

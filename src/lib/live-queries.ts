@@ -6,7 +6,6 @@ const liveQueries = new Set<Key>();
 export function trackLiveQueries(useSWRNext: SWRHook) {
   return (key: Key, fetcher: any, config: SWRConfiguration) => {
     const swr = useSWRNext(key, fetcher, config);
-    console.log(liveQueries);
 
     useEffect(() => {
       if (!liveQueries.has(key)) {

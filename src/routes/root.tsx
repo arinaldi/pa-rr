@@ -11,7 +11,7 @@ export default function Root() {
   return (
     <SWRConfig
       value={{
-        dedupingInterval: 1000 * 60,
+        revalidateIfStale: false,
         use: [trackLiveQueries],
       }}
     >

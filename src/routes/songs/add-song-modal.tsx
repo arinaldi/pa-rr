@@ -12,7 +12,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useSession } from '@/components/session-provider';
-import { useFeaturedSongs } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
@@ -26,7 +25,6 @@ const defaultValues = {
 };
 
 export default function AddSongModal() {
-  const { mutate } = useFeaturedSongs();
   const [open, setOpen] = useState(false);
   const form = useForm<SongInput>({
     defaultValues,
@@ -40,7 +38,7 @@ export default function AddSongModal() {
   }
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, mutate],
+    callbacks: [onClose],
     handleSubmit: form.handleSubmit,
     submitFn: async (data: SongInput) => {
       const { error } = await supabase.from('songs').insert(data);

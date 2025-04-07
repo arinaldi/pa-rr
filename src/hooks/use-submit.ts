@@ -2,9 +2,10 @@ import { FormEvent, useState } from 'react';
 import { UseFormHandleSubmit } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { capitalizeFirstLetter } from '@/lib/utils';
 import { MESSAGES } from '@/lib/constants';
+import { revalidateLiveQueries } from '@/lib/live-queries';
 import { Callback } from '@/lib/types';
+import { capitalizeFirstLetter } from '@/lib/utils';
 
 export interface Options {
   callbacks?: Callback[];
@@ -27,6 +28,7 @@ export function useSubmit(options: Options): Payload {
       setSubmitting(true);
       await submitFn(data);
       setSubmitting(false);
+      await revalidateLiveQueries();
 
       callbacks?.forEach((c) => {
         c();

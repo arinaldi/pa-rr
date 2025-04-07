@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useNewReleases } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES } from '@/lib/constants';
 import { formatDate } from '@/lib/formatters';
@@ -22,7 +21,6 @@ interface Props {
 }
 
 export default function EditReleaseModal({ onClose, release }: Props) {
-  const { mutate } = useNewReleases();
   const form = useForm<ReleaseInput>({
     defaultValues: {
       artist: release.artist,
@@ -33,7 +31,7 @@ export default function EditReleaseModal({ onClose, release }: Props) {
   });
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, mutate],
+    callbacks: [onClose],
     handleSubmit: form.handleSubmit,
     submitFn: async (data: ReleaseInput) => {
       const { error } = await supabase

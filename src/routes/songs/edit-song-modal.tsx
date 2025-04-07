@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useFeaturedSongs } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { Song } from '@/lib/types';
 import { MESSAGES } from '@/lib/constants';
@@ -21,7 +20,6 @@ interface Props {
 }
 
 export default function EditSongModal({ onClose, song }: Props) {
-  const { mutate } = useFeaturedSongs();
   const form = useForm<SongInput>({
     defaultValues: {
       artist: song.artist,
@@ -32,7 +30,7 @@ export default function EditSongModal({ onClose, song }: Props) {
   });
 
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, mutate],
+    callbacks: [onClose],
     handleSubmit: form.handleSubmit,
     submitFn: async (data: SongInput) => {
       const { error } = await supabase

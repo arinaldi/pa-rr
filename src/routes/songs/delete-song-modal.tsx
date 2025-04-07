@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import SubmitButton from '@/components/submit-button';
-import { useFeaturedSongs } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES } from '@/lib/constants';
 import { Song } from '@/lib/types';
@@ -20,9 +19,8 @@ interface Props {
 }
 
 export default function DeleteSongModal({ onClose, song }: Props) {
-  const { mutate } = useFeaturedSongs();
   const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose, mutate],
+    callbacks: [onClose],
     submitFn: async (event: FormEvent) => {
       event.preventDefault();
 

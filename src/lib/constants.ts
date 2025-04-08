@@ -70,6 +70,7 @@ export const ROUTE_HREF = {
   FEATURED_SONGS: '/songs',
   NEW_RELEASES: '/releases',
   PLAYLIST: '/playlist',
+  SANDBOX: '/sandbox',
   SIGNIN: '/signin',
   SIGNOUT: '/signout',
   TOP_ALBUMS: '/albums',

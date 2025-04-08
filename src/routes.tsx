@@ -16,6 +16,7 @@ import NewReleases from '@/routes/releases/new-releases';
 import NotFound from '@/routes/not-found';
 import Playlist from '@/routes/playlist/playlist';
 import Root from '@/routes/root';
+import Sandbox from '@/routes/sandbox/sandbox';
 import SignIn from '@/routes/signin/signin';
 import SignOut from '@/routes/signout/signout';
 import TopAlbums from '@/routes/albums/top-albums';
@@ -39,7 +40,7 @@ async function validateSession() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    throw redirect(ROUTE_HREF.TOP_ALBUMS);
+    throw redirect('/not-found');
   }
 
   return true;
@@ -231,6 +232,15 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.PLAYLIST,
         Component: Playlist,
         loader: () => ({ title: 'Playlist' }),
+      },
+      {
+        path: ROUTE_HREF.SANDBOX,
+        Component: Sandbox,
+        loader: async () => {
+          await validateSession();
+
+          return { title: 'Sandbox' };
+        },
       },
       {
         path: ROUTE_HREF.SIGNIN,

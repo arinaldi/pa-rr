@@ -11,7 +11,7 @@ import AlbumForm from './album-form';
 export default function AddAlbum() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const form = useForm<AlbumInput>({
+  const form = useForm({
     defaultValues: {
       artist: '',
       title: '',

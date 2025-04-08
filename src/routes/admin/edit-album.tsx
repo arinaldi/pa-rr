@@ -20,7 +20,7 @@ export default function EditAlbum() {
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
-  const form = useForm<AlbumInput>({
+  const form = useForm({
     defaultValues: {
       artist: album.artist,
       title: album.title,

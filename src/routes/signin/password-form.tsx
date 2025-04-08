@@ -28,7 +28,7 @@ interface Props {
 export default function PasswordForm({ email, onCancel }: Props) {
   const navigate = useNavigate();
   const mobile = useMobile();
-  const form = useForm<SignInInput>({
+  const form = useForm({
     defaultValues: {
       email,
       password: '',

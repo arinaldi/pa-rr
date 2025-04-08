@@ -33,7 +33,7 @@ interface Props {
 export default function OtpForm({ email, onCancel }: Props) {
   const navigate = useNavigate();
   const mobile = useMobile();
-  const form = useForm<VerifyOtpInput>({
+  const form = useForm({
     defaultValues: {
       code: '',
       email,

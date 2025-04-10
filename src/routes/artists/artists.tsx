@@ -91,6 +91,7 @@ export default function Artists() {
         <div className="relative">
           <Input
             autoFocus
+            name="artists"
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
             ref={searchRef}

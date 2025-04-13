@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useMobile } from '@/hooks/use-mobile';
-import { usePageTitle } from '@/hooks/use-page-title';
+import { APP_NAME } from '@/lib/constants';
 
 interface LoaderData {
   count: number;
@@ -34,12 +34,12 @@ export default function PageTitle() {
   const navigate = useNavigate();
   const match = matches.find((m) => m.pathname === pathname);
   const data = match?.data as LoaderData;
-  usePageTitle(data?.title);
 
   if (!data) return null;
 
   return (
     <>
+      <title>{data?.title ? `${data.title} | ${APP_NAME}` : APP_NAME}</title>
       <BreadcrumbSeparator className="hidden md:block" />
       {mobile && data.parents && (
         <>

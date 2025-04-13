@@ -46,3 +46,7 @@ export function parseAdminQuery(query: Record<string, QueryValue>) {
     title: parseQuery(query.title),
   };
 }
+
+export async function wait(ms = 0) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}

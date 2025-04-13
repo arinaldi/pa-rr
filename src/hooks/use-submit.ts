@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useTransition } from 'react';
 import { UseFormHandleSubmit } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -20,39 +20,36 @@ interface Payload {
 }
 
 export function useSubmit(options: Options): Payload {
-  const [submitting, setSubmitting] = useState(false);
+  const [pending, startTransition] = useTransition();
   const { callbacks, handleSubmit, submitFn, successMessage = '' } = options;
 
   async function handler(data?: any) {
-    try {
-      setSubmitting(true);
-      await submitFn(data);
-      setSubmitting(false);
-      await revalidateLiveQueries();
+    startTransition(async () => {
+      try {
+        await submitFn(data);
+        await revalidateLiveQueries();
 
-      callbacks?.forEach((c) => {
-        c();
-      });
+        callbacks?.forEach((c) => {
+          c();
+        });
 
-      if (successMessage) {
-        toast.success(successMessage);
+        if (successMessage) {
+          toast.success(successMessage);
+        }
+      } catch (error: unknown) {
+        let message: string = MESSAGES.ERROR;
+
+        if (error instanceof Error && error.message) {
+          message = error.message;
+        }
+
+        toast.error(capitalizeFirstLetter(message));
       }
-    } catch (error: any) {
-      setSubmitting(false);
-      let message: string = MESSAGES.ERROR;
-
-      if (error?.info?.error) {
-        message = error.info.error;
-      } else if (error instanceof Error && error.message) {
-        message = error.message;
-      }
-
-      toast.error(capitalizeFirstLetter(message));
-    }
+    });
   }
 
   return {
     onSubmit: handleSubmit ? handleSubmit(handler) : handler,
-    submitting,
+    submitting: pending,
   };
 }

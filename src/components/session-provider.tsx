@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, use, useEffect, useState } from 'react';
 import { type Session } from '@supabase/supabase-js';
 
 import { type Children } from '@/lib/types';
@@ -11,7 +11,7 @@ interface Context {
 const SessionContext = createContext<Context>({ session: null });
 
 export function useSession() {
-  const context = useContext(SessionContext);
+  const context = use(SessionContext);
 
   if (!context) {
     throw new Error('useSession must be used within a SessionProvider');

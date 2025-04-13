@@ -1,5 +1,3 @@
-import { FormEvent } from 'react';
-
 import {
   DialogContent,
   DialogDescription,
@@ -8,7 +6,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import SubmitButton from '@/components/submit-button';
-import { useSubmit } from '@/hooks/use-submit';
+import { useAction } from '@/hooks/use-action';
 import { MESSAGES } from '@/lib/constants';
 import { Release } from '@/lib/types';
 import { supabase } from '@/supabase/client';
@@ -19,11 +17,10 @@ interface Props {
 }
 
 export default function DeleteReleaseModal({ onClose, release }: Props) {
-  const { onSubmit, submitting } = useSubmit({
+  const [, action, pending] = useAction({
     callbacks: [onClose],
-    submitFn: async (event: FormEvent) => {
-      event.preventDefault();
-
+    initialState: undefined,
+    submitFn: async () => {
       const { error } = await supabase
         .from('releases')
         .delete()
@@ -45,9 +42,9 @@ export default function DeleteReleaseModal({ onClose, release }: Props) {
         </DialogTitle>
         <DialogDescription>This action cannot be undone</DialogDescription>
       </DialogHeader>
-      <form onSubmit={onSubmit}>
+      <form action={action}>
         <DialogFooter>
-          <SubmitButton submitting={submitting} variant="destructive">
+          <SubmitButton submitting={pending} variant="destructive">
             Delete
           </SubmitButton>
         </DialogFooter>

@@ -76,7 +76,7 @@ export default function UserMenu() {
                 </>
               ) : (
                 <>
-                  <Avatar className="flex size-8 items-center justify-center rounded-lg bg-gray-200">
+                  <Avatar className="bg-muted flex size-8 items-center justify-center rounded-lg">
                     <User className="size-5" />
                   </Avatar>
                 </>

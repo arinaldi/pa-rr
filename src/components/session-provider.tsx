@@ -37,9 +37,5 @@ export function SessionProvider({ children }: Children) {
     return () => subscription.unsubscribe();
   }, []);
 
-  return (
-    <SessionContext.Provider value={{ session }}>
-      {children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext value={{ session }}>{children}</SessionContext>;
 }

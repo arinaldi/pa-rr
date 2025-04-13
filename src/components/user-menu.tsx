@@ -32,10 +32,6 @@ export default function UserMenu() {
   const { isMobile, setOpenMobile } = useSidebar();
   const { setTheme, theme } = useTheme();
 
-  function onValueChange(value: string) {
-    setTheme(value as Theme);
-  }
-
   async function signOut() {
     const { error } = await supabase.auth.signOut();
 
@@ -124,7 +120,7 @@ export default function UserMenu() {
               <DropdownMenuLabel>Theme</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup
-                onValueChange={onValueChange}
+                onValueChange={(t) => setTheme(t as Theme)}
                 value={theme}
               >
                 <DropdownMenuRadioItem value="light">

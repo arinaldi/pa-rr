@@ -1,5 +1,3 @@
-import { FormEvent } from 'react';
-
 import {
   DialogContent,
   DialogDescription,
@@ -8,7 +6,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import SubmitButton from '@/components/submit-button';
-import { useSubmit } from '@/hooks/use-submit';
+import { useAction } from '@/hooks/use-action';
 import { MESSAGES } from '@/lib/constants';
 import { Song } from '@/lib/types';
 import { supabase } from '@/supabase/client';
@@ -19,11 +17,10 @@ interface Props {
 }
 
 export default function DeleteSongModal({ onClose, song }: Props) {
-  const { onSubmit, submitting } = useSubmit({
+  const [, action, pending] = useAction({
     callbacks: [onClose],
-    submitFn: async (event: FormEvent) => {
-      event.preventDefault();
-
+    initialState: undefined,
+    submitFn: async () => {
       const { error } = await supabase.from('songs').delete().eq('id', song.id);
 
       if (error) {
@@ -41,9 +38,9 @@ export default function DeleteSongModal({ onClose, song }: Props) {
         </DialogTitle>
         <DialogDescription>This action cannot be undone</DialogDescription>
       </DialogHeader>
-      <form onSubmit={onSubmit}>
+      <form action={action}>
         <DialogFooter>
-          <SubmitButton submitting={submitting} variant="destructive">
+          <SubmitButton submitting={pending} variant="destructive">
             Delete
           </SubmitButton>
         </DialogFooter>

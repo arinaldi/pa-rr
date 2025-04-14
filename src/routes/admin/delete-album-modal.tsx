@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { Button } from '@/components/ui/button';
@@ -22,8 +22,8 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import SubmitButton from '@/components/submit-button';
+import { useAction } from '@/hooks/use-action';
 import { useMobile } from '@/hooks/use-mobile';
-import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
 import { Album } from '@/lib/types';
 import { supabase } from '@/supabase/client';
@@ -38,13 +38,12 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
   const [searchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const mobile = useMobile();
-  const { onSubmit, submitting } = useSubmit({
+  const [, action, pending] = useAction({
     callbacks: [
       () => navigate(`${ROUTES_ADMIN.base.href}?${searchParams.toString()}`),
     ],
-    submitFn: async (event: FormEvent) => {
-      event.preventDefault();
-
+    initialState: undefined,
+    submitFn: async () => {
       if (album.favorite) {
         const { data: ranking, error: rankingError } = await supabase
           .from('rankings')
@@ -82,7 +81,7 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
           </Button>
         </DrawerTrigger>
         <DrawerContent>
-          <form onSubmit={onSubmit}>
+          <form action={action}>
             <DrawerHeader className="text-left">
               <DrawerTitle>
                 Are you sure you want to delete {album.artist} &ndash;{' '}
@@ -96,7 +95,7 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
               <SubmitButton
                 className="w-full"
                 size="lg"
-                submitting={submitting}
+                submitting={pending}
                 variant="destructive"
               >
                 Delete
@@ -130,9 +129,9 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
           </DialogTitle>
           <DialogDescription>This action cannot be undone</DialogDescription>
         </DialogHeader>
-        <form onSubmit={onSubmit}>
+        <form action={action}>
           <DialogFooter>
-            <SubmitButton submitting={submitting} variant="destructive">
+            <SubmitButton submitting={pending} variant="destructive">
               Delete
             </SubmitButton>
           </DialogFooter>

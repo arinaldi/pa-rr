@@ -23,22 +23,14 @@ export default function MenuLink(props: Props) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={active}>
-        <NavLink
-          className="group/link"
-          onClick={() => setOpenMobile(false)}
-          to={to}
-        >
+        <NavLink onClick={() => setOpenMobile(false)} to={to}>
           {({ isActive }) => (
             <>
               <props.icon
-                className={cn(
-                  'group-hover/link:text-primary group-hover/link:font-medium',
-                  isActive ? '' : 'text-muted-foreground',
-                )}
+                className={cn(isActive ? '' : 'text-muted-foreground')}
               />
               <span
                 className={cn(
-                  'group-hover/link:text-primary group-hover/link:font-medium',
                   isActive ? 'font-medium' : 'text-muted-foreground',
                 )}
               >

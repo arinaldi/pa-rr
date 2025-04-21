@@ -34,7 +34,7 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const searchParams = Object.fromEntries(params.entries());
-  const { artist, page, perPage, sort, studio, title } =
+  const { artist, cd, page, perPage, sort, studio, title } =
     parseAdminQuery(searchParams);
   const [sortProp, desc] = sort.split(':') ?? [];
   const direction = desc ? DESC : ASC;
@@ -48,8 +48,12 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
     .ilike('title', `%${title}%`)
     .range(start, end);
 
-  if (studio === 'true') {
-    query = query.eq('studio', true);
+  if (cd) {
+    query = query.eq('cd', cd === 'true');
+  }
+
+  if (studio) {
+    query = query.eq('studio', studio === 'true');
   }
 
   if (sortProp) {
@@ -80,7 +84,7 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const searchParams = Object.fromEntries(params.entries());
-  const { artist, studio, title } = parseAdminQuery(searchParams);
+  const { artist, cd, studio, title } = parseAdminQuery(searchParams);
   let query = supabase
     .from('albums')
     .select('*', { count: 'exact', head: true })
@@ -88,8 +92,12 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
     .ilike('artist', `%${artist}%`)
     .ilike('title', `%${title}%`);
 
-  if (studio === 'true') {
-    query = query.eq('studio', true);
+  if (cd) {
+    query = query.eq('cd', cd === 'true');
+  }
+
+  if (studio) {
+    query = query.eq('studio', studio === 'true');
   }
 
   const { count, error } = await query;

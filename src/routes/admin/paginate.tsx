@@ -1,16 +1,12 @@
 import { Link, useSearchParams } from 'react-router';
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react';
 
-import {
-  parsePageQuery,
-  parsePerPageQuery,
-  parseStudioQuery,
-} from '@/lib/utils';
+import { parsePageQuery, parsePerPageQuery } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Pagination,
@@ -18,7 +14,8 @@ import {
   PaginationItem,
 } from '@/components/ui/pagination';
 import PerPage from './per-page';
-import StudioFilter from './studio-filter';
+import FacetedFilter from './faceted-filter';
+import ResetFilters from './reset-filters';
 
 interface Props {
   total: number;
@@ -28,7 +25,6 @@ export default function Paginate({ total }: Props) {
   const [searchParams] = useSearchParams();
   const page = parsePageQuery(searchParams.get('page'));
   const perPage = parsePerPageQuery(searchParams.get('perPage'));
-  const studio = parseStudioQuery(searchParams.get('studio'));
   const lastPage = Math.ceil(total / perPage);
   const isFirstPage = page === 1;
   const isLastPage = page === lastPage;
@@ -44,7 +40,11 @@ export default function Paginate({ total }: Props) {
     <>
       {/* Desktop version */}
       <Pagination className="hidden sm:flex sm:items-center sm:justify-between sm:gap-8">
-        <StudioFilter studio={studio} />
+        <div className="flex items-center gap-2">
+          <FacetedFilter queryKey="cd" title="CD" />
+          <FacetedFilter queryKey="studio" title="Studio" />
+          <ResetFilters queryKeys={['cd', 'studio']} />
+        </div>
         <div className="flex items-center gap-8">
           <PerPage perPage={perPage} />
           <p className="text-sm font-medium">
@@ -59,7 +59,7 @@ export default function Paginate({ total }: Props) {
                   to={getHref(1)}
                 >
                   <span className="sr-only">Go to first page</span>
-                  <ChevronsLeftIcon className="size-4" />
+                  <ChevronsLeft className="size-4" />
                 </Link>
               </Button>
             </PaginationItem>
@@ -71,7 +71,7 @@ export default function Paginate({ total }: Props) {
                   to={getHref(page - 1)}
                 >
                   <span className="sr-only">Go to previous page</span>
-                  <ChevronLeftIcon className="size-4" />
+                  <ChevronLeft className="size-4" />
                 </Link>
               </Button>
             </PaginationItem>
@@ -83,7 +83,7 @@ export default function Paginate({ total }: Props) {
                   to={getHref(page + 1)}
                 >
                   <span className="sr-only">Go to next page</span>
-                  <ChevronRightIcon className="size-4" />
+                  <ChevronRight className="size-4" />
                 </Link>
               </Button>
             </PaginationItem>
@@ -95,7 +95,7 @@ export default function Paginate({ total }: Props) {
                   to={getHref(lastPage)}
                 >
                   <span className="sr-only">Go to last page</span>
-                  <ChevronsRightIcon className="size-4" />
+                  <ChevronsRight className="size-4" />
                 </Link>
               </Button>
             </PaginationItem>
@@ -103,7 +103,7 @@ export default function Paginate({ total }: Props) {
         </div>
       </Pagination>
       {/* Mobile version */}
-      <Pagination className="flex items-center justify-between gap-2 sm:hidden">
+      <Pagination className="flex flex-col gap-4 sm:hidden">
         <div className="flex items-center gap-4">
           <PaginationContent className="gap-2">
             <PaginationItem>
@@ -114,7 +114,7 @@ export default function Paginate({ total }: Props) {
                   to={getHref(page - 1)}
                 >
                   <span className="sr-only">Go to previous page</span>
-                  <ChevronLeftIcon className="size-4" />
+                  <ChevronLeft className="size-4" />
                 </Link>
               </Button>
             </PaginationItem>
@@ -126,7 +126,7 @@ export default function Paginate({ total }: Props) {
                   to={getHref(page + 1)}
                 >
                   <span className="sr-only">Go to next page</span>
-                  <ChevronRightIcon className="size-4" />
+                  <ChevronRight className="size-4" />
                 </Link>
               </Button>
             </PaginationItem>
@@ -135,7 +135,11 @@ export default function Paginate({ total }: Props) {
             Page {page.toLocaleString()} of {lastPage.toLocaleString()}
           </p>
         </div>
-        <StudioFilter studio={studio} />
+        <div className="flex items-center gap-2">
+          <FacetedFilter queryKey="cd" title="CD" />
+          <FacetedFilter queryKey="studio" title="Studio" />
+        </div>
+        <ResetFilters queryKeys={['cd', 'studio']} />
       </Pagination>
     </>
   );

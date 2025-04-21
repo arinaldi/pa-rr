@@ -38,5 +38,3 @@ interface ErrorResult {
 }
 
 export type MutateResult = SuccessResult | ErrorResult;
-
-export type StudioValue = 'true' | 'false';

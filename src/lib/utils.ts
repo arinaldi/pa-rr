@@ -2,7 +2,6 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import { PER_PAGE } from '@/lib/constants';
-import { type StudioValue } from '@/lib/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,17 +31,14 @@ export function parsePerPageQuery(value: QueryValue) {
   return SMALL;
 }
 
-export function parseStudioQuery(value: QueryValue): StudioValue {
-  return value === 'true' ? value : 'false';
-}
-
 export function parseAdminQuery(query: Record<string, QueryValue>) {
   return {
     artist: parseQuery(query.artist),
+    cd: parseQuery(query.cd),
     page: parsePageQuery(query.page),
     perPage: parsePerPageQuery(query.perPage),
     sort: parseQuery(query.sort),
-    studio: parseStudioQuery(query.studio),
+    studio: parseQuery(query.studio),
     title: parseQuery(query.title),
   };
 }

@@ -1,6 +1,6 @@
 import { startTransition, useOptimistic, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { Circle, CircleOff, PlusCircle, X } from 'lucide-react';
+import { Circle, CircleOff, PlusCircle } from 'lucide-react';
 
 import { cn, parseQuery } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,7 @@ import {
   CommandGroup,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from '@/components/ui/command';
 import {
   Popover,
@@ -24,7 +25,6 @@ interface Props {
 }
 
 const options = [
-  { icon: X, label: 'Clear', value: 'clear' },
   { icon: Circle, label: 'Enabled', value: 'true' },
   { icon: CircleOff, label: 'Disabled', value: 'false' },
 ];
@@ -88,7 +88,6 @@ export default function FacetedFilter({ queryKey, title }: Props) {
               {options.map((option) => {
                 return (
                   <CommandItem
-                    disabled={option.value === 'clear' && !optimisticValue}
                     key={option.value}
                     onSelect={onSelect}
                     value={option.value}
@@ -104,6 +103,17 @@ export default function FacetedFilter({ queryKey, title }: Props) {
                   </CommandItem>
                 );
               })}
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup>
+              <CommandItem
+                className="justify-center"
+                disabled={!optimisticValue}
+                onSelect={onSelect}
+                value="clear"
+              >
+                Clear filter
+              </CommandItem>
             </CommandGroup>
           </CommandList>
         </Command>

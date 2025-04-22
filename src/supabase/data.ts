@@ -34,18 +34,18 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const searchParams = Object.fromEntries(params.entries());
-  const { artist, cd, page, perPage, sort, studio, title } =
+  const { cd, page, perPage, search, sort, studio } =
     parseAdminQuery(searchParams);
   const [sortProp, desc] = sort.split(':') ?? [];
   const direction = desc ? DESC : ASC;
   const start = (page - 1) * perPage;
   const end = page * perPage - 1;
+  const searchTerm = `%${search}%`;
 
   let query = supabase
     .from('albums')
     .select('*', { count: 'exact' })
-    .ilike('artist', `%${artist}%`)
-    .ilike('title', `%${title}%`)
+    .or(`artist.ilike.${searchTerm}, title.ilike.${searchTerm}`)
     .range(start, end);
 
   if (cd) {
@@ -84,13 +84,14 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const searchParams = Object.fromEntries(params.entries());
-  const { artist, cd, studio, title } = parseAdminQuery(searchParams);
+  const { cd, search, studio } = parseAdminQuery(searchParams);
+  const searchTerm = `%${search}%`;
+
   let query = supabase
     .from('albums')
     .select('*', { count: 'exact', head: true })
     .eq('cd', true)
-    .ilike('artist', `%${artist}%`)
-    .ilike('title', `%${title}%`);
+    .or(`artist.ilike.${searchTerm}, title.ilike.${searchTerm}`);
 
   if (cd) {
     query = query.eq('cd', cd === 'true');
@@ -151,12 +152,13 @@ export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const searchParams = Object.fromEntries(params.entries());
-  const { sort, title } = parseAdminQuery(searchParams);
+  const { search, sort } = parseAdminQuery(searchParams);
   const [sortProp, desc] = sort.split(':') ?? [];
   const direction = desc ? DESC : ASC;
+  const searchTerm = `%${search}%`;
   let candidates: AllTimeListItem[] = [];
 
-  if (title) {
+  if (search) {
     let query = supabase
       .from('albums')
       .select(
@@ -173,7 +175,7 @@ export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
         `,
       )
       .gte('rankings.position', 1)
-      .ilike('title', `%${title}%`)
+      .or(`artist.ilike.${searchTerm}, title.ilike.${searchTerm}`)
       .range(0, 24)
       .order('artist', { ascending: direction === ASC });
 

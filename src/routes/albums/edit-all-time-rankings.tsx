@@ -50,7 +50,7 @@ export default function EditAllTimeRankings() {
     <div className="max-w-7xl">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
         <div>
-          <Search autoFocus type="title" />
+          <Search autoFocus />
           {candidates.length === 0 && title && (
             <div className="mt-4 flex justify-center">
               <DataEmptyPlaceholder />

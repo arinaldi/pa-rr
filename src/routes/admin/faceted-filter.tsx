@@ -1,8 +1,8 @@
 import { startTransition, useOptimistic, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import { PlusCircle } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
+import { cn, parseQuery } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,10 +26,29 @@ interface Props {
 const options = ['clear', 'true', 'false'];
 
 export default function FacetedFilter({ queryKey, title }: Props) {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useOptimistic(searchParams.get(queryKey) ?? '');
+  const [optimisticValue, setOptimisticValue] = useOptimistic(
+    parseQuery(searchParams.get(queryKey)),
+  );
+
+  function onSelect(value: string) {
+    startTransition(() => {
+      setOpen(false);
+      setOptimisticValue(value);
+      setSearchParams((prev) => {
+        prev.set('page', '1');
+
+        if (value === 'clear') {
+          prev.delete(queryKey);
+        } else {
+          prev.set(queryKey, value);
+        }
+
+        return prev;
+      });
+    });
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -37,7 +56,7 @@ export default function FacetedFilter({ queryKey, title }: Props) {
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle />
           {title}
-          {value && (
+          {optimisticValue && (
             <>
               <Separator
                 orientation="vertical"
@@ -48,41 +67,23 @@ export default function FacetedFilter({ queryKey, title }: Props) {
                   className="rounded-sm px-1 font-normal"
                   variant="secondary"
                 >
-                  {value}
+                  {optimisticValue}
                 </Badge>
               </div>
             </>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      <PopoverContent align="start" className="w-[200px] p-0">
         <Command>
           <CommandList>
             <CommandGroup>
               {options.map((o) => {
                 return (
-                  <CommandItem
-                    key={o}
-                    onSelect={(v) => {
-                      setOpen(false);
-                      const query = new URLSearchParams(searchParams);
-
-                      query.set('page', '1');
-
-                      if (v === 'clear') {
-                        query.delete(queryKey);
-                      } else {
-                        query.set(queryKey, v);
-                      }
-
-                      startTransition(() => {
-                        setValue(v);
-                        navigate(`?${query.toString()}`);
-                      });
-                    }}
-                    value={o}
-                  >
-                    <span className={cn(o === value && 'font-semibold')}>
+                  <CommandItem key={o} onSelect={onSelect} value={o}>
+                    <span
+                      className={cn(o === optimisticValue && 'font-semibold')}
+                    >
                       {o}
                     </span>
                   </CommandItem>

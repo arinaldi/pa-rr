@@ -33,13 +33,12 @@ export function parsePerPageQuery(value: QueryValue) {
 
 export function parseAdminQuery(query: Record<string, QueryValue>) {
   return {
-    artist: parseQuery(query.artist),
     cd: parseQuery(query.cd),
     page: parsePageQuery(query.page),
     perPage: parsePerPageQuery(query.perPage),
+    search: parseQuery(query.search),
     sort: parseQuery(query.sort),
     studio: parseQuery(query.studio),
-    title: parseQuery(query.title),
   };
 }
 

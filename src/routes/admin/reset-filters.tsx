@@ -1,5 +1,5 @@
 import { startTransition } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import { X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -9,8 +9,7 @@ interface Props {
 }
 
 export default function ResetFilters({ queryKeys }: Props) {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const show = queryKeys.some((qk) => searchParams.get(qk));
 
   if (!show) return null;
@@ -19,14 +18,15 @@ export default function ResetFilters({ queryKeys }: Props) {
     <Button
       className="h-8 w-fit px-2 lg:px-3"
       onClick={() => {
-        const query = new URLSearchParams(searchParams);
-
-        query.set('page', '1');
-        queryKeys.forEach((qk) => {
-          query.delete(qk);
-        });
         startTransition(() => {
-          navigate(`?${query}`);
+          setSearchParams((prev) => {
+            prev.set('page', '1');
+            queryKeys.forEach((qk) => {
+              prev.delete(qk);
+            });
+
+            return prev;
+          });
         });
       }}
       variant="ghost"

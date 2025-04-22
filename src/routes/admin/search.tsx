@@ -1,5 +1,11 @@
-import { ChangeEvent, useRef, useState, useTransition } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router';
+import {
+  ChangeEvent,
+  ComponentProps,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
+import { useSearchParams } from 'react-router';
 
 import { DEBOUNCE_IN_MS, SORT_VALUE } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
@@ -7,16 +13,9 @@ import { Input } from '@/components/ui/input';
 import InputClearButton from '@/components/input-clear-button';
 import InputSpinner from '@/components/input-spinner';
 
-interface Props {
-  autoFocus?: boolean;
-  type: 'artist' | 'title';
-}
-
-export default function Search({ autoFocus, type }: Props) {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const query = parseQuery(searchParams.get(type));
+export default function Search(props: ComponentProps<'input'>) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const defaultValue = parseQuery(searchParams.get('search'));
   const [pending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
@@ -27,19 +26,20 @@ export default function Search({ autoFocus, type }: Props) {
 
     const { value } = event.target;
     const id = setTimeout(() => {
-      const params = new URLSearchParams(searchParams?.toString());
-
-      if (value) {
-        params.set(type, value);
-        params.set('sort', SORT_VALUE.YEAR);
-      } else {
-        params.delete(type);
-        params.delete('sort');
-      }
-
-      params.set('page', '1');
       startTransition(() => {
-        navigate(`${pathname}?${params.toString()}`, { replace: true });
+        setSearchParams((prev) => {
+          prev.set('page', '1');
+
+          if (value) {
+            prev.set('search', value);
+            prev.set('sort', SORT_VALUE.YEAR);
+          } else {
+            prev.delete('search');
+            prev.delete('sort');
+          }
+
+          return prev;
+        });
       });
 
       setTimeoutId(undefined);
@@ -49,14 +49,14 @@ export default function Search({ autoFocus, type }: Props) {
   }
 
   function onClear() {
-    const params = new URLSearchParams(searchParams.toString());
-
-    params.delete(type);
-    params.delete('sort');
-    params.set('page', '1');
-
     startTransition(() => {
-      navigate(`${pathname}?${params.toString()}`, { replace: true });
+      setSearchParams((prev) => {
+        prev.set('page', '1');
+        prev.delete('search');
+        prev.delete('sort');
+
+        return prev;
+      });
     });
 
     if (inputRef?.current) {
@@ -66,17 +66,16 @@ export default function Search({ autoFocus, type }: Props) {
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative flex-1">
       <Input
-        autoFocus={autoFocus}
-        defaultValue={query}
-        id={`${type}-search`}
-        name={type}
+        defaultValue={defaultValue}
+        name="search"
         onChange={onSearch}
-        placeholder={`Search ${type}`}
+        placeholder="Search"
         ref={inputRef}
+        {...props}
       />
-      {!searching && query && <InputClearButton onClick={onClear} />}
+      {!searching && defaultValue && <InputClearButton onClick={onClear} />}
       {searching && <InputSpinner />}
     </div>
   );

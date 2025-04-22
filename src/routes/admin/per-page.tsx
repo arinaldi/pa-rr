@@ -1,7 +1,6 @@
 import { startTransition, useOptimistic } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { PER_PAGE } from '@/lib/constants';
 import {
   Select,
   SelectContent,
@@ -9,22 +8,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-interface Props {
-  perPage: PER_PAGE;
-}
+import { PER_PAGE } from '@/lib/constants';
+import { parsePerPageQuery } from '@/lib/utils';
 
 const { SMALL, MEDIUM, LARGE } = PER_PAGE;
 
-export default function PerPage({ perPage }: Props) {
-  const [, setSearchParams] = useSearchParams();
-  const [optimisticPerPage, setOptimisticPerPage] = useOptimistic(
+export default function PerPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const perPage = parsePerPageQuery(searchParams.get('perPage'));
+  const [optimisticValue, setOptimisticValue] = useOptimistic(
     perPage.toString(),
   );
 
   function onValueChange(value: string) {
     startTransition(() => {
-      setOptimisticPerPage(value);
+      setOptimisticValue(value);
       setSearchParams((prev) => {
         prev.set('page', '1');
         prev.set('perPage', value);
@@ -37,7 +35,7 @@ export default function PerPage({ perPage }: Props) {
   return (
     <div className="flex items-center gap-x-2">
       <p className="text-sm font-medium">Rows per page</p>
-      <Select onValueChange={onValueChange} value={optimisticPerPage}>
+      <Select onValueChange={onValueChange} value={optimisticValue}>
         <SelectTrigger className="h-8">
           <SelectValue />
         </SelectTrigger>

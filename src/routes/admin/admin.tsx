@@ -27,7 +27,7 @@ export default function Admin() {
   const { albums, cdCount, count } = useLoaderData<typeof getAdminData>();
 
   return (
-    <div className="space-y-4">
+    <>
       <div className="flex items-center justify-between gap-2">
         <Link to={`${ROUTES_ADMIN.add.href}?${searchParams.toString()}`}>
           <Button type="button">Add album</Button>
@@ -42,25 +42,24 @@ export default function Admin() {
           </span>
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <Search autoFocus type="artist" />
-        <Search type="title" />
-      </div>
-      <div className="mt-2 mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-2">
-          <FacetedFilter queryKey="cd" title="CD" />
-          <FacetedFilter queryKey="studio" title="Studio" />
+      <div className="mt-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+        <Search autoFocus />
+        <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-2">
+            <FacetedFilter queryKey="cd" title="CD" />
+            <FacetedFilter queryKey="studio" title="Studio" />
+          </div>
+          <ResetFilters queryKeys={['cd', 'studio']} />
         </div>
-        <ResetFilters queryKeys={['cd', 'studio']} />
       </div>
 
       {albums?.length === 0 ? (
-        <div className="flex justify-center">
+        <div className="mt-4 flex justify-center">
           <DataEmptyPlaceholder />
         </div>
       ) : (
         <>
-          <div className="rounded-md border">
+          <div className="mt-4 rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow className="text-xs">
@@ -102,6 +101,6 @@ export default function Admin() {
           <Paginate total={count} />
         </>
       )}
-    </div>
+    </>
   );
 }

@@ -1,8 +1,8 @@
-import { Link, useSearchParams } from 'react-router';
+import { startTransition } from 'react';
+import { useSearchParams } from 'react-router';
 import { ArrowDown } from 'lucide-react';
 
 import { cn, parseQuery } from '@/lib/utils';
-import { ROUTES_ADMIN } from '@/lib/constants';
 import { Children } from '@/lib/types';
 import { TableHead } from '@/components/ui/table';
 
@@ -16,11 +16,10 @@ export default function SortableColumn({
   prop,
   wrapperClassName = '',
 }: Props) {
-  const [searchParams] = useSearchParams();
-  const query = new URLSearchParams(searchParams);
+  const [searchParams, setSearchParams] = useSearchParams();
   const sort = parseQuery(searchParams.get('sort'));
   const [sortProp, desc] = sort.split(':') ?? [];
-  let newSort = null;
+  let newSort: string | null = null;
 
   if (sortProp !== prop) {
     newSort = prop;
@@ -28,30 +27,35 @@ export default function SortableColumn({
     newSort = `${prop}:desc`;
   }
 
-  if (newSort) {
-    query.set('sort', newSort);
-  } else {
-    query.delete('sort');
+  function onClick() {
+    startTransition(() => {
+      setSearchParams((prev) => {
+        if (newSort) {
+          prev.set('sort', newSort);
+        } else {
+          prev.delete('sort');
+        }
+
+        return prev;
+      });
+    });
   }
 
   return (
-    <TableHead className={cn(`cursor-pointer`, wrapperClassName)} scope="col">
-      <Link
-        to={
-          query ? `${ROUTES_ADMIN.base.href}?${query}` : ROUTES_ADMIN.base.href
-        }
-        replace
+    <TableHead
+      className={cn(`cursor-pointer`, wrapperClassName)}
+      onClick={onClick}
+      scope="col"
+    >
+      {children}
+      <span
+        className={cn('ml-1 flex-none', sortProp === prop ? '' : 'invisible')}
       >
-        {children}
-        <span
-          className={cn('ml-1 flex-none', sortProp === prop ? '' : 'invisible')}
-        >
-          <ArrowDown
-            aria-hidden="true"
-            className={cn('inline size-4', desc ? 'rotate-180' : '')}
-          />
-        </span>
-      </Link>
+        <ArrowDown
+          aria-hidden="true"
+          className={cn('inline size-4', desc ? 'rotate-180' : '')}
+        />
+      </span>
     </TableHead>
   );
 }

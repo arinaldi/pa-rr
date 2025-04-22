@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router';
-import { MoveDownIcon } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
 import { cn, parseQuery } from '@/lib/utils';
 import { ROUTES_ADMIN } from '@/lib/constants';
@@ -35,10 +35,7 @@ export default function SortableColumn({
   }
 
   return (
-    <TableHead
-      className={cn(`cursor-pointer font-extrabold`, wrapperClassName)}
-      scope="col"
-    >
+    <TableHead className={cn(`cursor-pointer`, wrapperClassName)} scope="col">
       <Link
         to={
           query ? `${ROUTES_ADMIN.base.href}?${query}` : ROUTES_ADMIN.base.href
@@ -49,7 +46,7 @@ export default function SortableColumn({
         <span
           className={cn('ml-1 flex-none', sortProp === prop ? '' : 'invisible')}
         >
-          <MoveDownIcon
+          <ArrowDown
             aria-hidden="true"
             className={cn('inline size-4', desc ? 'rotate-180' : '')}
           />

@@ -7,7 +7,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -20,6 +19,8 @@ import Search from './search';
 import SortableColumn from './sortable-column';
 import TableLink from './table-link';
 import { ROUTES_ADMIN } from '@/lib/constants';
+import FacetedFilter from './faceted-filter';
+import ResetFilters from './reset-filters';
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
@@ -41,9 +42,16 @@ export default function Admin() {
           </span>
         </div>
       </div>
-      <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <Search autoFocus type="artist" />
         <Search type="title" />
+      </div>
+      <div className="mt-2 mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-2">
+          <FacetedFilter queryKey="cd" title="CD" />
+          <FacetedFilter queryKey="studio" title="Studio" />
+        </div>
+        <ResetFilters queryKeys={['cd', 'studio']} />
       </div>
 
       {albums?.length === 0 ? (
@@ -51,48 +59,48 @@ export default function Admin() {
           <DataEmptyPlaceholder />
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow className="text-xs tracking-wider uppercase">
-              <SortableColumn prop="artist">Artist</SortableColumn>
-              <SortableColumn prop="title">Title</SortableColumn>
-              <SortableColumn prop="year">Year</SortableColumn>
-              <TableHead />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {albums.map((a) => (
-              <TableRow key={a.id}>
-                <TableCell>{a.artist}</TableCell>
-                <TableCell>
-                  {a.cd && <DiscIcon className="mr-1 mb-0.5 inline size-4" />}
-                  <span
-                    className={cn(
-                      a.studio ? 'font-medium' : 'font-light',
-                      a.favorite ? 'italic' : '',
-                    )}
-                  >
-                    {a.title}
-                  </span>
-                  {a.favorite && (
-                    <CheckIcon className="mb-0.5 ml-1 inline size-4" />
-                  )}
-                </TableCell>
-                <TableCell>{a.year}</TableCell>
-                <TableCell className="text-right">
-                  <TableLink id={a.id} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={5}>
-                <Paginate total={count} />
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+        <>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow className="text-xs">
+                  <SortableColumn prop="artist">Artist</SortableColumn>
+                  <SortableColumn prop="title">Title</SortableColumn>
+                  <SortableColumn prop="year">Year</SortableColumn>
+                  <TableHead />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {albums.map((a) => (
+                  <TableRow key={a.id}>
+                    <TableCell>{a.artist}</TableCell>
+                    <TableCell>
+                      {a.cd && (
+                        <DiscIcon className="mr-1 mb-0.5 inline size-4" />
+                      )}
+                      <span
+                        className={cn(
+                          a.studio ? 'font-medium' : 'font-light',
+                          a.favorite && 'italic',
+                        )}
+                      >
+                        {a.title}
+                      </span>
+                      {a.favorite && (
+                        <CheckIcon className="mb-0.5 ml-1 inline size-4" />
+                      )}
+                    </TableCell>
+                    <TableCell>{a.year}</TableCell>
+                    <TableCell className="text-right">
+                      <TableLink id={a.id} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <Paginate total={count} />
+        </>
       )}
     </div>
   );

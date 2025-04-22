@@ -14,8 +14,6 @@ import {
   PaginationItem,
 } from '@/components/ui/pagination';
 import PerPage from './per-page';
-import FacetedFilter from './faceted-filter';
-import ResetFilters from './reset-filters';
 
 interface Props {
   total: number;
@@ -39,12 +37,7 @@ export default function Paginate({ total }: Props) {
   return (
     <>
       {/* Desktop version */}
-      <Pagination className="hidden sm:flex sm:items-center sm:justify-between sm:gap-8">
-        <div className="flex items-center gap-2">
-          <FacetedFilter queryKey="cd" title="CD" />
-          <FacetedFilter queryKey="studio" title="Studio" />
-          <ResetFilters queryKeys={['cd', 'studio']} />
-        </div>
+      <Pagination className="hidden sm:flex sm:items-center sm:justify-end sm:gap-8">
         <div className="flex items-center gap-8">
           <PerPage perPage={perPage} />
           <p className="text-sm font-medium">
@@ -135,11 +128,6 @@ export default function Paginate({ total }: Props) {
             Page {page.toLocaleString()} of {lastPage.toLocaleString()}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <FacetedFilter queryKey="cd" title="CD" />
-          <FacetedFilter queryKey="studio" title="Studio" />
-        </div>
-        <ResetFilters queryKeys={['cd', 'studio']} />
       </Pagination>
     </>
   );

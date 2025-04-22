@@ -1,6 +1,6 @@
 import { startTransition, useOptimistic, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { PlusCircle } from 'lucide-react';
+import { Circle, CircleOff, PlusCircle, X } from 'lucide-react';
 
 import { cn, parseQuery } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
@@ -23,7 +23,11 @@ interface Props {
   title: string;
 }
 
-const options = ['clear', 'true', 'false'];
+const options = [
+  { icon: X, label: 'Clear', value: 'clear' },
+  { icon: Circle, label: 'Enabled', value: 'true' },
+  { icon: CircleOff, label: 'Disabled', value: 'false' },
+];
 
 export default function FacetedFilter({ queryKey, title }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,11 +35,14 @@ export default function FacetedFilter({ queryKey, title }: Props) {
   const [optimisticValue, setOptimisticValue] = useOptimistic(
     parseQuery(searchParams.get(queryKey)),
   );
+  const selectedOption = options.find((o) => o.value === optimisticValue);
 
   function onSelect(value: string) {
+    const newValue = value === 'clear' ? '' : value;
+
+    setOpen(false);
     startTransition(() => {
-      setOpen(false);
-      setOptimisticValue(value);
+      setOptimisticValue(newValue);
       setSearchParams((prev) => {
         prev.set('page', '1');
 
@@ -53,10 +60,10 @@ export default function FacetedFilter({ queryKey, title }: Props) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button className="border-dashed text-xs" size="sm" variant="outline">
           <PlusCircle />
           {title}
-          {optimisticValue && (
+          {selectedOption && (
             <>
               <Separator
                 orientation="vertical"
@@ -67,7 +74,7 @@ export default function FacetedFilter({ queryKey, title }: Props) {
                   className="rounded-sm px-1 font-normal"
                   variant="secondary"
                 >
-                  {optimisticValue}
+                  {selectedOption.label}
                 </Badge>
               </div>
             </>
@@ -78,13 +85,21 @@ export default function FacetedFilter({ queryKey, title }: Props) {
         <Command>
           <CommandList>
             <CommandGroup>
-              {options.map((o) => {
+              {options.map((option) => {
                 return (
-                  <CommandItem key={o} onSelect={onSelect} value={o}>
+                  <CommandItem
+                    disabled={option.value === 'clear' && !optimisticValue}
+                    key={option.value}
+                    onSelect={onSelect}
+                    value={option.value}
+                  >
+                    <option.icon className="text-muted-foreground size-4" />
                     <span
-                      className={cn(o === optimisticValue && 'font-semibold')}
+                      className={cn(
+                        option.value === optimisticValue && 'font-semibold',
+                      )}
                     >
-                      {o}
+                      {option.label}
                     </span>
                   </CommandItem>
                 );

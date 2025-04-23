@@ -198,3 +198,14 @@ export function formatRankingsAllTime(
     year: r.album?.year ?? '',
   }));
 }
+
+type ReleaseTuple = [string, Release[]];
+
+export function sortReleases(a: ReleaseTuple, b: ReleaseTuple) {
+  const dateA = a[0] === 'TBD' ? a[0] : new Date(a[0]).toISOString();
+  const dateB = b[0] === 'TBD' ? b[0] : new Date(b[0]).toISOString();
+
+  if (dateA < dateB) return -1;
+  if (dateA > dateB) return 1;
+  return 0;
+}

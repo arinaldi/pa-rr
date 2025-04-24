@@ -145,7 +145,7 @@ export const router = createBrowserRouter([
                 title: 'Top albums',
               },
             ],
-            title: 'All-time albums',
+            title: 'All-time',
           };
         },
       },
@@ -166,10 +166,10 @@ export const router = createBrowserRouter([
               },
               {
                 href: ROUTE_HREF.ALL_TIME,
-                title: 'All-time albums',
+                title: 'All-time',
               },
             ],
-            title: 'Edit all-time rankings',
+            title: 'Edit all-time',
           };
         },
       },

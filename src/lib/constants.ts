@@ -1,5 +1,7 @@
 import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 
+import { Route } from '@/lib/types';
+
 /* ENUM */
 
 export enum MESSAGES {
@@ -76,11 +78,17 @@ export const ROUTE_HREF = {
   TOP_ALBUMS: '/albums',
 };
 
-export const ROUTES = [
+export const ROUTES: Route[] = [
   {
     href: ROUTE_HREF.TOP_ALBUMS,
     icon: Layers,
     label: 'Top albums',
+    items: [
+      {
+        href: ROUTE_HREF.ALL_TIME,
+        label: 'All-time',
+      },
+    ],
   },
   {
     href: ROUTE_HREF.FEATURED_SONGS,

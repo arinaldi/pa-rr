@@ -61,12 +61,7 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {ROUTES.map((r) => (
-                  <MenuLink
-                    key={r.label}
-                    icon={r.icon}
-                    label={r.label}
-                    to={r.href}
-                  />
+                  <MenuLink key={r.href} route={r} />
                 ))}
               </SidebarMenu>
             </SidebarGroupContent>
@@ -77,9 +72,11 @@ export function AppSidebar() {
               <SidebarGroupContent>
                 <SidebarMenu>
                   <MenuLink
-                    icon={Lock}
-                    label={ROUTES_ADMIN.base.label}
-                    to={ROUTES_ADMIN.base.href}
+                    route={{
+                      href: ROUTES_ADMIN.base.href,
+                      icon: Lock,
+                      label: ROUTES_ADMIN.base.label,
+                    }}
                   />
                 </SidebarMenu>
               </SidebarGroupContent>

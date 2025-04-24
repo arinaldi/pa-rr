@@ -23,15 +23,7 @@ export default function TopAlbums() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <DecadeSelect />
-        <Link
-          className="text-foreground hover:text-muted-foreground text-sm underline underline-offset-4"
-          to={ROUTE_HREF.ALL_TIME}
-        >
-          All-time list
-        </Link>
-      </div>
+      <DecadeSelect />
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
         {Object.entries(favorites)
           .sort((a, b) => Number(b[0]) - Number(a[0]))

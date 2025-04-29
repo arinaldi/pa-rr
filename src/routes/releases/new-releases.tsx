@@ -20,7 +20,7 @@ export default function NewReleases() {
             <div key={date}>
               <h2 className="bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-xl font-semibold tracking-tight">
                 {date}
-                <Badge className="bg-white" variant="outline">
+                <Badge className="bg-background" variant="outline">
                   {data.length.toLocaleString()}
                 </Badge>
               </h2>

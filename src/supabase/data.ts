@@ -34,7 +34,7 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const searchParams = Object.fromEntries(params.entries());
-  const { cd, page, perPage, search, sort, studio } =
+  const { cd, page, perPage, search, sort, studio, wishlist } =
     parseAdminQuery(searchParams);
   const [sortProp, desc] = sort.split(':') ?? [];
   const direction = desc ? DESC : ASC;
@@ -50,6 +50,10 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
 
   if (cd) {
     query = query.eq('cd', cd === 'true');
+  }
+
+  if (wishlist) {
+    query = query.eq('wishlist', wishlist === 'true');
   }
 
   if (studio) {
@@ -236,6 +240,7 @@ export async function getFavorites() {
         id,
         studio,
         title,
+        wishlist,
         year,
         ranking:rankings (
           position

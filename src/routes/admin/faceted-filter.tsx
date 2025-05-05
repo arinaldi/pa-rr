@@ -60,14 +60,18 @@ export default function FacetedFilter({ queryKey, title }: Props) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className="border-dashed text-xs" size="sm" variant="outline">
+        <Button
+          className="justify-start border-dashed text-xs"
+          size="sm"
+          variant="outline"
+        >
           <PlusCircle />
           {title}
           {selectedOption && (
             <>
               <Separator
                 orientation="vertical"
-                className="mx-2 data-[orientation=vertical]:h-4"
+                className="mx-1 data-[orientation=vertical]:h-4"
               />
               <div className="flex space-x-1">
                 <Badge

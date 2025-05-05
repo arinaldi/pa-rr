@@ -27,6 +27,7 @@ export default function EditAlbum() {
       year: Number(album.year),
       studio: album.studio,
       cd: album.cd,
+      wishlist: album.wishlist,
       favorite: album.favorite,
     },
     resolver: zodResolver(albumSchema),

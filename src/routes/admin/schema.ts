@@ -6,6 +6,7 @@ export const albumSchema = z.object({
   year: z.coerce.number().gte(1900).lte(2100),
   studio: z.coerce.boolean(),
   cd: z.coerce.boolean(),
+  wishlist: z.coerce.boolean(),
   favorite: z.coerce.boolean(),
 });
 

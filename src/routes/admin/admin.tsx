@@ -1,5 +1,5 @@
 import { Link, useLoaderData, useSearchParams } from 'react-router';
-import { CheckIcon, DiscIcon } from 'lucide-react';
+import { Check, Disc, HeartPlus } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -42,14 +42,13 @@ export default function Admin() {
           </span>
         </div>
       </div>
-      <div className="mt-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+      <div className="mt-4 flex flex-col justify-between gap-2 md:flex-row">
         <Search autoFocus />
-        <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-2">
-            <FacetedFilter queryKey="cd" title="CD" />
-            <FacetedFilter queryKey="studio" title="Studio" />
-          </div>
-          <ResetFilters queryKeys={['cd', 'studio']} />
+        <div className="flex flex-1 flex-wrap items-center gap-2">
+          <FacetedFilter queryKey="cd" title="CD" />
+          <FacetedFilter queryKey="wishlist" title="Wishlist" />
+          <FacetedFilter queryKey="studio" title="Studio" />
+          <ResetFilters queryKeys={['cd', 'studio', 'wishlist']} />
         </div>
       </div>
 
@@ -75,7 +74,10 @@ export default function Admin() {
                     <TableCell>{a.artist}</TableCell>
                     <TableCell>
                       {a.cd && (
-                        <DiscIcon className="mr-1 mb-0.5 inline size-4" />
+                        <Disc className="text-muted-foreground mr-1 mb-0.5 inline size-4" />
+                      )}
+                      {a.wishlist && (
+                        <HeartPlus className="text-muted-foreground mr-1 mb-0.5 inline size-4" />
                       )}
                       <span
                         className={cn(
@@ -86,7 +88,7 @@ export default function Admin() {
                         {a.title}
                       </span>
                       {a.favorite && (
-                        <CheckIcon className="mb-0.5 ml-1 inline size-4" />
+                        <Check className="text-muted-foreground mb-0.5 ml-1 inline size-4" />
                       )}
                     </TableCell>
                     <TableCell>{a.year}</TableCell>

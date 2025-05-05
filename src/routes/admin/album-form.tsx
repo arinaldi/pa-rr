@@ -104,6 +104,25 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
         />
         <FormField
           control={form.control}
+          name="wishlist"
+          render={({ field }) => (
+            <FormItem className="flex space-y-0 space-x-3">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  name={field.name}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Wishlist</FormLabel>
+                <FormDescription>Do you want to own this CD?</FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="favorite"
           render={({ field }) => (
             <FormItem className="flex space-y-0 space-x-3">

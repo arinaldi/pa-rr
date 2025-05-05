@@ -18,6 +18,7 @@ export default function AddAlbum() {
       year: new Date().getFullYear(),
       studio: false,
       cd: false,
+      wishlist: false,
       favorite: false,
     },
     resolver: zodResolver(albumSchema),

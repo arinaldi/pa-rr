@@ -39,6 +39,7 @@ export function parseAdminQuery(query: Record<string, QueryValue>) {
     search: parseQuery(query.search),
     sort: parseQuery(query.sort),
     studio: parseQuery(query.studio),
+    wishlist: parseQuery(query.wishlist),
   };
 }
 

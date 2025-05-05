@@ -42,9 +42,9 @@ export default function Admin() {
           </span>
         </div>
       </div>
-      <div className="mt-4 flex flex-col justify-between gap-2 md:flex-row">
+      <div className="mt-4 flex flex-col gap-2 lg:flex-row lg:items-center">
         <Search autoFocus />
-        <div className="flex flex-1 flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <FacetedFilter queryKey="cd" title="CD" />
           <FacetedFilter queryKey="wishlist" title="Wishlist" />
           <FacetedFilter queryKey="studio" title="Studio" />

@@ -66,7 +66,7 @@ export default function Search(props: ComponentProps<'input'>) {
   }
 
   return (
-    <div className="relative flex-1">
+    <div className="relative">
       <Input
         defaultValue={defaultValue}
         name="search"

@@ -116,7 +116,7 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Wishlist</FormLabel>
-                <FormDescription>Do you want to own this CD?</FormDescription>
+                <FormDescription>Is this CD on your wishlist?</FormDescription>
               </div>
             </FormItem>
           )}

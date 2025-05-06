@@ -46,9 +46,10 @@ export default function Admin() {
         <Search autoFocus />
         <div className="flex flex-wrap items-center gap-2">
           <FacetedFilter queryKey="cd" title="CD" />
-          <FacetedFilter queryKey="wishlist" title="Wishlist" />
+          <FacetedFilter queryKey="favorite" title="Favorite" />
           <FacetedFilter queryKey="studio" title="Studio" />
-          <ResetFilters queryKeys={['cd', 'studio', 'wishlist']} />
+          <FacetedFilter queryKey="wishlist" title="Wishlist" />
+          <ResetFilters queryKeys={['cd', 'favorite', 'studio', 'wishlist']} />
         </div>
       </div>
 

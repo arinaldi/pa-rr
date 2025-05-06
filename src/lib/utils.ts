@@ -34,6 +34,7 @@ export function parsePerPageQuery(value: QueryValue) {
 export function parseAdminQuery(query: Record<string, QueryValue>) {
   return {
     cd: parseQuery(query.cd),
+    favorite: parseQuery(query.favorite),
     page: parsePageQuery(query.page),
     perPage: parsePerPageQuery(query.perPage),
     search: parseQuery(query.search),

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { XIcon } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -49,7 +49,7 @@ export default function RemoveAllTimeRankingModal({ item, removeItem }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="size-6" size="icon" type="button" variant="ghost">
-          <XIcon className="size-4" />
+          <X className="size-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

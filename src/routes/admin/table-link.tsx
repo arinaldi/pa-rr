@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router';
-import { ChevronRightIcon } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 import { ROUTES_ADMIN } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ export default function TableLink({ id }: Props) {
   return (
     <Button asChild className="size-8 p-0" variant="ghost">
       <Link to={`${to}?${searchParams.toString()}`}>
-        <ChevronRightIcon className="size-4" />
+        <ChevronRight className="size-4" />
       </Link>
     </Button>
   );

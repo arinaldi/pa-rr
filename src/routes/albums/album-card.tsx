@@ -1,5 +1,5 @@
 import { Reorder, useDragControls } from 'framer-motion';
-import { GripIcon } from 'lucide-react';
+import { Grip } from 'lucide-react';
 
 import {
   Card,
@@ -32,7 +32,7 @@ export default function AlbumCard({ item, position, removeItem }: Props) {
             <CardTitle>
               {position}. {item.title}
             </CardTitle>
-            <GripIcon
+            <Grip
               className="size-4 shrink-0 touch-none hover:cursor-grab active:cursor-grabbing"
               onPointerDown={(event) => controls.start(event)}
             />

@@ -1,5 +1,5 @@
 import { UseFormReturn } from 'react-hook-form';
-import { LockIcon, SendHorizontalIcon } from 'lucide-react';
+import { Lock, SendHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -79,7 +79,7 @@ export default function EmailForm({
             size={mobile ? 'lg' : 'default'}
             type="submit"
           >
-            <LockIcon className="mr-2 size-4" />
+            <Lock className="mr-2 size-4" />
             Sign in with password
           </Button>
         </form>
@@ -101,7 +101,7 @@ export default function EmailForm({
             submitting={submitting}
             variant="outline"
           >
-            <SendHorizontalIcon className="size-4" />
+            <SendHorizontal className="size-4" />
             Send one-time password
           </SubmitButton>
         </form>

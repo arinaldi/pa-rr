@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react';
+import { EllipsisVertical, Pencil, Trash } from 'lucide-react';
 
 import { Release } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -45,9 +45,9 @@ export default function ReleaseActions({ release }: Props) {
     >
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button className="-mr-1 -mt-1.5 size-8 shrink-0 p-0" variant="ghost">
+          <Button className="-mt-1.5 -mr-1 size-8 shrink-0 p-0" variant="ghost">
             <span className="sr-only">Open menu</span>
-            <EllipsisVerticalIcon className="size-4" />
+            <EllipsisVertical className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -58,7 +58,7 @@ export default function ReleaseActions({ release }: Props) {
             onClick={() => setModal((m) => ({ ...m, type: 'edit' }))}
           >
             <DropdownMenuItem className="flex items-center gap-2">
-              <PencilIcon className="size-4" />
+              <Pencil className="size-4" />
               Edit
             </DropdownMenuItem>
           </DialogTrigger>
@@ -67,7 +67,7 @@ export default function ReleaseActions({ release }: Props) {
             onClick={() => setModal((m) => ({ ...m, type: 'delete' }))}
           >
             <DropdownMenuItem className="flex items-center gap-2">
-              <TrashIcon className="size-4" />
+              <Trash className="size-4" />
               Delete
             </DropdownMenuItem>
           </DialogTrigger>

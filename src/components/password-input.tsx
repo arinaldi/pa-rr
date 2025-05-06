@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,11 +18,7 @@ const PasswordInput = (props: React.ComponentProps<'input'>) => {
         type="button"
         variant="ghost"
       >
-        {on ? (
-          <EyeIcon className="size-4" />
-        ) : (
-          <EyeOffIcon className="size-4" />
-        )}
+        {on ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
       </Button>
     </div>
   );

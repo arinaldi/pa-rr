@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { ArrowUpIcon } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 import { useFeaturedSongs } from '@/hooks/use-data';
 import { HEADER_LETTERS } from '@/lib/formatters';
@@ -70,7 +70,7 @@ export default function FeaturedSongs() {
         className="text-muted-foreground fixed right-0 bottom-0 p-5 text-sm"
         href="#top"
       >
-        <ArrowUpIcon className="mr-1 inline size-4" />
+        <ArrowUp className="mr-1 inline size-4" />
         <span>Top</span>
       </a>
     </div>

@@ -1,4 +1,4 @@
-import { CircleXIcon, InfoIcon } from 'lucide-react';
+import { CircleX, Info } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { MESSAGES } from '@/lib/constants';
@@ -14,8 +14,8 @@ interface Props {
 }
 
 const icons: Record<Variant, Icon> = {
-  default: InfoIcon,
-  destructive: CircleXIcon,
+  default: Info,
+  destructive: CircleX,
 };
 
 export default function AppMessage({

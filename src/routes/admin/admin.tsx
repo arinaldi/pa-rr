@@ -19,6 +19,7 @@ import Search from './search';
 import SortableColumn from './sortable-column';
 import TableLink from './table-link';
 import { ROUTES_ADMIN } from '@/lib/constants';
+import AlbumActions from './album-actions';
 import FacetedFilter from './faceted-filter';
 import ResetFilters from './reset-filters';
 
@@ -64,8 +65,8 @@ export default function Admin() {
               <TableHeader>
                 <TableRow className="text-xs">
                   <SortableColumn prop="artist">Artist</SortableColumn>
-                  <SortableColumn prop="title">Title</SortableColumn>
                   <SortableColumn prop="year">Year</SortableColumn>
+                  <SortableColumn prop="title">Title</SortableColumn>
                   <TableHead />
                 </TableRow>
               </TableHeader>
@@ -73,6 +74,7 @@ export default function Admin() {
                 {albums.map((a) => (
                   <TableRow key={a.id}>
                     <TableCell>{a.artist}</TableCell>
+                    <TableCell>{a.year}</TableCell>
                     <TableCell>
                       {a.cd && (
                         <Disc className="text-muted-foreground mr-1 mb-0.5 inline size-4" />
@@ -92,8 +94,8 @@ export default function Admin() {
                         <Check className="text-muted-foreground mb-0.5 ml-1 inline size-4" />
                       )}
                     </TableCell>
-                    <TableCell>{a.year}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="flex items-end justify-end gap-2">
+                      <AlbumActions album={a} />
                       <TableLink id={a.id} />
                     </TableCell>
                   </TableRow>

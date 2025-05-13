@@ -4,6 +4,7 @@ import { Reorder } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
+import { useAllTimeRankings } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
@@ -18,6 +19,7 @@ export default function EditAllTimeRankings() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const title = parseQuery(searchParams.get('title'));
+  useAllTimeRankings();
   const [items, setItems] = useState(favorites);
 
   function removeItem(id: number) {

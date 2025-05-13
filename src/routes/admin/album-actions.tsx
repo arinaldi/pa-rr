@@ -19,10 +19,19 @@ interface Props {
   album: Album;
 }
 
+type Key = 'cd' | 'favorite' | 'studio' | 'wishlist';
+
+const AlbumKeys: Record<Key, string> = {
+  cd: 'CD',
+  favorite: 'Favorite',
+  studio: 'Studio',
+  wishlist: 'Wishlist',
+};
+
 export default function AlbumActions({ album }: Props) {
   const revalidator = useRevalidator();
 
-  async function onChange(key: 'cd' | 'wishlist', checked: boolean) {
+  async function onChange(key: Key, checked: boolean) {
     const { error } = await supabase
       .from('albums')
       .update({
@@ -49,18 +58,16 @@ export default function AlbumActions({ album }: Props) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem
-          checked={album.cd}
-          onCheckedChange={(checked) => onChange('cd', checked)}
-        >
-          CD
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={album.wishlist}
-          onCheckedChange={(checked) => onChange('wishlist', checked)}
-        >
-          Wishlist
-        </DropdownMenuCheckboxItem>
+        {Object.entries(AlbumKeys).map(([key, value]) => (
+          <DropdownMenuCheckboxItem
+            checked={album[key as Key]}
+            key={key}
+            onCheckedChange={(checked) => onChange(key as Key, checked)}
+            onSelect={(event) => event.preventDefault()}
+          >
+            {value}
+          </DropdownMenuCheckboxItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

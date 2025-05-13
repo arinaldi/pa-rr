@@ -1,3 +1,4 @@
+import { ScrollRestoration } from 'react-router';
 import { SWRConfig } from 'swr';
 
 import { AppSidebar } from '@/components/app-sidebar';
@@ -18,6 +19,7 @@ export default function Root() {
       <SessionProvider>
         <ThemeProvider>
           <AppSidebar />
+          <ScrollRestoration />
           <TailwindIndicator />
           <Toaster position="top-right" richColors />
         </ThemeProvider>

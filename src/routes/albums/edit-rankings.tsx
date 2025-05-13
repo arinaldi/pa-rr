@@ -3,6 +3,7 @@ import { useLoaderData, useNavigate, useParams } from 'react-router';
 import { Reorder } from 'framer-motion';
 
 import SubmitButton from '@/components/submit-button';
+import { useTopAlbums } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
@@ -14,7 +15,8 @@ export default function EditRankings() {
   const { favorites } = useLoaderData<typeof getRankingsByYear>();
   const navigate = useNavigate();
   const params = useParams();
-  const year = parseQuery(params?.year);
+  const year = parseQuery(params.year);
+  useTopAlbums();
   const [items, setItems] = useState(
     favorites.sort((a, b) => {
       if (a.ranking > b.ranking) return 1;

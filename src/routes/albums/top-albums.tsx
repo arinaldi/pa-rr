@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { ArrowUp, Pencil } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -9,11 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import TopLink from '@/components/top-link';
 import { useSession } from '@/components/session-provider';
 import { useTopAlbums } from '@/hooks/use-data';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { capitalizeFirstLetter } from '@/lib/utils';
-import { DecadeSelect } from './decade-select';
+import DecadeLink from './decade-link';
 
 export default function TopAlbums() {
   const {
@@ -23,7 +24,7 @@ export default function TopAlbums() {
 
   return (
     <div className="space-y-4">
-      <DecadeSelect />
+      <DecadeLink />
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 md:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
         {Object.entries(favorites)
           .sort((a, b) => Number(b[0]) - Number(a[0]))
@@ -79,13 +80,7 @@ export default function TopAlbums() {
             </Card>
           ))}
       </div>
-      <a
-        className="text-muted-foreground fixed right-0 bottom-0 p-5 text-sm"
-        href="#top"
-      >
-        <ArrowUp className="mr-1 inline size-4" />
-        <span>Top</span>
-      </a>
+      <TopLink />
     </div>
   );
 }

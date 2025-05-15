@@ -1,9 +1,7 @@
-import { Fragment } from 'react';
-import { ArrowUp } from 'lucide-react';
-
 import { useFeaturedSongs } from '@/hooks/use-data';
-import { HEADER_LETTERS } from '@/lib/formatters';
+import TopLink from '@/components/top-link';
 import AddSongModal from './add-song-modal';
+import LetterLink from './letter-link';
 import SongActions from './song-actions';
 
 export default function FeaturedSongs() {
@@ -14,20 +12,7 @@ export default function FeaturedSongs() {
   return (
     <div className="space-y-4">
       <AddSongModal />
-      <div className="flex flex-wrap gap-1.5">
-        {HEADER_LETTERS.map((l, index) => (
-          <Fragment key={l}>
-            <a
-              className="hover:text-muted-foreground underline underline-offset-4"
-              key={l}
-              href={`#letter-${l}`}
-            >
-              {l}
-            </a>
-            {index < HEADER_LETTERS.length - 1 && <span>&middot;</span>}
-          </Fragment>
-        ))}
-      </div>
+      <LetterLink />
       <div className="mt-4 flex flex-col gap-8">
         {Object.entries(songs).map(([letter, data]) => {
           if (data.length === 0) return null;
@@ -66,13 +51,7 @@ export default function FeaturedSongs() {
           );
         })}
       </div>
-      <a
-        className="text-muted-foreground fixed right-0 bottom-0 p-5 text-sm"
-        href="#top"
-      >
-        <ArrowUp className="mr-1 inline size-4" />
-        <span>Top</span>
-      </a>
+      <TopLink />
     </div>
   );
 }

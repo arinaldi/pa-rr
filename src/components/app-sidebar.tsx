@@ -26,15 +26,22 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { APP_NAME, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
+import { getCookie } from '@/lib/utils';
 import { useSession } from './session-provider';
 import PageTitle from './page-title';
 import UserMenu from './user-menu';
 
 export function AppSidebar() {
   const session = useSession();
+  const sidebarState = getCookie('sidebar_state');
+  let defaultOpen = true;
+
+  if (sidebarState) {
+    defaultOpen = sidebarState === 'true';
+  }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <Sidebar variant="inset">
         <SidebarHeader>
           <SidebarMenu>

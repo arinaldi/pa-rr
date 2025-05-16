@@ -47,3 +47,17 @@ export function parseAdminQuery(query: Record<string, QueryValue>) {
 export async function wait(ms = 0) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
+
+export function getCookie(name: string) {
+  const cookies = document.cookie.split(';');
+
+  for (let cookie of cookies) {
+    cookie = cookie.trim();
+
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+
+  return null;
+}

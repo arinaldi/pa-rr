@@ -24,6 +24,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
+  SIDEBAR_COOKIE_NAME,
 } from '@/components/ui/sidebar';
 import { APP_NAME, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
 import { getCookie } from '@/lib/utils';
@@ -33,7 +34,7 @@ import UserMenu from './user-menu';
 
 export function AppSidebar() {
   const session = useSession();
-  const sidebarState = getCookie('sidebar_state');
+  const sidebarState = getCookie(SIDEBAR_COOKIE_NAME);
   let defaultOpen = true;
 
   if (sidebarState) {

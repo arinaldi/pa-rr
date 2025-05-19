@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useSession } from '@/components/session-provider';
+import TopLink from '@/components/top-link';
 import { useAllTimeRankings } from '@/hooks/use-data';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -56,6 +57,7 @@ export default function AllTimeRankings() {
           </ol>
         </CardContent>
       </Card>
+      <TopLink />
     </div>
   );
 }

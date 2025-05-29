@@ -1,21 +1,21 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 
 import EmailForm from './email-form';
 import OtpForm from './otp-form';
 import PasswordForm from './password-form';
-import { emailSchema } from './schema';
+import { emailSchema, type EmailInput } from './schema';
 
 type View = 'email' | 'password' | 'otp';
 
 export default function SignIn() {
   const [view, setView] = useState<View>('email');
-  const form = useForm({
+  const form = useForm<EmailInput>({
     defaultValues: {
       email: '',
     },
-    resolver: zodResolver(emailSchema),
+    resolver: standardSchemaResolver(emailSchema),
   });
   const email = form.watch('email');
 

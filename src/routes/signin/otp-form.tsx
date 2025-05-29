@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,12 +33,12 @@ interface Props {
 export default function OtpForm({ email, onCancel }: Props) {
   const navigate = useNavigate();
   const mobile = useMobile();
-  const form = useForm({
+  const form = useForm<VerifyOtpInput>({
     defaultValues: {
       code: '',
       email,
     },
-    resolver: zodResolver(verifyOtpSchema),
+    resolver: standardSchemaResolver(verifyOtpSchema),
   });
 
   const { onSubmit, submitting } = useSubmit({

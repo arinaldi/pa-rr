@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 
 import { Release } from '@/lib/types';
 import {
@@ -21,24 +21,24 @@ interface Props {
 }
 
 export default function EditReleaseModal({ onClose, release }: Props) {
-  const form = useForm({
+  const form = useForm<ReleaseInput>({
     defaultValues: {
       artist: release.artist,
       title: release.title,
       date: release.date ? formatDate(release.date) : '',
     },
-    resolver: zodResolver(releaseSchema),
+    resolver: standardSchemaResolver(releaseSchema),
   });
 
   const { onSubmit, submitting } = useSubmit({
     callbacks: [onClose],
     handleSubmit: form.handleSubmit,
-    submitFn: async (data: ReleaseInput) => {
+    submitFn: async ({ date, ...rest }: ReleaseInput) => {
       const { error } = await supabase
         .from('releases')
         .update({
-          ...data,
-          date: data.date || null,
+          ...rest,
+          date: date.length === 0 ? null : date,
         })
         .eq('id', release.id);
 

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +18,7 @@ import { useMobile } from '@/hooks/use-mobile';
 import { useSubmit } from '@/hooks/use-submit';
 import { EMAIL, MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
-import { SignInInput, signInSchema } from './schema';
+import { signInSchema, type SignInInput } from './schema';
 
 interface Props {
   email: string;
@@ -28,12 +28,12 @@ interface Props {
 export default function PasswordForm({ email, onCancel }: Props) {
   const navigate = useNavigate();
   const mobile = useMobile();
-  const form = useForm({
+  const form = useForm<SignInInput>({
     defaultValues: {
       email,
       password: '',
     },
-    resolver: zodResolver(signInSchema),
+    resolver: standardSchemaResolver(signInSchema),
   });
 
   const { onSubmit, submitting } = useSubmit({

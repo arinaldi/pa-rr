@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -26,9 +26,9 @@ const defaultValues = {
 
 export default function AddReleaseModal() {
   const [open, setOpen] = useState(false);
-  const form = useForm({
+  const form = useForm<ReleaseInput>({
     defaultValues,
-    resolver: zodResolver(releaseSchema),
+    resolver: standardSchemaResolver(releaseSchema),
   });
   const session = useSession();
 
@@ -40,10 +40,10 @@ export default function AddReleaseModal() {
   const { onSubmit, submitting } = useSubmit({
     callbacks: [onClose],
     handleSubmit: form.handleSubmit,
-    submitFn: async (data: ReleaseInput) => {
+    submitFn: async ({ date, ...rest }: ReleaseInput) => {
       const { error } = await supabase.from('releases').insert({
-        ...data,
-        date: data.date || null,
+        ...rest,
+        date: date.length === 0 ? null : date,
       });
 
       if (error) {

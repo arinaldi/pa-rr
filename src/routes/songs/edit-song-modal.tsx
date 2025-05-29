@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 
 import {
   DialogContent,
@@ -20,13 +20,13 @@ interface Props {
 }
 
 export default function EditSongModal({ onClose, song }: Props) {
-  const form = useForm({
+  const form = useForm<SongInput>({
     defaultValues: {
       artist: song.artist,
       title: song.title,
       link: song.link,
     },
-    resolver: zodResolver(songSchema),
+    resolver: standardSchemaResolver(songSchema),
   });
 
   const { onSubmit, submitting } = useSubmit({

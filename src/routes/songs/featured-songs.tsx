@@ -28,7 +28,7 @@ export default function FeaturedSongs() {
               <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {data.map((s) => (
                   <li key={s.id} className="text-sm">
-                    <span className="flex items-start gap-2">
+                    <span className="flex items-center gap-2">
                       <span>
                         <span className="text-muted-foreground">
                           {s.artist} &ndash;
@@ -42,7 +42,7 @@ export default function FeaturedSongs() {
                           {s.title}
                         </a>
                       </span>
-                      {<SongActions song={s} />}
+                      <SongActions song={s} />
                     </span>
                   </li>
                 ))}

@@ -92,10 +92,10 @@ export const router = createBrowserRouter([
         id: ROUTES_ADMIN.edit.href,
         path: ROUTES_ADMIN.edit.href,
         Component: EditAlbum,
-        loader: async (args) => {
+        loader: async ({ params }) => {
           await validateSession();
 
-          const data = await getAlbum(args);
+          const data = await getAlbum(params.id);
 
           return {
             ...data,

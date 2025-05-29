@@ -10,19 +10,19 @@ import {
 } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 import { MESSAGES, SORT_DIRECTION } from '@/lib/constants';
-import { parseAdminQuery } from '@/lib/utils';
+import { parseAdminQuery, type AdminParams } from '@/lib/utils';
 
 const { ASC, DESC } = SORT_DIRECTION;
 
-export async function getAlbum({ params }: LoaderFunctionArgs<any>) {
-  if (!params.id) {
+export async function getAlbum(id: string | undefined) {
+  if (!id) {
     throw new Error(MESSAGES.NO_DATA);
   }
 
   const { data: album, error } = await supabase
     .from('albums')
     .select('*')
-    .eq('id', parseInt(params.id, 10))
+    .eq('id', parseInt(id, 10))
     .single();
 
   if (error) throw new Error(error.message);
@@ -30,12 +30,9 @@ export async function getAlbum({ params }: LoaderFunctionArgs<any>) {
   return { album };
 }
 
-async function getAlbums({ request }: LoaderFunctionArgs<any>) {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
-  const searchParams = Object.fromEntries(params.entries());
+async function getAlbums(adminParams: AdminParams) {
   const { cd, favorite, page, perPage, search, sort, studio, wishlist } =
-    parseAdminQuery(searchParams);
+    adminParams;
   const [sortProp, desc] = sort.split(':') ?? [];
   const direction = desc ? DESC : ASC;
   const start = (page - 1) * perPage;
@@ -88,11 +85,8 @@ async function getAlbums({ request }: LoaderFunctionArgs<any>) {
   };
 }
 
-async function getCdCount({ request }: LoaderFunctionArgs<any>) {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
-  const searchParams = Object.fromEntries(params.entries());
-  const { cd, search, studio } = parseAdminQuery(searchParams);
+async function getCdCount(adminParams: AdminParams) {
+  const { cd, favorite, search, studio, wishlist } = adminParams;
   const searchTerm = `%${search}%`;
 
   let query = supabase
@@ -105,8 +99,16 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
     query = query.eq('cd', cd === 'true');
   }
 
+  if (favorite) {
+    query = query.eq('favorite', favorite === 'true');
+  }
+
   if (studio) {
     query = query.eq('studio', studio === 'true');
+  }
+
+  if (wishlist) {
+    query = query.eq('wishlist', wishlist === 'true');
   }
 
   const { count, error } = await query;
@@ -116,10 +118,14 @@ async function getCdCount({ request }: LoaderFunctionArgs<any>) {
   return count ?? 0;
 }
 
-export async function getAdminData(args: LoaderFunctionArgs<any>) {
+export async function getAdminData({ request }: LoaderFunctionArgs<any>) {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+  const searchParams = Object.fromEntries(params.entries());
+  const adminParams = parseAdminQuery(searchParams);
   const [{ albums, count }, cdCount] = await Promise.all([
-    getAlbums(args),
-    getCdCount(args),
+    getAlbums(adminParams),
+    getCdCount(adminParams),
   ]);
 
   return {
@@ -156,18 +162,13 @@ export async function getAllTimeRankings() {
   };
 }
 
-export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
-  const searchParams = Object.fromEntries(params.entries());
-  const { search, sort } = parseAdminQuery(searchParams);
-  const [sortProp, desc] = sort.split(':') ?? [];
-  const direction = desc ? DESC : ASC;
+export async function getCandidates(adminParams: AdminParams) {
+  const { search } = adminParams;
   const searchTerm = `%${search}%`;
   let candidates: AllTimeListItem[] = [];
 
   if (search) {
-    let query = supabase
+    const query = supabase
       .from('albums')
       .select(
         `
@@ -185,11 +186,7 @@ export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
       .gte('rankings.position', 1)
       .or(`artist.ilike.${searchTerm}, title.ilike.${searchTerm}`)
       .range(0, 24)
-      .order('artist', { ascending: direction === ASC });
-
-    if (sortProp) {
-      query = query.order(sortProp, { ascending: direction === ASC });
-    }
+      .order('artist', { ascending: true });
 
     const { data, error } = await query;
 
@@ -201,10 +198,14 @@ export async function getCandidates({ request }: LoaderFunctionArgs<any>) {
   return { candidates };
 }
 
-export async function getAllTimeData(args: LoaderFunctionArgs<any>) {
+export async function getAllTimeData({ request }: LoaderFunctionArgs<any>) {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+  const searchParams = Object.fromEntries(params.entries());
+  const adminParams = parseAdminQuery(searchParams);
   const [{ favorites }, { candidates }] = await Promise.all([
     getAllTimeRankings(),
-    getCandidates(args),
+    getCandidates(adminParams),
   ]);
 
   return {

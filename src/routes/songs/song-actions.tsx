@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useSession } from '@/components/session-provider';
 import DeleteSongModal from './delete-song-modal';
 import EditSongModal from './edit-song-modal';
 
@@ -26,7 +25,6 @@ interface ModalState {
 }
 
 export default function SongActions({ song }: Props) {
-  const session = useSession();
   const [modal, setModal] = useState<ModalState>({
     open: false,
     type: 'edit',
@@ -35,8 +33,6 @@ export default function SongActions({ song }: Props) {
   function onClose() {
     setModal((m) => ({ ...m, open: false }));
   }
-
-  if (!session) return null;
 
   return (
     <Dialog

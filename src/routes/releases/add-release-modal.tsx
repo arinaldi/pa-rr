@@ -11,7 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useSession } from '@/components/session-provider';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
@@ -30,7 +29,6 @@ export default function AddReleaseModal() {
     defaultValues,
     resolver: standardSchemaResolver(releaseSchema),
   });
-  const session = useSession();
 
   function onClose() {
     setOpen(false);
@@ -52,8 +50,6 @@ export default function AddReleaseModal() {
     },
     successMessage: `${MESSAGES.RELEASE_PREFIX} added`,
   });
-
-  if (!session) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

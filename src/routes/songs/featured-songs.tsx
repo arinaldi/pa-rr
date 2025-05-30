@@ -1,17 +1,19 @@
 import { useFeaturedSongs } from '@/hooks/use-data';
+import { useSession } from '@/components/session-provider';
 import TopLink from '@/components/top-link';
 import AddSongModal from './add-song-modal';
 import LetterLink from './letter-link';
 import SongActions from './song-actions';
 
 export default function FeaturedSongs() {
+  const session = useSession();
   const {
     data: { songs },
   } = useFeaturedSongs();
 
   return (
     <div className="space-y-4">
-      <AddSongModal />
+      {session && <AddSongModal />}
       <LetterLink />
       <div className="mt-4 flex flex-col gap-8">
         {Object.entries(songs).map(([letter, data]) => {
@@ -42,7 +44,7 @@ export default function FeaturedSongs() {
                           {s.title}
                         </a>
                       </span>
-                      <SongActions song={s} />
+                      {session && <SongActions song={s} />}
                     </span>
                   </li>
                 ))}

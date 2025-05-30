@@ -1,3 +1,4 @@
+import { useSession } from '@/components/session-provider';
 import { Badge } from '@/components/ui/badge';
 import { useNewReleases } from '@/hooks/use-data';
 import { sortReleases } from '@/lib/formatters';
@@ -6,13 +7,14 @@ import AddReleaseModal from './add-release-modal';
 import ReleaseActions from './release-actions';
 
 export default function NewReleases() {
+  const session = useSession();
   const {
     data: { releases },
   } = useNewReleases();
 
   return (
     <div className="space-y-4">
-      <AddReleaseModal />
+      {session && <AddReleaseModal />}
       <div className="space-y-8">
         {Object.entries(releases)
           .sort(sortReleases)
@@ -36,7 +38,7 @@ export default function NewReleases() {
                     <span className="text-muted-foreground">{r.artist}</span>
                     <span className="flex items-center gap-2">
                       {r.title}
-                      <ReleaseActions release={r} />
+                      {session && <ReleaseActions release={r} />}
                     </span>
                   </li>
                 ))}

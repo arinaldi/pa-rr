@@ -5,7 +5,7 @@ import {
   useSearchParams,
 } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
@@ -20,7 +20,7 @@ export default function EditAlbum() {
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
-  const form = useForm<AlbumInput>({
+  const form = useForm({
     defaultValues: {
       artist: album.artist,
       title: album.title,
@@ -30,7 +30,7 @@ export default function EditAlbum() {
       wishlist: album.wishlist,
       favorite: album.favorite,
     },
-    resolver: standardSchemaResolver(albumSchema),
+    resolver: zodResolver(albumSchema),
   });
 
   const { onSubmit, submitting } = useSubmit({

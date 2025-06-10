@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -25,9 +25,9 @@ const defaultValues = {
 
 export default function AddSongModal() {
   const [open, setOpen] = useState(false);
-  const form = useForm<SongInput>({
+  const form = useForm({
     defaultValues,
-    resolver: standardSchemaResolver(songSchema),
+    resolver: zodResolver(songSchema),
   });
 
   function onClose() {

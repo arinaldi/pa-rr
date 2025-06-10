@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
@@ -11,7 +11,7 @@ import AlbumForm from './album-form';
 export default function AddAlbum() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const form = useForm<AlbumInput>({
+  const form = useForm({
     defaultValues: {
       artist: '',
       title: '',
@@ -21,7 +21,7 @@ export default function AddAlbum() {
       wishlist: false,
       favorite: false,
     },
-    resolver: standardSchemaResolver(albumSchema),
+    resolver: zodResolver(albumSchema),
   });
 
   const { onSubmit, submitting } = useSubmit({

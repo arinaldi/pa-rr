@@ -13,9 +13,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import SubmitButton from '@/components/submit-button';
+import { type AlbumInput } from './schema';
 
 interface Props {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<AlbumInput>;
   onSubmit: (event: FormEvent<Element>) => Promise<void>;
   submitting: boolean;
 }
@@ -57,7 +58,12 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
             <FormItem>
               <FormLabel>Year</FormLabel>
               <FormControl>
-                <Input inputMode="numeric" type="number" {...field} />
+                <Input
+                  inputMode="numeric"
+                  type="number"
+                  {...field}
+                  onChange={(event) => field.onChange(+event.target.value)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

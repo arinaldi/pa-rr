@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useTopAlbums } from '@/hooks/use-data';
 import { Album } from '@/lib/types';
 import { wait } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
@@ -30,6 +31,7 @@ const AlbumKeys: Record<Key, string> = {
 
 export default function AlbumActions({ album }: Props) {
   const revalidator = useRevalidator();
+  const { mutate } = useTopAlbums();
 
   async function onChange(key: Key, checked: boolean) {
     const { error } = await supabase
@@ -44,6 +46,7 @@ export default function AlbumActions({ album }: Props) {
     }
 
     await wait(100);
+    mutate();
     revalidator.revalidate();
   }
 

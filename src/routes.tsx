@@ -35,11 +35,9 @@ import {
 import ErrorPage from './error-page';
 
 async function validateSession() {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getClaims();
 
-  if (!session) {
+  if (!data) {
     throw redirect('/not-found');
   }
 
@@ -246,11 +244,9 @@ export const router = createBrowserRouter([
         path: ROUTE_HREF.SIGNIN,
         Component: SignIn,
         loader: async () => {
-          const {
-            data: { session },
-          } = await supabase.auth.getSession();
+          const { data } = await supabase.auth.getClaims();
 
-          if (session) {
+          if (data) {
             return redirect(ROUTES_ADMIN.base.href);
           }
 

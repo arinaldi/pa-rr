@@ -22,10 +22,11 @@ interface Props {
 
 export default function Paginate({ total }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [optimisticPage, setOptimisticPage] = useOptimistic(
+  const [optimisticPage, setOptimisticPage] = useOptimistic<number, number>(
     parsePageQuery(searchParams.get('page')),
+    (_, newPage) => newPage,
   );
-  const perPage = parsePerPageQuery(searchParams.get('perPage'));
+  const perPage = parsePerPageQuery(searchParams.get('per_page'));
   const lastPage = Math.ceil(total / perPage);
   const isFirstPage = optimisticPage === 1;
   const isLastPage = optimisticPage === lastPage;

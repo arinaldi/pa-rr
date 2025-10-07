@@ -15,7 +15,7 @@ const { SMALL, MEDIUM, LARGE } = PER_PAGE;
 
 export default function PerPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const perPage = parsePerPageQuery(searchParams.get('perPage'));
+  const perPage = parsePerPageQuery(searchParams.get('per_page'));
   const [optimisticValue, setOptimisticValue] = useOptimistic(
     perPage.toString(),
   );
@@ -25,7 +25,7 @@ export default function PerPage() {
       setOptimisticValue(value);
       setSearchParams((prev) => {
         prev.set('page', '1');
-        prev.set('perPage', value);
+        prev.set('per_page', value);
 
         return prev;
       });

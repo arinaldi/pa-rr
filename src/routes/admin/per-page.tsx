@@ -1,4 +1,4 @@
-import { startTransition, useOptimistic } from 'react';
+import { startTransition, useOptimistic, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import {
@@ -15,14 +15,17 @@ const { SMALL, MEDIUM, LARGE } = PER_PAGE;
 
 export default function PerPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const perPage = parsePerPageQuery(searchParams.get('per_page'));
-  const [optimisticValue, setOptimisticValue] = useOptimistic(
-    perPage.toString(),
+  const [perPage, setPerPage] = useState(() =>
+    parsePerPageQuery(searchParams.get('per_page')),
   );
+  const [optimisticValue, setOptimisticValue] = useOptimistic(perPage);
 
   function onValueChange(value: string) {
+    const newValue = parseInt(value);
+
     startTransition(() => {
-      setOptimisticValue(value);
+      setPerPage(newValue);
+      setOptimisticValue(newValue);
       setSearchParams((prev) => {
         prev.set('page', '1');
         prev.set('per_page', value);
@@ -35,7 +38,7 @@ export default function PerPage() {
   return (
     <div className="flex items-center gap-x-2">
       <p className="text-sm font-medium">Rows per page</p>
-      <Select onValueChange={onValueChange} value={optimisticValue}>
+      <Select onValueChange={onValueChange} value={optimisticValue.toString()}>
         <SelectTrigger className="h-8">
           <SelectValue />
         </SelectTrigger>

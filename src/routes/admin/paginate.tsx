@@ -1,4 +1,4 @@
-import { startTransition, useOptimistic } from 'react';
+import { startTransition, useOptimistic, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import {
   ChevronLeft,
@@ -22,18 +22,19 @@ interface Props {
 
 export default function Paginate({ total }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [optimisticPage, setOptimisticPage] = useOptimistic<number, number>(
+  const [page, setPage] = useState(() =>
     parsePageQuery(searchParams.get('page')),
-    (_, newPage) => newPage,
   );
+  const [optimisticValue, setOptimisticValue] = useOptimistic(page);
   const perPage = parsePerPageQuery(searchParams.get('per_page'));
   const lastPage = Math.ceil(total / perPage);
-  const isFirstPage = optimisticPage === 1;
-  const isLastPage = optimisticPage === lastPage;
+  const isFirstPage = optimisticValue === 1;
+  const isLastPage = optimisticValue === lastPage;
 
   function goToPage(value: number) {
     startTransition(() => {
-      setOptimisticPage(value);
+      setPage(value);
+      setOptimisticValue(value);
       setSearchParams((prev) => {
         prev.set('page', value.toString());
 
@@ -49,7 +50,7 @@ export default function Paginate({ total }: Props) {
         <div className="flex items-center gap-10">
           <PerPage />
           <p className="text-sm font-medium">
-            Page {optimisticPage.toLocaleString()} of{' '}
+            Page {optimisticValue.toLocaleString()} of{' '}
             {lastPage.toLocaleString()}
           </p>
           <PaginationContent className="gap-2">
@@ -67,7 +68,7 @@ export default function Paginate({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isFirstPage}
-                onClick={() => goToPage(optimisticPage - 1)}
+                onClick={() => goToPage(optimisticValue - 1)}
                 size="icon"
                 variant="outline"
               >
@@ -78,7 +79,7 @@ export default function Paginate({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isLastPage}
-                onClick={() => goToPage(optimisticPage + 1)}
+                onClick={() => goToPage(optimisticValue + 1)}
                 size="icon"
                 variant="outline"
               >
@@ -107,7 +108,7 @@ export default function Paginate({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isFirstPage}
-                onClick={() => goToPage(optimisticPage - 1)}
+                onClick={() => goToPage(optimisticValue - 1)}
                 size="icon"
                 variant="outline"
               >
@@ -118,7 +119,7 @@ export default function Paginate({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isLastPage}
-                onClick={() => goToPage(optimisticPage + 1)}
+                onClick={() => goToPage(optimisticValue + 1)}
                 size="icon"
                 variant="outline"
               >
@@ -128,7 +129,7 @@ export default function Paginate({ total }: Props) {
             </PaginationItem>
           </PaginationContent>
           <p className="text-sm font-medium">
-            Page {optimisticPage.toLocaleString()} of{' '}
+            Page {optimisticValue.toLocaleString()} of{' '}
             {lastPage.toLocaleString()}
           </p>
         </div>

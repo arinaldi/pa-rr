@@ -31,17 +31,17 @@ const options = [
 
 export default function FacetedFilter({ queryKey, title }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [open, setOpen] = useState(false);
-  const [optimisticValue, setOptimisticValue] = useOptimistic(
+  const [value, setValue] = useState(() =>
     parseQuery(searchParams.get(queryKey)),
   );
+  const [optimisticValue, setOptimisticValue] = useOptimistic(value);
   const selectedOption = options.find((o) => o.value === optimisticValue);
 
   function onSelect(value: string) {
     const newValue = value === 'clear' ? '' : value;
 
-    setOpen(false);
     startTransition(() => {
+      setValue(newValue);
       setOptimisticValue(newValue);
       setSearchParams((prev) => {
         prev.set('page', '1');
@@ -58,7 +58,7 @@ export default function FacetedFilter({ queryKey, title }: Props) {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover>
       <PopoverTrigger asChild>
         <Button
           className="justify-start border-dashed text-xs"

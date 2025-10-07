@@ -1,8 +1,8 @@
-import { startTransition, useOptimistic, useState } from 'react';
+import { startTransition, useEffect, useOptimistic, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Circle, CircleOff, PlusCircle } from 'lucide-react';
 
-import { cn, parseQuery } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,11 +31,19 @@ const options = [
 
 export default function FacetedFilter({ queryKey, title }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [value, setValue] = useState(() =>
-    parseQuery(searchParams.get(queryKey)),
-  );
+  const originalValue = searchParams.get(queryKey) ?? '';
+  const [value, setValue] = useState(originalValue);
   const [optimisticValue, setOptimisticValue] = useOptimistic(value);
   const selectedOption = options.find((o) => o.value === optimisticValue);
+
+  useEffect(() => {
+    if (!originalValue) {
+      startTransition(() => {
+        setValue('');
+        setOptimisticValue('');
+      });
+    }
+  }, [originalValue, setOptimisticValue]);
 
   function onSelect(value: string) {
     const newValue = value === 'clear' ? '' : value;

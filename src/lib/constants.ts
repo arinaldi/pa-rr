@@ -35,6 +35,8 @@ export enum SORT_VALUE {
 
 /* CONST */
 
+export const ADMIN_QUERY_KEY = 'status';
+
 export const APP_NAME = 'Perfect Albums';
 
 export const DEBOUNCE_IN_MS = 500;

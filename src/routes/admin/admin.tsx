@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useLoaderData, useSearchParams } from 'react-router';
 import { Check, Disc, HeartPlus } from 'lucide-react';
 
@@ -18,14 +19,19 @@ import Paginate from './paginate';
 import Search from './search';
 import SortableColumn from './sortable-column';
 import TableLink from './table-link';
-import { ROUTES_ADMIN } from '@/lib/constants';
+import { ADMIN_QUERY_KEY, ROUTES_ADMIN } from '@/lib/constants';
 import AlbumActions from './album-actions';
 import FacetedFilter from './faceted-filter';
 import ResetFilters from './reset-filters';
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.getAll(ADMIN_QUERY_KEY));
   const { albums, cdCount, count } = useLoaderData<typeof getAdminData>();
+
+  function updateQuery(value: string[]) {
+    setQuery(value);
+  }
 
   return (
     <>
@@ -43,14 +49,11 @@ export default function Admin() {
           </span>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-2 lg:flex-row lg:items-center">
+      <div className="mt-4 flex flex-col gap-2 md:flex-row md:items-center">
         <Search autoFocus />
         <div className="flex flex-wrap items-center gap-2">
-          <FacetedFilter queryKey="cd" title="CD" />
-          <FacetedFilter queryKey="favorite" title="Favorite" />
-          <FacetedFilter queryKey="studio" title="Studio" />
-          <FacetedFilter queryKey="wishlist" title="Wishlist" />
-          <ResetFilters queryKeys={['cd', 'favorite', 'studio', 'wishlist']} />
+          <FacetedFilter query={query} updateQuery={updateQuery} />
+          <ResetFilters updateQuery={updateQuery} />
         </div>
       </div>
 

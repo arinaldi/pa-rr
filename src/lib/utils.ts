@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { PER_PAGE } from '@/lib/constants';
+import { ADMIN_QUERY_KEY, PER_PAGE } from '@/lib/constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,16 +31,15 @@ export function parsePerPageQuery(value: QueryValue) {
   return SMALL;
 }
 
-export function parseAdminQuery(query: Record<string, QueryValue>) {
+export function parseAdminQuery(params: URLSearchParams) {
+  const query = Object.fromEntries(params.entries());
+
   return {
-    cd: parseQuery(query.cd),
-    favorite: parseQuery(query.favorite),
     page: parsePageQuery(query.page),
     perPage: parsePerPageQuery(query.per_page),
     search: parseQuery(query.search),
     sort: parseQuery(query.sort),
-    studio: parseQuery(query.studio),
-    wishlist: parseQuery(query.wishlist),
+    status: params.getAll(ADMIN_QUERY_KEY),
   };
 }
 

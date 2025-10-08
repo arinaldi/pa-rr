@@ -31,8 +31,7 @@ export async function getAlbum(id: string | undefined) {
 }
 
 async function getAlbums(adminParams: AdminParams) {
-  const { cd, favorite, page, perPage, search, sort, studio, wishlist } =
-    adminParams;
+  const { page, perPage, search, sort, status } = adminParams;
   const [sortProp, desc] = sort.split(':') ?? [];
   const direction = desc ? DESC : ASC;
   const start = (page - 1) * perPage;
@@ -45,20 +44,10 @@ async function getAlbums(adminParams: AdminParams) {
     .or(`artist.ilike.${searchTerm}, title.ilike.${searchTerm}`)
     .range(start, end);
 
-  if (cd) {
-    query = query.eq('cd', cd === 'true');
-  }
-
-  if (favorite) {
-    query = query.eq('favorite', favorite === 'true');
-  }
-
-  if (studio) {
-    query = query.eq('studio', studio === 'true');
-  }
-
-  if (wishlist) {
-    query = query.eq('wishlist', wishlist === 'true');
+  if (status.length > 0) {
+    status.forEach((s) => {
+      query = query.eq(s, true);
+    });
   }
 
   if (sortProp) {
@@ -86,7 +75,7 @@ async function getAlbums(adminParams: AdminParams) {
 }
 
 async function getCdCount(adminParams: AdminParams) {
-  const { cd, favorite, search, studio, wishlist } = adminParams;
+  const { search, status } = adminParams;
   const searchTerm = `%${search}%`;
 
   let query = supabase
@@ -95,20 +84,10 @@ async function getCdCount(adminParams: AdminParams) {
     .eq('cd', true)
     .or(`artist.ilike.${searchTerm}, title.ilike.${searchTerm}`);
 
-  if (cd) {
-    query = query.eq('cd', cd === 'true');
-  }
-
-  if (favorite) {
-    query = query.eq('favorite', favorite === 'true');
-  }
-
-  if (studio) {
-    query = query.eq('studio', studio === 'true');
-  }
-
-  if (wishlist) {
-    query = query.eq('wishlist', wishlist === 'true');
+  if (status.length > 0) {
+    status.forEach((s) => {
+      query = query.eq(s, true);
+    });
   }
 
   const { count, error } = await query;
@@ -121,8 +100,7 @@ async function getCdCount(adminParams: AdminParams) {
 export async function getAdminData({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
-  const searchParams = Object.fromEntries(params.entries());
-  const adminParams = parseAdminQuery(searchParams);
+  const adminParams = parseAdminQuery(params);
   const [{ albums, count }, cdCount] = await Promise.all([
     getAlbums(adminParams),
     getCdCount(adminParams),
@@ -201,8 +179,7 @@ export async function getCandidates(adminParams: AdminParams) {
 export async function getAllTimeData({ request }: LoaderFunctionArgs<any>) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
-  const searchParams = Object.fromEntries(params.entries());
-  const adminParams = parseAdminQuery(searchParams);
+  const adminParams = parseAdminQuery(params);
   const [{ favorites }, { candidates }] = await Promise.all([
     getAllTimeRankings(),
     getCandidates(adminParams),

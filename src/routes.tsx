@@ -12,6 +12,7 @@ import EditAlbum from '@/routes/admin/edit-album';
 import EditAllTimeRankings from '@/routes/albums/edit-all-time-rankings';
 import EditRankings from '@/routes/albums/edit-rankings';
 import FeaturedSongs from '@/routes/songs/featured-songs';
+import Home from '@/routes/home/home';
 import NewReleases from '@/routes/releases/new-releases';
 import NotFound from '@/routes/not-found';
 import Playlist from '@/routes/playlist/playlist';
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     HydrateFallback: Fallback,
     children: [
+      {
+        path: '/',
+        Component: Home,
+      },
       {
         path: ROUTES_ADMIN.base.href,
         Component: Admin,

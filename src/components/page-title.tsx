@@ -33,7 +33,7 @@ export default function PageTitle() {
   const matches = useMatches();
   const navigate = useNavigate();
   const match = matches.find((m) => m.pathname === pathname);
-  const data = match?.data as LoaderData;
+  const data = match?.loaderData as LoaderData;
 
   if (!data) return null;
 

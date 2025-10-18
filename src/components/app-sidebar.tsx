@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 import { Disc, Lock } from 'lucide-react';
 
 import {
@@ -48,7 +48,7 @@ export function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild>
-                <div>
+                <Link to="/">
                   <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                     <Disc className="size-4" />
                   </div>
@@ -58,7 +58,7 @@ export function AppSidebar() {
                       The best music on the net
                     </span>
                   </div>
-                </div>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

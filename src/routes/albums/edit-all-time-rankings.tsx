@@ -8,8 +8,8 @@ import { useAllTimeRankings } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
-import DataEmptyPlaceholder from '@/routes/admin/data-empty-placeholder';
-import Search from '@/routes/admin/data-table-search';
+import { DataEmptyPlaceholder } from '@/routes/admin/data-empty-placeholder';
+import { DataTableSearch } from '@/routes/admin/data-table-search';
 import { supabase } from '@/supabase/client';
 import { getAllTimeData } from '@/supabase/data';
 import AlbumCard from './album-card';
@@ -52,7 +52,7 @@ export default function EditAllTimeRankings() {
     <div className="max-w-7xl">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
         <div>
-          <Search autoFocus />
+          <DataTableSearch autoFocus />
           {candidates.length === 0 && title && (
             <div className="mt-4 flex justify-center">
               <DataEmptyPlaceholder />

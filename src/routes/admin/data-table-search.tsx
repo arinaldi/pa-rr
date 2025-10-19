@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import InputClearButton from '@/components/input-clear-button';
 import InputSpinner from '@/components/input-spinner';
 
-export default function Search(props: ComponentProps<'input'>) {
+export function DataTableSearch(props: ComponentProps<'input'>) {
   const [searchParams, setSearchParams] = useSearchParams();
   const defaultValue = parseQuery(searchParams.get('search'));
   const [pending, startTransition] = useTransition();

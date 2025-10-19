@@ -14,13 +14,13 @@ import {
   PaginationContent,
   PaginationItem,
 } from '@/components/ui/pagination';
-import PerPage from './per-page';
+import { DataTablePerPage } from './data-table-per-page';
 
 interface Props {
   total: number;
 }
 
-export default function Paginate({ total }: Props) {
+export function DataTablePagination({ total }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(() =>
     parsePageQuery(searchParams.get('page')),
@@ -48,7 +48,7 @@ export default function Paginate({ total }: Props) {
       {/* Desktop version */}
       <Pagination className="mt-4 hidden sm:flex sm:items-center sm:justify-end">
         <div className="flex items-center gap-10">
-          <PerPage />
+          <DataTablePerPage />
           <p className="text-sm font-medium">
             Page {optimisticValue.toLocaleString()} of{' '}
             {lastPage.toLocaleString()}

@@ -29,7 +29,7 @@ const AlbumKeys: Record<Key, string> = {
   wishlist: 'Wishlist',
 };
 
-export default function AlbumActions({ album }: Props) {
+export function DataTableAlbumActions({ album }: Props) {
   const revalidator = useRevalidator();
   const { mutate } = useTopAlbums();
 

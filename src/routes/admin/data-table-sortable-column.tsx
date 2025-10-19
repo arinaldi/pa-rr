@@ -11,7 +11,7 @@ interface Props extends Children {
   wrapperClassName?: string;
 }
 
-export default function SortableColumn({
+export function DataTableSortableColumn({
   children,
   prop,
   wrapperClassName = '',

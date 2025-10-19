@@ -12,17 +12,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { ADMIN_QUERY_KEY, ROUTES_ADMIN } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { getAdminData } from '@/supabase/data';
-import DataEmptyPlaceholder from './data-empty-placeholder';
-import Paginate from './paginate';
-import Search from './search';
-import SortableColumn from './sortable-column';
-import TableLink from './table-link';
-import { ADMIN_QUERY_KEY, ROUTES_ADMIN } from '@/lib/constants';
-import AlbumActions from './album-actions';
-import FacetedFilter from './faceted-filter';
-import ResetFilters from './reset-filters';
+import { DataEmptyPlaceholder } from './data-empty-placeholder';
+import { DataTablePagination } from './data-table-pagination';
+import { DataTableSearch } from './data-table-search';
+import { DataTableSortableColumn } from './data-table-sortable-column';
+import { DataTableLink } from './data-table-link';
+import { DataTableAlbumActions } from './data-table-album-actions';
+import { DataTableFacetedFilter } from './data-table-faceted-filter';
+import { DataTableResetFilters } from './data-table-reset-filters';
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
@@ -50,10 +50,10 @@ export default function Admin() {
         </div>
       </div>
       <div className="mt-4 flex flex-col gap-2 md:flex-row md:items-center">
-        <Search autoFocus />
+        <DataTableSearch autoFocus />
         <div className="flex flex-wrap items-center gap-2">
-          <FacetedFilter query={query} updateQuery={updateQuery} />
-          <ResetFilters updateQuery={updateQuery} />
+          <DataTableFacetedFilter query={query} updateQuery={updateQuery} />
+          <DataTableResetFilters updateQuery={updateQuery} />
         </div>
       </div>
 
@@ -67,9 +67,15 @@ export default function Admin() {
             <Table>
               <TableHeader>
                 <TableRow className="text-xs">
-                  <SortableColumn prop="artist">Artist</SortableColumn>
-                  <SortableColumn prop="year">Year</SortableColumn>
-                  <SortableColumn prop="title">Title</SortableColumn>
+                  <DataTableSortableColumn prop="artist">
+                    Artist
+                  </DataTableSortableColumn>
+                  <DataTableSortableColumn prop="year">
+                    Year
+                  </DataTableSortableColumn>
+                  <DataTableSortableColumn prop="title">
+                    Title
+                  </DataTableSortableColumn>
                   <TableHead />
                 </TableRow>
               </TableHeader>
@@ -86,10 +92,7 @@ export default function Admin() {
                         <HeartPlus className="text-muted-foreground mr-1 mb-0.5 inline size-4" />
                       )}
                       <span
-                        className={cn(
-                          a.studio ? 'font-medium' : 'font-light',
-                          a.favorite && 'italic',
-                        )}
+                        className={cn(a.studio ? 'font-medium' : 'font-light')}
                       >
                         {a.title}
                       </span>
@@ -98,15 +101,15 @@ export default function Admin() {
                       )}
                     </TableCell>
                     <TableCell className="flex items-end justify-end gap-2">
-                      <AlbumActions album={a} />
-                      <TableLink id={a.id} />
+                      <DataTableAlbumActions album={a} />
+                      <DataTableLink id={a.id} />
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
-          <Paginate total={count} />
+          <DataTablePagination total={count} />
         </>
       )}
     </>

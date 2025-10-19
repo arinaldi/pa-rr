@@ -9,7 +9,7 @@ import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
 import DataEmptyPlaceholder from '@/routes/admin/data-empty-placeholder';
-import Search from '@/routes/admin/search';
+import Search from '@/routes/admin/data-table-search';
 import { supabase } from '@/supabase/client';
 import { getAllTimeData } from '@/supabase/data';
 import AlbumCard from './album-card';

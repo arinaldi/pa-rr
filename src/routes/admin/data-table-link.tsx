@@ -8,7 +8,7 @@ interface Props {
   id: number;
 }
 
-export default function TableLink({ id }: Props) {
+export function DataTableLink({ id }: Props) {
   const [searchParams] = useSearchParams();
   const to = `${ROUTES_ADMIN.edit.href.replace(':id', id.toString())}`;
 

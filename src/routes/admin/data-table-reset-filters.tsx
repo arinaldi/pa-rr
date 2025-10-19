@@ -9,7 +9,7 @@ interface Props {
   updateQuery: (value: string[]) => void;
 }
 
-export default function ResetFilters({ updateQuery }: Props) {
+export function DataTableResetFilters({ updateQuery }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const show = searchParams.getAll(ADMIN_QUERY_KEY).length > 0;
 

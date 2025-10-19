@@ -13,7 +13,7 @@ import { parsePerPageQuery } from '@/lib/utils';
 
 const { SMALL, MEDIUM, LARGE } = PER_PAGE;
 
-export default function PerPage() {
+export function DataTablePerPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [perPage, setPerPage] = useState(() =>
     parsePerPageQuery(searchParams.get('per_page')),

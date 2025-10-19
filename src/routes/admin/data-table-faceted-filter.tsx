@@ -34,7 +34,7 @@ interface Props {
   updateQuery: (value: string[]) => void;
 }
 
-export default function FacetedFilter({ query, updateQuery }: Props) {
+export function DataTableFacetedFilter({ query, updateQuery }: Props) {
   const setSearchParams = useSearchParams()[1];
   const [optimisticValue, setOptimisticValue] = useOptimistic(query);
   const selectedValues = new Set(optimisticValue);

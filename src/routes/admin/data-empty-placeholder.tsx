@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 
-export default function DataEmptyPlaceholder() {
+export function DataEmptyPlaceholder() {
   return (
     <div className="flex w-full items-center justify-center rounded-md border border-dashed p-6 sm:w-auto sm:min-w-80">
       <div className="mx-auto flex max-w-[400px] flex-col items-center justify-center text-center">

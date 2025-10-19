@@ -46,7 +46,7 @@ export function DataTablePagination({ total }: Props) {
   return (
     <>
       {/* Desktop version */}
-      <Pagination className="mt-4 hidden sm:flex sm:items-center sm:justify-end">
+      <Pagination className="mt-4 hidden px-2 sm:flex sm:items-center sm:justify-end">
         <div className="flex items-center gap-10">
           <DataTablePerPage />
           <p className="text-sm font-medium">
@@ -102,7 +102,7 @@ export function DataTablePagination({ total }: Props) {
         </div>
       </Pagination>
       {/* Mobile version */}
-      <Pagination className="mt-4 flex flex-col gap-4 sm:hidden">
+      <Pagination className="mt-4 justify-end px-2 sm:hidden">
         <div className="flex items-center gap-4">
           <PaginationContent className="gap-2">
             <PaginationItem>

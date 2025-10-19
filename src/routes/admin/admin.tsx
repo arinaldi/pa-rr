@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { Link, useLoaderData, useSearchParams } from 'react-router';
+import {
+  Link,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 import { Check, Disc, HeartPlus } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -19,12 +24,12 @@ import { DataEmptyPlaceholder } from './data-empty-placeholder';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableSearch } from './data-table-search';
 import { DataTableSortableColumn } from './data-table-sortable-column';
-import { DataTableLink } from './data-table-link';
 import { DataTableAlbumActions } from './data-table-album-actions';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableResetFilters } from './data-table-reset-filters';
 
 export default function Admin() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.getAll(ADMIN_QUERY_KEY));
   const { albums, cdCount, count } = useLoaderData<typeof getAdminData>();
@@ -81,7 +86,15 @@ export default function Admin() {
               </TableHeader>
               <TableBody>
                 {albums.map((a) => (
-                  <TableRow key={a.id}>
+                  <TableRow
+                    key={a.id}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      navigate(
+                        ROUTES_ADMIN.edit.href.replace(':id', a.id.toString()),
+                      );
+                    }}
+                  >
                     <TableCell>{a.artist}</TableCell>
                     <TableCell>{a.year}</TableCell>
                     <TableCell>
@@ -102,7 +115,6 @@ export default function Admin() {
                     </TableCell>
                     <TableCell className="flex items-end justify-end gap-2">
                       <DataTableAlbumActions album={a} />
-                      <DataTableLink id={a.id} />
                     </TableCell>
                   </TableRow>
                 ))}

@@ -1,5 +1,5 @@
 import { useRevalidator } from 'react-router';
-import { EllipsisVertical } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -51,14 +51,23 @@ export function DataTableAlbumActions({ album }: Props) {
   }
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="-mt-1.5 -mr-1 size-8 shrink-0 p-0" variant="ghost">
+        <Button
+          className="-mt-1.5 -mr-1 size-8 shrink-0 p-0"
+          size="icon"
+          variant="ghost"
+        >
           <span className="sr-only">Open menu</span>
-          <EllipsisVertical className="size-4" />
+          <MoreHorizontal className="size-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {Object.entries(AlbumKeys).map(([key, value]) => (
@@ -66,7 +75,9 @@ export function DataTableAlbumActions({ album }: Props) {
             checked={album[key as Key]}
             key={key}
             onCheckedChange={(checked) => onChange(key as Key, checked)}
-            onSelect={(event) => event.preventDefault()}
+            onSelect={(event) => {
+              event.preventDefault();
+            }}
           >
             {value}
           </DropdownMenuCheckboxItem>

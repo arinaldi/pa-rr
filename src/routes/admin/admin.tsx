@@ -113,7 +113,7 @@ export default function Admin() {
                         <Check className="text-muted-foreground mb-0.5 ml-1 inline size-4" />
                       )}
                     </TableCell>
-                    <TableCell className="flex items-end justify-end gap-2">
+                    <TableCell className="flex justify-end">
                       <DataTableAlbumActions album={a} />
                     </TableCell>
                   </TableRow>

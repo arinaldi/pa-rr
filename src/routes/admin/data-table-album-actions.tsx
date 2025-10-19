@@ -54,12 +54,12 @@ export function DataTableAlbumActions({ album }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="-mt-1.5 -mr-1 size-8 shrink-0 p-0"
+          className="data-[state=open]:bg-muted size-8 p-0"
           size="icon"
           variant="ghost"
         >
           <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="size-4" />
+          <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

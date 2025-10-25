@@ -1,14 +1,12 @@
 import { FormEvent } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { Controller, UseFormReturn } from 'react-hook-form';
 
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import SubmitButton from '@/components/submit-button';
 import { cn } from '@/lib/utils';
@@ -28,51 +26,45 @@ export default function SongForm({
   submitting,
 }: Props) {
   return (
-    <Form {...form}>
-      <form className={cn('space-y-6', className)} onSubmit={onSubmit}>
-        <FormField
+    <form className={cn('space-y-6', className)} onSubmit={onSubmit}>
+      <FieldGroup>
+        <Controller
           control={form.control}
           name="artist"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Artist</FormLabel>
-              <FormControl>
-                <Input autoFocus {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="artist">Artist</FieldLabel>
+              <Input {...field} autoFocus id="artist" />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
-        <FormField
+        <Controller
           control={form.control}
           name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="title">Title</FieldLabel>
+              <Input {...field} id="title" />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
-        <FormField
+        <Controller
           control={form.control}
           name="link"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Link</FormLabel>
-              <FormControl>
-                <Input inputMode="url" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="link">Link</FieldLabel>
+              <Input {...field} id="link" inputMode="url" />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
           )}
         />
-        <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
-          Save
-        </SubmitButton>
-      </form>
-    </Form>
+      </FieldGroup>
+      <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
+        Save
+      </SubmitButton>
+    </form>
   );
 }

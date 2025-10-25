@@ -29,8 +29,13 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           name="artist"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="artist">Artist</FieldLabel>
-              <Input {...field} autoFocus id="artist" />
+              <FieldLabel htmlFor={field.name}>Artist</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                autoFocus
+                id={field.name}
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -40,8 +45,12 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           name="title"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="title">Title</FieldLabel>
-              <Input {...field} id="title" />
+              <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id={field.name}
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -51,10 +60,11 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           name="year"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="year">Year</FieldLabel>
+              <FieldLabel htmlFor={field.name}>Year</FieldLabel>
               <Input
                 {...field}
-                id="year"
+                aria-invalid={fieldState.invalid}
+                id={field.name}
                 inputMode="numeric"
                 onChange={(event) => field.onChange(+event.target.value)}
                 type="number"
@@ -70,12 +80,12 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
             <Field orientation="horizontal">
               <Checkbox
                 checked={field.value}
-                id="studio"
+                id={field.name}
                 name={field.name}
                 onCheckedChange={field.onChange}
               />
               <FieldContent>
-                <FieldLabel htmlFor="studio">Studio</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Studio</FieldLabel>
                 <FieldDescription>Is this a studio album?</FieldDescription>
               </FieldContent>
             </Field>
@@ -88,12 +98,12 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
             <Field orientation="horizontal">
               <Checkbox
                 checked={field.value}
-                id="cd"
+                id={field.name}
                 name={field.name}
                 onCheckedChange={field.onChange}
               />
               <FieldContent>
-                <FieldLabel htmlFor="cd">CD</FieldLabel>
+                <FieldLabel htmlFor={field.name}>CD</FieldLabel>
                 <FieldDescription>Do you own this CD?</FieldDescription>
               </FieldContent>
             </Field>
@@ -106,12 +116,12 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
             <Field orientation="horizontal">
               <Checkbox
                 checked={field.value}
-                id="wishlist"
+                id={field.name}
                 name={field.name}
                 onCheckedChange={field.onChange}
               />
               <FieldContent>
-                <FieldLabel htmlFor="wishlist">Wishlist</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Wishlist</FieldLabel>
                 <FieldDescription>
                   Is this CD on your wishlist?
                 </FieldDescription>
@@ -126,12 +136,12 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
             <Field orientation="horizontal">
               <Checkbox
                 checked={field.value}
-                id="favorite"
+                id={field.name}
                 name={field.name}
                 onCheckedChange={field.onChange}
               />
               <FieldContent>
-                <FieldLabel htmlFor="favorite">Favorite</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Favorite</FieldLabel>
                 <FieldDescription>Is this a top album?</FieldDescription>
               </FieldContent>
             </Field>

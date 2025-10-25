@@ -60,12 +60,12 @@ export default function PasswordForm({ email, onCancel }: Props) {
             name="password"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                 <PasswordInput
                   {...field}
                   aria-invalid={fieldState.invalid}
                   autoFocus
-                  id="password"
+                  id={field.name}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

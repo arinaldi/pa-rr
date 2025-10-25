@@ -33,8 +33,13 @@ export default function SongForm({
           name="artist"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="artist">Artist</FieldLabel>
-              <Input {...field} autoFocus id="artist" />
+              <FieldLabel htmlFor={field.name}>Artist</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                autoFocus
+                id={field.name}
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -44,8 +49,12 @@ export default function SongForm({
           name="title"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="title">Title</FieldLabel>
-              <Input {...field} id="title" />
+              <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id={field.name}
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -55,8 +64,13 @@ export default function SongForm({
           name="link"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="link">Link</FieldLabel>
-              <Input {...field} id="link" inputMode="url" />
+              <FieldLabel htmlFor={field.name}>Link</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id={field.name}
+                inputMode="url"
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

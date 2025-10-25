@@ -66,8 +66,13 @@ export default function OtpForm({ email, onCancel }: Props) {
             name="code"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="code">One-time password</FieldLabel>
-                <InputOTP {...field} id="code" maxLength={6}>
+                <FieldLabel htmlFor={field.name}>One-time password</FieldLabel>
+                <InputOTP
+                  {...field}
+                  aria-invalid={fieldState.invalid}
+                  id={field.name}
+                  maxLength={6}
+                >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
                     <InputOTPSlot index={1} />

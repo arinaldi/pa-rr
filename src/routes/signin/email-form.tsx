@@ -57,7 +57,7 @@ export default function EmailForm({
             name="email"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                 <Input
                   {...field}
                   aria-invalid={fieldState.invalid}
@@ -65,7 +65,7 @@ export default function EmailForm({
                   autoComplete="email"
                   autoCorrect="off"
                   autoFocus
-                  id="email"
+                  id={field.name}
                   type="email"
                 />
                 {fieldState.invalid && (

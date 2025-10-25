@@ -33,8 +33,13 @@ export default function ReleaseForm({
           name="artist"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="artist">Artist</FieldLabel>
-              <Input {...field} autoFocus id="artist" />
+              <FieldLabel htmlFor={field.name}>Artist</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                autoFocus
+                id={field.name}
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -44,8 +49,12 @@ export default function ReleaseForm({
           name="title"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="title">Title</FieldLabel>
-              <Input {...field} id="title" />
+              <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id={field.name}
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -55,8 +64,13 @@ export default function ReleaseForm({
           name="date"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="date">Date</FieldLabel>
-              <Input {...field} id="date" type="date" />
+              <FieldLabel htmlFor={field.name}>Date</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id={field.name}
+                type="date"
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

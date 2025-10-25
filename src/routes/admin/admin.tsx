@@ -90,9 +90,9 @@ export default function Admin() {
                     key={a.id}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigate(
-                        ROUTES_ADMIN.edit.href.replace(':id', a.id.toString()),
-                      );
+                      const to = `${ROUTES_ADMIN.edit.href.replace(':id', a.id.toString())}`;
+
+                      navigate(`${to}?${searchParams}`);
                     }}
                   >
                     <TableCell>{a.artist}</TableCell>

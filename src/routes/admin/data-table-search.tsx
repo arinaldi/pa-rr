@@ -6,16 +6,21 @@ import {
   useTransition,
 } from 'react';
 import { useSearchParams } from 'react-router';
+import { Search, X } from 'lucide-react';
 
 import { DEBOUNCE_IN_MS, SORT_VALUE } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
-import InputClearButton from '@/components/input-clear-button';
-import InputSpinner from '@/components/input-spinner';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group';
+import Spinner from '@/components/spinner';
 
 export function DataTableSearch(props: ComponentProps<'input'>) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const defaultValue = parseQuery(searchParams.get('search'));
+  const search = parseQuery(searchParams.get('search'));
   const [pending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
@@ -66,17 +71,35 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
   }
 
   return (
-    <div className="relative">
-      <Input
-        defaultValue={defaultValue}
+    <InputGroup className="md:w-56">
+      <InputGroupInput
+        defaultValue={search}
         name="search"
         onChange={onSearch}
         placeholder="Search"
         ref={inputRef}
         {...props}
       />
-      {!searching && defaultValue && <InputClearButton onClick={onClear} />}
-      {searching && <InputSpinner />}
-    </div>
+      <InputGroupAddon>
+        <Search />
+      </InputGroupAddon>
+      {!searching && search && (
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            arial-label="Clear search"
+            onClick={onClear}
+            size="icon-sm"
+            title="Clear search"
+          >
+            <X />
+          </InputGroupButton>
+        </InputGroupAddon>
+      )}
+      {searching && (
+        <InputGroupAddon align="inline-end">
+          <Spinner className="size-4" />
+        </InputGroupAddon>
+      )}
+    </InputGroup>
   );
 }

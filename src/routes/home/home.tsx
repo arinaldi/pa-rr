@@ -12,7 +12,7 @@ import {
 
 export default function Home() {
   return (
-    <Empty className="border">
+    <Empty className="mx-auto w-fit border">
       <EmptyHeader>
         <EmptyMedia
           className="bg-sidebar-primary text-sidebar-primary-foreground"

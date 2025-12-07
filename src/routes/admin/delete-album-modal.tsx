@@ -29,7 +29,7 @@ import { Album } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
 interface Props {
-  album: Album;
+  album: Omit<Album, 'artist_title'>;
   className?: string;
 }
 

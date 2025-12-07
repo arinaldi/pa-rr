@@ -17,7 +17,7 @@ import { wait } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
 
 interface Props {
-  album: Album;
+  album: Omit<Album, 'artist_title'>;
 }
 
 type Key = 'cd' | 'favorite' | 'studio' | 'wishlist';

@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { MESSAGES } from '@/lib/constants';
 import { revalidateLiveQueries } from '@/lib/live-queries';
-import { Callback } from '@/lib/types';
+import type { Callback } from '@/lib/types';
 import { capitalizeFirstLetter } from '@/lib/utils';
 
 type State = void | undefined;

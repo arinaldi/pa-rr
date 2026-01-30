@@ -1,10 +1,10 @@
-import { FormEvent, useTransition } from 'react';
-import { UseFormHandleSubmit } from 'react-hook-form';
+import { type FormEvent, useTransition } from 'react';
+import { type UseFormHandleSubmit } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { MESSAGES } from '@/lib/constants';
 import { revalidateLiveQueries } from '@/lib/live-queries';
-import { Callback } from '@/lib/types';
+import type { Callback } from '@/lib/types';
 import { capitalizeFirstLetter } from '@/lib/utils';
 
 export interface Options {

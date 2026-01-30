@@ -25,7 +25,7 @@ import SubmitButton from '@/components/submit-button';
 import { useAction } from '@/hooks/use-action';
 import { useMobile } from '@/hooks/use-mobile';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
-import { Album } from '@/lib/types';
+import type { Album } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
 interface Props {

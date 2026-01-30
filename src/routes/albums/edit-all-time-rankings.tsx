@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { useLoaderData, useNavigate, useSearchParams } from 'react-router';
 import { Reorder } from 'framer-motion';
 

@@ -1,39 +1,37 @@
 import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 
-import { Route } from '@/lib/types';
+import type { Route } from '@/lib/types';
 
-/* ENUM */
+export const MESSAGES = {
+  ALBUM_PREFIX: 'Album successfully',
+  SONG_PREFIX: 'Song successfully',
+  RELEASE_PREFIX: 'Release successfully',
+  ERROR: 'Something went wrong',
+  NO_DATA: 'No data',
+  NOT_AUTHORIZED: 'Not authorized',
+  INVALID_DATA: 'Invalid data',
+};
 
-export enum MESSAGES {
-  ALBUM_PREFIX = 'Album successfully',
-  SONG_PREFIX = 'Song successfully',
-  RELEASE_PREFIX = 'Release successfully',
-  ERROR = 'Something went wrong',
-  NO_DATA = 'No data',
-  NOT_AUTHORIZED = 'Not authorized',
-  INVALID_DATA = 'Invalid data',
-}
+export const PER_PAGE = {
+  SMALL: 25,
+  MEDIUM: 50,
+  LARGE: 100,
+};
 
-export enum PER_PAGE {
-  SMALL = 25,
-  MEDIUM = 50,
-  LARGE = 100,
-}
+export const SORT_DIRECTION = {
+  ASC: 'asc',
+  DESC: 'desc',
+  NONE: '',
+};
 
-export enum SORT_DIRECTION {
-  ASC = 'asc',
-  DESC = 'desc',
-  NONE = '',
-}
+export const SORT_VALUE = {
+  ARTIST: 'artist',
+  NONE: '',
+  TITLE: 'title',
+  YEAR: 'year',
+};
 
-export enum SORT_VALUE {
-  ARTIST = 'artist',
-  NONE = '',
-  TITLE = 'title',
-  YEAR = 'year',
-}
-
-/* CONST */
+////////////////////////////////
 
 export const ADMIN_QUERY_KEY = 'status';
 

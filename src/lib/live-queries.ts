@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Key, mutate, SWRConfiguration, SWRHook } from 'swr';
+import { type Key, mutate, type SWRConfiguration, type SWRHook } from 'swr';
 
 const liveQueries = new Set<Key>();
 

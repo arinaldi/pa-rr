@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { EllipsisVertical, Pencil, Trash } from 'lucide-react';
 
-import { Release } from '@/lib/types';
+import type { Release } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {

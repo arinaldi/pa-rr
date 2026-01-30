@@ -9,7 +9,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { Route } from '@/lib/types';
+import type { Route } from '@/lib/types';
 
 interface Props {
   route: Route;

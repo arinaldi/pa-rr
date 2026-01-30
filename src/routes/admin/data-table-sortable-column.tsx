@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import { ArrowDown } from 'lucide-react';
 
 import { cn, parseQuery } from '@/lib/utils';
-import { Children } from '@/lib/types';
+import type { Children } from '@/lib/types';
 import { TableHead } from '@/components/ui/table';
 
 interface Props extends Children {

@@ -1,4 +1,4 @@
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { Controller, type UseFormReturn } from 'react-hook-form';
 import { Lock, SendHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';

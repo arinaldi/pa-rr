@@ -8,7 +8,7 @@ import {
 import SubmitButton from '@/components/submit-button';
 import { useAction } from '@/hooks/use-action';
 import { MESSAGES } from '@/lib/constants';
-import { Release } from '@/lib/types';
+import type { Release } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
 interface Props {

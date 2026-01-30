@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTopAlbums } from '@/hooks/use-data';
-import { Album } from '@/lib/types';
+import type { Album } from '@/lib/types';
 import { wait } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
 

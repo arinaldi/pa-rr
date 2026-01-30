@@ -2,7 +2,7 @@ import { CircleX, Info } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { MESSAGES } from '@/lib/constants';
-import { Icon } from '@/lib/types';
+import type { Icon } from '@/lib/types';
 
 type Variant = 'default' | 'destructive';
 

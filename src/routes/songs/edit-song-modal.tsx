@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useSubmit } from '@/hooks/use-submit';
-import { Song } from '@/lib/types';
+import type { Song } from '@/lib/types';
 import { MESSAGES } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { songSchema, type SongInput } from './schema';

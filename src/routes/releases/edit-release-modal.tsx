@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Release } from '@/lib/types';
+import type { Release } from '@/lib/types';
 import {
   DialogContent,
   DialogDescription,

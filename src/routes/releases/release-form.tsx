@@ -1,5 +1,5 @@
-import { FormEvent } from 'react';
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { type FormEvent } from 'react';
+import { Controller, type UseFormReturn } from 'react-hook-form';
 
 import {
   Field,

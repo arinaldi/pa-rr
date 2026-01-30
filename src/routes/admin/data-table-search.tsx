@@ -1,6 +1,6 @@
 import {
-  ChangeEvent,
-  ComponentProps,
+  type ChangeEvent,
+  type ComponentProps,
   useRef,
   useState,
   useTransition,

@@ -60,6 +60,7 @@ export default function PasswordForm({ email, onCancel }: Props) {
                 <PasswordInput
                   {...field}
                   aria-invalid={fieldState.invalid}
+                  autoComplete="password"
                   autoFocus
                   id={field.name}
                 />

@@ -7,7 +7,7 @@ export function PrivateRoute() {
   const session = useSession();
 
   if (!session) {
-    return <Navigate to={ROUTE_HREF.NOT_FOUND} />;
+    return <Navigate to={ROUTE_HREF.TOP_ALBUMS} />;
   }
 
   return <Outlet />;

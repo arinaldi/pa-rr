@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { ChevronsUpDown, LogIn, LogOut, User } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -22,21 +22,16 @@ import {
 } from '@/components/ui/sidebar';
 import { useSession } from '@/components/session-provider';
 import { useTheme, type Theme } from '@/components/theme-provider';
-import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
+import { ROUTE_HREF } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 
 export default function UserMenu() {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const session = useSession();
   const { isMobile, setOpenMobile } = useSidebar();
   const { setTheme, theme } = useTheme();
 
   async function signOut() {
-    if (pathname.startsWith(ROUTES_ADMIN.base.href)) {
-      navigate(ROUTE_HREF.TOP_ALBUMS);
-    }
-
     const { error } = await supabase.auth.signOut();
 
     if (error) {

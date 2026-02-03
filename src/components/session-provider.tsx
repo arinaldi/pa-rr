@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import { type Session } from '@supabase/supabase-js';
 
 import { Fallback } from '@/components/fallback';
-import { ROUTES_ADMIN } from '@/lib/constants';
 import { type Children } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
@@ -38,10 +37,6 @@ export function SessionProvider({ children }: Children) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-
-      if (session) {
-        navigate(ROUTES_ADMIN.base.href);
-      }
     });
 
     return () => {

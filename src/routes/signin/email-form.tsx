@@ -46,9 +46,7 @@ export default function EmailForm({
         throw new Error(error.message);
       }
     },
-    onSuccess: () => {
-      setViewOtp();
-    },
+    onSuccess: setViewOtp,
   });
 
   return (

@@ -1,5 +1,3 @@
-import { type LoaderFunctionArgs } from 'react-router';
-
 import {
   type AllTimeListItem,
   formatFavorites,
@@ -10,7 +8,7 @@ import {
 } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 import { MESSAGES, SORT_DIRECTION } from '@/lib/constants';
-import { parseAdminQuery, type AdminParams } from '@/lib/utils';
+import { type AdminParams } from '@/lib/utils';
 
 const { ASC, DESC } = SORT_DIRECTION;
 
@@ -97,10 +95,7 @@ async function getCdCount(adminParams: AdminParams) {
   return count ?? 0;
 }
 
-export async function getAdminData({ request }: LoaderFunctionArgs<any>) {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
-  const adminParams = parseAdminQuery(params);
+export async function getAdminData(adminParams: AdminParams) {
   const [{ albums, count }, cdCount] = await Promise.all([
     getAlbums(adminParams),
     getCdCount(adminParams),
@@ -176,10 +171,7 @@ export async function getCandidates(adminParams: AdminParams) {
   return { candidates };
 }
 
-export async function getAllTimeData({ request }: LoaderFunctionArgs<any>) {
-  const url = new URL(request.url);
-  const params = new URLSearchParams(url.search);
-  const adminParams = parseAdminQuery(params);
+export async function getAllTimeData(adminParams: AdminParams) {
   const [{ favorites }, { candidates }] = await Promise.all([
     getAllTimeRankings(),
     getCandidates(adminParams),

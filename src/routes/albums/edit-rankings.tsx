@@ -1,22 +1,33 @@
-import { type FormEvent, useState } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import { Reorder } from 'framer-motion';
 
 import SubmitButton from '@/components/submit-button';
-import { useTopAlbums } from '@/hooks/use-data';
+import { useRankingsByYear } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
-import { getRankingsByYear } from '@/supabase/data';
 import AlbumCard from './album-card';
+import type { AllTimeListItem } from '@/lib/formatters';
 
 export default function EditRankings() {
-  const { favorites } = useLoaderData<typeof getRankingsByYear>();
-  const navigate = useNavigate();
   const params = useParams();
   const year = parseQuery(params.year);
-  useTopAlbums();
+  const { data } = useRankingsByYear(year);
+
+  return data?.favorites ? (
+    <Content favorites={data.favorites} year={year} />
+  ) : null;
+}
+
+interface Props {
+  favorites: AllTimeListItem[];
+  year: string;
+}
+
+function Content({ favorites, year }: Props) {
+  const navigate = useNavigate();
   const [items, setItems] = useState(
     favorites.sort((a, b) => {
       if (a.ranking > b.ranking) return 1;
@@ -27,7 +38,7 @@ export default function EditRankings() {
 
   const { onSubmit, submitting } = useSubmit({
     callbacks: [() => navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`)],
-    submitFn: async (event: FormEvent) => {
+    submitFn: async (event: SubmitEvent) => {
       event.preventDefault();
 
       const rankings = items.map((item, index) => ({

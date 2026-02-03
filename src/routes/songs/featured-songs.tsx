@@ -7,9 +7,8 @@ import SongActions from './song-actions';
 
 export default function FeaturedSongs() {
   const session = useSession();
-  const {
-    data: { songs },
-  } = useFeaturedSongs();
+  const { data } = useFeaturedSongs();
+  const songs = data?.songs ?? {};
 
   return (
     <div className="space-y-4">

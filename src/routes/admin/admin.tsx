@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-} from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Check, Disc, HeartPlus } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -18,21 +13,25 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ADMIN_QUERY_KEY, ROUTES_ADMIN } from '@/lib/constants';
-import { cn } from '@/lib/utils';
-import { getAdminData } from '@/supabase/data';
+import { cn, parseAdminQuery } from '@/lib/utils';
 import { DataEmptyPlaceholder } from './data-empty-placeholder';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableSearch } from './data-table-search';
 import { DataTableSortableColumn } from './data-table-sortable-column';
-import { DataTableAlbumActions } from './data-table-album-actions';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableResetFilters } from './data-table-reset-filters';
+import { useAdminData } from '@/hooks/use-data';
 
 export default function Admin() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.getAll(ADMIN_QUERY_KEY));
-  const { albums, cdCount, count } = useLoaderData<typeof getAdminData>();
+  const { data, isLoading } = useAdminData(parseAdminQuery(searchParams));
+  const { albums, count, cdCount } = data ?? {
+    albums: [],
+    count: 0,
+    cdCount: 0,
+  };
 
   function updateQuery(value: string[]) {
     setQuery(value);
@@ -62,7 +61,7 @@ export default function Admin() {
         </div>
       </div>
 
-      {albums?.length === 0 ? (
+      {!isLoading && albums.length === 0 ? (
         <div className="mt-4 flex justify-center">
           <DataEmptyPlaceholder />
         </div>
@@ -113,9 +112,7 @@ export default function Admin() {
                         <Check className="text-muted-foreground mb-0.5 ml-1 inline size-4" />
                       )}
                     </TableCell>
-                    <TableCell className="flex justify-end">
-                      <DataTableAlbumActions album={a} />
-                    </TableCell>
+                    <TableCell className="flex justify-end"></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

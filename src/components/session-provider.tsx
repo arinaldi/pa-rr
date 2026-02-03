@@ -1,6 +1,7 @@
 import { createContext, use, useEffect, useState } from 'react';
 import { type Session } from '@supabase/supabase-js';
 
+import { Fallback } from '@/components/fallback';
 import { type Children } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
@@ -22,10 +23,12 @@ export function useSession() {
 
 export function SessionProvider({ children }: Children) {
   const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setLoading(false);
     });
 
     const {
@@ -34,8 +37,14 @@ export function SessionProvider({ children }: Children) {
       setSession(session);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  return <SessionContext value={{ session }}>{children}</SessionContext>;
+  return (
+    <SessionContext value={{ session }}>
+      {loading ? <Fallback /> : children}
+    </SessionContext>
+  );
 }

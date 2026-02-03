@@ -33,9 +33,8 @@ interface State {
 
 export default function Artists() {
   const session = useSession();
-  const {
-    data: { artists },
-  } = useArtists();
+  const { data } = useArtists();
+  const artists = data?.artists ?? [];
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
   const [fetching, setFetching] = useState(false);

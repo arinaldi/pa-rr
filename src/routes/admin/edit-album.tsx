@@ -1,34 +1,29 @@
-import {
-  useLoaderData,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { useAlbum } from '@/hooks/use-data';
 import { useSubmit } from '@/hooks/use-submit';
 import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
-import { getAlbum } from '@/supabase/data';
 import AlbumForm from './album-form';
 import { albumSchema, type AlbumInput } from './schema';
 import DeleteAlbumModal from './delete-album-modal';
 
 export default function EditAlbum() {
-  const { album } = useLoaderData<typeof getAlbum>();
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
+  const { data } = useAlbum(params.id);
   const form = useForm({
-    defaultValues: {
-      artist: album.artist,
-      title: album.title,
-      year: Number(album.year),
-      studio: album.studio,
-      cd: album.cd,
-      wishlist: album.wishlist,
-      favorite: album.favorite,
+    values: {
+      artist: data?.album.artist ?? '',
+      title: data?.album.title ?? '',
+      year: Number(data?.album.year),
+      studio: data?.album.studio ?? false,
+      cd: data?.album.cd ?? false,
+      wishlist: data?.album.wishlist ?? false,
+      favorite: data?.album.favorite ?? false,
     },
     resolver: zodResolver(albumSchema),
   });
@@ -45,7 +40,7 @@ export default function EditAlbum() {
 
       const id = parseInt(params.id, 10);
 
-      if (album.favorite && !rest.favorite) {
+      if (data?.album.favorite && !rest.favorite) {
         const { data: ranking, error: rankingError } = await supabase
           .from('rankings')
           .select('*')
@@ -79,7 +74,12 @@ export default function EditAlbum() {
   return (
     <div className="max-w-sm">
       <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />
-      <DeleteAlbumModal album={album} className="mt-2 w-full sm:w-auto" />
+      {data?.album && (
+        <DeleteAlbumModal
+          album={data.album}
+          className="mt-2 w-full sm:w-auto"
+        />
+      )}
     </div>
   );
 }

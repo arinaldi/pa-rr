@@ -11,9 +11,8 @@ import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 export default function AllTimeRankings() {
-  const {
-    data: { favorites },
-  } = useAllTimeRankings();
+  const { data } = useAllTimeRankings();
+  const favorites = data?.favorites ?? [];
   const session = useSession();
 
   return (

@@ -11,9 +11,8 @@ import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import DecadeLink from './decade-link';
 
 export default function TopAlbums() {
-  const {
-    data: { favorites },
-  } = useTopAlbums();
+  const { data } = useTopAlbums();
+  const favorites = data?.favorites ?? {};
   const session = useSession();
 
   return (

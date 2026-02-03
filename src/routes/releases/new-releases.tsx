@@ -8,9 +8,8 @@ import ReleaseActions from './release-actions';
 
 export default function NewReleases() {
   const session = useSession();
-  const {
-    data: { releases },
-  } = useNewReleases();
+  const { data } = useNewReleases();
+  const releases = data?.releases ?? {};
 
   return (
     <div className="space-y-4">

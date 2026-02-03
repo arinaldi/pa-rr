@@ -1,88 +1,35 @@
-import { Fragment } from 'react/jsx-runtime';
-import { useLocation, useMatches, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { Badge } from '@/components/ui/badge';
-import {
-  BreadcrumbEllipsis,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useMobile } from '@/hooks/use-mobile';
-import { APP_NAME } from '@/lib/constants';
-
-interface LoaderData {
-  count: number;
-  parents?: {
-    href: string;
-    title: string;
-  }[];
-  title: string;
-}
+import { Separator } from '@/components/ui/separator';
+import { useCount } from '@/hooks/use-count';
+import { APP_NAME, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
 
 export default function PageTitle() {
-  const mobile = useMobile();
+  const count = useCount();
   const { pathname } = useLocation();
-  const matches = useMatches();
-  const navigate = useNavigate();
-  const match = matches.find((m) => m.pathname === pathname);
-  const data = match?.loaderData as LoaderData;
+  const currentRoute = ROUTES.find((r) => pathname.startsWith(r.href));
+  let title = currentRoute?.label;
 
-  if (!data) return null;
+  if (!title && pathname.startsWith(ROUTES_ADMIN.base.href)) {
+    title = ROUTES_ADMIN.base.label;
+  }
 
   return (
     <>
-      <title>{data?.title ? `${data.title} | ${APP_NAME}` : APP_NAME}</title>
-      <BreadcrumbSeparator className="hidden md:block" />
-      {mobile && data.parents && (
+      <title>{title ? `${title} | ${APP_NAME}` : APP_NAME}</title>
+      {title && (
         <>
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              className="flex items-center gap-1 md:hidden"
-              aria-label="Toggle menu"
-            >
-              <BreadcrumbEllipsis className="size-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              {data.parents.map((p) => (
-                <DropdownMenuItem
-                  key={p.href}
-                  onSelect={() => navigate(p.href)}
-                >
-                  {p.title}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <BreadcrumbSeparator />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          <span className="flex items-center gap-2">
+            <h1 className="text-sm">{title}</h1>
+            <Badge variant="secondary">{count.toLocaleString()}</Badge>
+          </span>
         </>
       )}
-      {!mobile &&
-        data.parents?.map((p) => (
-          <Fragment key={p.href}>
-            <BreadcrumbItem>
-              <BreadcrumbLink to={p.href}>{p.title}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-          </Fragment>
-        ))}
-      <BreadcrumbItem>
-        <BreadcrumbPage>
-          <span className="flex items-center gap-2">
-            <span>{data.title}</span>
-            {data.count !== undefined && (
-              <Badge variant="secondary">{data.count.toLocaleString()}</Badge>
-            )}
-          </span>
-        </BreadcrumbPage>
-      </BreadcrumbItem>
     </>
   );
 }

@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import useSWR from 'swr';
+import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
 
 import { useCountActions } from '@/hooks/use-count';
-import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
 import type { AdminParams } from '@/lib/utils';
 import {
   getAdminData,
@@ -17,68 +16,89 @@ import {
 } from '@/supabase/data';
 
 export function useAdminData(adminParams: AdminParams) {
-  const result = useSWR(
-    [ROUTES_ADMIN.base.href, adminParams],
-    () => getAdminData(adminParams),
-    { keepPreviousData: true },
-  );
+  const result = useQuery({
+    queryKey: ['admin', adminParams],
+    queryFn: () => getAdminData(adminParams),
+    placeholderData: keepPreviousData,
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useAlbum(id: string | undefined) {
-  return useSWR(id ? ROUTES_ADMIN.edit.href.replace(':id', id) : null, () =>
-    getAlbum(id),
-  );
+  return useQuery({
+    queryKey: ['admin', 'album', id],
+    queryFn: id ? () => getAlbum(id) : skipToken,
+  });
 }
 
 export function useAllTimeData(adminParams: AdminParams) {
-  const result = useSWR([ROUTE_HREF.ALL_TIME_EDIT, adminParams], () =>
-    getAllTimeData(adminParams),
-  );
+  const result = useQuery({
+    queryKey: ['all-time-edit', adminParams],
+    queryFn: () => getAllTimeData(adminParams),
+    placeholderData: keepPreviousData,
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useAllTimeRankings() {
-  const result = useSWR(ROUTE_HREF.ALL_TIME, getAllTimeRankings);
+  const result = useQuery({
+    queryKey: ['all-time-rankings'],
+    queryFn: getAllTimeRankings,
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useArtists() {
-  const result = useSWR(ROUTE_HREF.ARTISTS, getArtists);
+  const result = useQuery({
+    queryKey: ['artists'],
+    queryFn: getArtists,
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useFeaturedSongs() {
-  const result = useSWR(ROUTE_HREF.FEATURED_SONGS, getSongs);
+  const result = useQuery({
+    queryKey: ['featured-songs'],
+    queryFn: getSongs,
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useNewReleases() {
-  const result = useSWR(ROUTE_HREF.NEW_RELEASES, getReleases);
+  const result = useQuery({
+    queryKey: ['new-releases'],
+    queryFn: getReleases,
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useRankingsByYear(year: string) {
-  const result = useSWR(year, () => getRankingsByYear(year));
+  const result = useQuery({
+    queryKey: ['rankings-by-year', year],
+    queryFn: () => getRankingsByYear(year),
+  });
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useTopAlbums() {
-  const result = useSWR(ROUTE_HREF.TOP_ALBUMS, getFavorites);
+  const result = useQuery({
+    queryKey: ['top-albums'],
+    queryFn: getFavorites,
+  });
   useSetCount(result.data?.count);
 
   return result;

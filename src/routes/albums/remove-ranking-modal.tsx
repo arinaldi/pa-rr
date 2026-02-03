@@ -1,4 +1,5 @@
-import { type FormEvent, useState } from 'react';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import SubmitButton from '@/components/submit-button';
-import { useSubmit } from '@/hooks/use-submit';
 import { type AllTimeListItem } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 
@@ -23,12 +23,12 @@ interface Props {
 
 export default function RemoveAllTimeRankingModal({ item, removeItem }: Props) {
   const [open, setOpen] = useState(false);
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [() => setOpen(false)],
-    submitFn: async (event: FormEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
 
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: 'All-time ranking removed',
+    },
+    mutationFn: async () => {
       const { error } = await supabase
         .from('rankings')
         .update({
@@ -42,7 +42,9 @@ export default function RemoveAllTimeRankingModal({ item, removeItem }: Props) {
 
       removeItem(item.id);
     },
-    successMessage: 'All-time ranking removed',
+    onSuccess: () => {
+      setOpen(false);
+    },
   });
 
   return (
@@ -59,9 +61,15 @@ export default function RemoveAllTimeRankingModal({ item, removeItem }: Props) {
           </DialogTitle>
           <DialogDescription>This action cannot be undone</DialogDescription>
         </DialogHeader>
-        <form onSubmit={onSubmit}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            mutate();
+          }}
+        >
           <DialogFooter>
-            <SubmitButton submitting={submitting} variant="destructive">
+            <SubmitButton submitting={isPending} variant="destructive">
               Delete
             </SubmitButton>
           </DialogFooter>

@@ -1,7 +1,7 @@
 import { CircleX, Info } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { MESSAGES } from '@/lib/constants';
+import { MESSAGE } from '@/lib/constants';
 import type { Icon } from '@/lib/types';
 
 type Variant = 'default' | 'destructive';
@@ -20,7 +20,7 @@ const icons: Record<Variant, Icon> = {
 
 export default function AppMessage({
   className = '',
-  description = MESSAGES.ERROR,
+  description = MESSAGE.ERROR,
   title = 'Error',
   variant = 'destructive',
 }: Props) {

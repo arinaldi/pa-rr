@@ -1,5 +1,5 @@
-import { type FormEvent } from 'react';
-import { Controller, type UseFormReturn } from 'react-hook-form';
+import { type SubmitEventHandler } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   Field,
@@ -8,23 +8,18 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import SubmitButton from '@/components/submit-button';
+import type { Children } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { type SongInput } from './schema';
 
-interface Props {
+interface Props extends Children {
   className?: string;
-  form: UseFormReturn<SongInput>;
-  onSubmit: (event: FormEvent<Element>) => Promise<void>;
-  submitting: boolean;
+  onSubmit: SubmitEventHandler<HTMLFormElement>;
 }
 
-export default function SongForm({
-  className,
-  form,
-  onSubmit,
-  submitting,
-}: Props) {
+export default function SongForm({ children, className, onSubmit }: Props) {
+  const form = useFormContext<SongInput>();
+
   return (
     <form className={cn('space-y-6', className)} onSubmit={onSubmit}>
       <FieldGroup>
@@ -76,9 +71,7 @@ export default function SongForm({
           )}
         />
       </FieldGroup>
-      <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
-        Save
-      </SubmitButton>
+      {children}
     </form>
   );
 }

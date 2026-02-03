@@ -33,15 +33,15 @@ export default function UserMenu() {
   const { setTheme, theme } = useTheme();
 
   async function signOut() {
+    if (pathname.startsWith(ROUTES_ADMIN.base.href)) {
+      navigate(ROUTE_HREF.TOP_ALBUMS);
+    }
+
     const { error } = await supabase.auth.signOut();
 
     if (error) {
       toast.error(error.message);
       return;
-    }
-
-    if (pathname.startsWith(ROUTES_ADMIN.base.href)) {
-      navigate(ROUTE_HREF.TOP_ALBUMS);
     }
   }
 

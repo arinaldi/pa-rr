@@ -2,7 +2,7 @@ import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 
 import type { Route } from '@/lib/types';
 
-export const MESSAGES = {
+export const MESSAGE = {
   ALBUM_PREFIX: 'Album successfully',
   SONG_PREFIX: 'Song successfully',
   RELEASE_PREFIX: 'Release successfully',
@@ -73,7 +73,6 @@ export const ROUTE_HREF = {
   NEW_RELEASES: '/releases',
   NOT_FOUND: '/not-found',
   PLAYLIST: '/playlist',
-  SANDBOX: '/sandbox',
   SIGNIN: '/signin',
   SIGNOUT: '/signout',
   TOP_ALBUMS: '/albums',

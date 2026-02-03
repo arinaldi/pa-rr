@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { SWRConfig } from 'swr';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { AppSidebar } from '@/components/app-sidebar';
 import { ROUTE_HREF, ROUTES_ADMIN } from '@/lib/constants';
-import { trackLiveQueries } from '@/lib/live-queries';
+import { queryClient } from '@/lib/query-client';
 import AddAlbum from '@/routes/admin/add-album';
 import Admin from '@/routes/admin/admin';
 import AllTimeRankings from '@/routes/albums/all-time-rankings';
@@ -18,7 +18,6 @@ import NotFound from '@/routes/not-found';
 import Playlist from '@/routes/playlist/playlist';
 import { PrivateRoute } from '@/components/private-route';
 import { PublicRoute } from '@/components/public-route';
-import Sandbox from '@/routes/sandbox/sandbox';
 import { ScrollToTop } from '@/components/scroll-to-top';
 import { SessionProvider } from '@/components/session-provider';
 import SignIn from '@/routes/signin/signin';
@@ -31,11 +30,7 @@ import TopAlbums from '@/routes/albums/top-albums';
 export function AppRoutes() {
   return (
     <BrowserRouter>
-      <SWRConfig
-        value={{
-          use: [trackLiveQueries],
-        }}
-      >
+      <QueryClientProvider client={queryClient}>
         <SessionProvider>
           <ThemeProvider>
             <Routes>
@@ -59,7 +54,6 @@ export function AppRoutes() {
                 />
                 <Route path={ROUTE_HREF.ARTISTS} element={<Artists />} />
                 <Route path={ROUTE_HREF.PLAYLIST} element={<Playlist />} />
-                <Route path={ROUTE_HREF.SANDBOX} element={<Sandbox />} />
                 <Route element={<PrivateRoute />}>
                   <Route
                     path={ROUTE_HREF.EDIT_RANKINGS}
@@ -85,7 +79,7 @@ export function AppRoutes() {
             <Toaster position="top-right" richColors />
           </ThemeProvider>
         </SessionProvider>
-      </SWRConfig>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }

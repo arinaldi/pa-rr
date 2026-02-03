@@ -1,4 +1,5 @@
 import { Controller, type UseFormReturn } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
 import { Lock, SendHorizontal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -11,8 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import SubmitButton from '@/components/submit-button';
 import { useMobile } from '@/hooks/use-mobile';
-import { useSubmit } from '@/hooks/use-submit';
-import { EMAIL, MESSAGES } from '@/lib/constants';
+import { EMAIL, MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import type { EmailInput } from './schema';
 
@@ -28,12 +28,13 @@ export default function EmailForm({
   setViewPassword,
 }: Props) {
   const mobile = useMobile();
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [() => setViewOtp()],
-    handleSubmit: form.handleSubmit,
-    submitFn: async ({ email }: EmailInput) => {
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: 'Check your email for the code',
+    },
+    mutationFn: async ({ email }: EmailInput) => {
       if (email !== EMAIL) {
-        throw new Error(MESSAGES.ERROR);
+        throw new Error(MESSAGE.ERROR);
       }
 
       const { error } = await supabase.auth.signInWithOtp({
@@ -45,7 +46,9 @@ export default function EmailForm({
         throw new Error(error.message);
       }
     },
-    successMessage: 'Check your email for the code',
+    onSuccess: () => {
+      setViewOtp();
+    },
   });
 
   return (
@@ -94,10 +97,10 @@ export default function EmailForm({
           </span>
         </div>
       </div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={form.handleSubmit((data) => mutate(data))}>
         <SubmitButton
           className="w-full"
-          submitting={submitting}
+          submitting={isPending}
           variant="outline"
         >
           <SendHorizontal className="size-4" />

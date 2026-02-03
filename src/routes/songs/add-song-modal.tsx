@@ -1,51 +1,50 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES } from '@/lib/constants';
+import SubmitButton from '@/components/submit-button';
+import { MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { songSchema, type SongInput } from './schema';
 import SongForm from './song-form';
 
-const defaultValues = {
-  artist: '',
-  title: '',
-  link: '',
-};
-
 export default function AddSongModal() {
   const [open, setOpen] = useState(false);
   const form = useForm({
-    defaultValues,
+    defaultValues: {
+      artist: '',
+      title: '',
+      link: '',
+    },
     resolver: zodResolver(songSchema),
   });
 
-  function onClose() {
-    setOpen(false);
-    form.reset(defaultValues);
-  }
-
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose],
-    handleSubmit: form.handleSubmit,
-    submitFn: async (data: SongInput) => {
-      const { error } = await supabase.from('songs').insert(data);
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: `${MESSAGE.SONG_PREFIX} added`,
+    },
+    mutationFn: async (input: SongInput) => {
+      const { error } = await supabase.from('songs').insert(input);
 
       if (error) {
         throw new Error(error.message);
       }
     },
-    successMessage: `${MESSAGES.SONG_PREFIX} added`,
+    onSuccess: () => {
+      setOpen(false);
+      form.reset();
+    },
   });
 
   return (
@@ -60,7 +59,15 @@ export default function AddSongModal() {
             What&apos;s the next featured song?
           </DialogDescription>
         </DialogHeader>
-        <SongForm form={form} onSubmit={onSubmit} submitting={submitting} />
+        <FormProvider {...form}>
+          <SongForm onSubmit={form.handleSubmit((data) => mutate(data))}>
+            <DialogFooter>
+              <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
+                Save
+              </SubmitButton>
+            </DialogFooter>
+          </SongForm>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -17,8 +17,7 @@ import {
 } from '@/components/ui/input-otp';
 import SubmitButton from '@/components/submit-button';
 import { useMobile } from '@/hooks/use-mobile';
-import { useSubmit } from '@/hooks/use-submit';
-import { EMAIL, MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
+import { EMAIL, MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { verifyOtpSchema, type VerifyOtpInput } from './schema';
 
@@ -28,7 +27,6 @@ interface Props {
 }
 
 export default function OtpForm({ email, onCancel }: Props) {
-  const navigate = useNavigate();
   const mobile = useMobile();
   const form = useForm({
     defaultValues: {
@@ -37,12 +35,10 @@ export default function OtpForm({ email, onCancel }: Props) {
     resolver: zodResolver(verifyOtpSchema),
   });
 
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [() => navigate(ROUTES_ADMIN.base.href)],
-    handleSubmit: form.handleSubmit,
-    submitFn: async ({ code }: VerifyOtpInput) => {
+  const { isPending, mutate } = useMutation({
+    mutationFn: async ({ code }: VerifyOtpInput) => {
       if (email !== EMAIL) {
-        throw new Error(MESSAGES.INVALID_DATA);
+        throw new Error(MESSAGE.INVALID_DATA);
       }
 
       const { error } = await supabase.auth.verifyOtp({
@@ -59,7 +55,7 @@ export default function OtpForm({ email, onCancel }: Props) {
 
   return (
     <div className="max-w-sm">
-      <form onSubmit={onSubmit}>
+      <form onSubmit={form.handleSubmit((data) => mutate(data))}>
         <FieldGroup>
           <Controller
             control={form.control}
@@ -92,7 +88,7 @@ export default function OtpForm({ email, onCancel }: Props) {
             )}
           />
         </FieldGroup>
-        <SubmitButton className="mt-6 w-full" submitting={submitting}>
+        <SubmitButton className="mt-6 w-full" submitting={isPending}>
           Submit
         </SubmitButton>
       </form>

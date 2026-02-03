@@ -1,44 +1,40 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES } from '@/lib/constants';
+import SubmitButton from '@/components/submit-button';
+import { MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
-import { releaseSchema, type ReleaseInput } from './schema';
 import ReleaseForm from './release-form';
-
-const defaultValues = {
-  artist: '',
-  title: '',
-  date: '',
-};
+import { releaseSchema, type ReleaseInput } from './schema';
 
 export default function AddReleaseModal() {
   const [open, setOpen] = useState(false);
   const form = useForm({
-    defaultValues,
+    defaultValues: {
+      artist: '',
+      title: '',
+      date: '',
+    },
     resolver: zodResolver(releaseSchema),
   });
 
-  function onClose() {
-    setOpen(false);
-    form.reset(defaultValues);
-  }
-
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose],
-    handleSubmit: form.handleSubmit,
-    submitFn: async ({ date, ...rest }: ReleaseInput) => {
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: `${MESSAGE.RELEASE_PREFIX} added`,
+    },
+    mutationFn: async ({ date, ...rest }: ReleaseInput) => {
       const { error } = await supabase.from('releases').insert({
         ...rest,
         date: date.length === 0 ? null : date,
@@ -48,7 +44,10 @@ export default function AddReleaseModal() {
         throw new Error(error.message);
       }
     },
-    successMessage: `${MESSAGES.RELEASE_PREFIX} added`,
+    onSuccess: () => {
+      setOpen(false);
+      form.reset();
+    },
   });
 
   return (
@@ -61,7 +60,15 @@ export default function AddReleaseModal() {
           <DialogTitle>Add release</DialogTitle>
           <DialogDescription>What&apos;s the newest release?</DialogDescription>
         </DialogHeader>
-        <ReleaseForm form={form} onSubmit={onSubmit} submitting={submitting} />
+        <FormProvider {...form}>
+          <ReleaseForm onSubmit={form.handleSubmit((data) => mutate(data))}>
+            <DialogFooter>
+              <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
+                Save
+              </SubmitButton>
+            </DialogFooter>
+          </ReleaseForm>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );

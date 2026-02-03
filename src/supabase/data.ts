@@ -7,14 +7,14 @@ import {
   formatSongs,
 } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
-import { MESSAGES, SORT_DIRECTION } from '@/lib/constants';
+import { MESSAGE, SORT_DIRECTION } from '@/lib/constants';
 import { type AdminParams } from '@/lib/utils';
 
 const { ASC, DESC } = SORT_DIRECTION;
 
 export async function getAlbum(id: string | undefined) {
   if (!id) {
-    throw new Error(MESSAGES.NO_DATA);
+    throw new Error(MESSAGE.NO_DATA);
   }
 
   const { data: album, error } = await supabase

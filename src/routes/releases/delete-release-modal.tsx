@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
+
 import {
   DialogContent,
   DialogDescription,
@@ -6,8 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import SubmitButton from '@/components/submit-button';
-import { useAction } from '@/hooks/use-action';
-import { MESSAGES } from '@/lib/constants';
+import { MESSAGE } from '@/lib/constants';
 import type { Release } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
@@ -17,10 +18,11 @@ interface Props {
 }
 
 export default function DeleteReleaseModal({ onClose, release }: Props) {
-  const [, action, pending] = useAction({
-    callbacks: [onClose],
-    initialState: undefined,
-    submitFn: async () => {
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: `${MESSAGE.RELEASE_PREFIX} deleted`,
+    },
+    mutationFn: async () => {
       const { error } = await supabase
         .from('releases')
         .delete()
@@ -30,7 +32,7 @@ export default function DeleteReleaseModal({ onClose, release }: Props) {
         throw new Error(error.message);
       }
     },
-    successMessage: `${MESSAGES.RELEASE_PREFIX} deleted`,
+    onSuccess: onClose,
   });
 
   return (
@@ -42,9 +44,14 @@ export default function DeleteReleaseModal({ onClose, release }: Props) {
         </DialogTitle>
         <DialogDescription>This action cannot be undone</DialogDescription>
       </DialogHeader>
-      <form action={action}>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          mutate();
+        }}
+      >
         <DialogFooter>
-          <SubmitButton submitting={pending} variant="destructive">
+          <SubmitButton submitting={isPending} variant="destructive">
             Delete
           </SubmitButton>
         </DialogFooter>

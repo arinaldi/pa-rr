@@ -1,10 +1,11 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
+import SubmitButton from '@/components/submit-button';
 import { useAlbum } from '@/hooks/use-data';
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES, ROUTES_ADMIN } from '@/lib/constants';
+import { MESSAGE, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import AlbumForm from './album-form';
 import { albumSchema, type AlbumInput } from './schema';
@@ -28,14 +29,13 @@ export default function EditAlbum() {
     resolver: zodResolver(albumSchema),
   });
 
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [
-      () => navigate(`${ROUTES_ADMIN.base.href}?${searchParams.toString()}`),
-    ],
-    handleSubmit: form.handleSubmit,
-    submitFn: async ({ year, ...rest }: AlbumInput) => {
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: `${MESSAGE.ALBUM_PREFIX} edited`,
+    },
+    mutationFn: async ({ year, ...rest }: AlbumInput) => {
       if (!params.id) {
-        throw new Error(MESSAGES.NO_DATA);
+        throw new Error(MESSAGE.NO_DATA);
       }
 
       const id = parseInt(params.id, 10);
@@ -68,18 +68,26 @@ export default function EditAlbum() {
         throw new Error(error.message);
       }
     },
-    successMessage: `${MESSAGES.ALBUM_PREFIX} edited`,
+    onSuccess: () => {
+      navigate(`${ROUTES_ADMIN.base.href}?${searchParams.toString()}`);
+    },
   });
 
   return (
     <div className="max-w-sm">
-      <AlbumForm form={form} onSubmit={onSubmit} submitting={submitting} />
-      {data?.album && (
-        <DeleteAlbumModal
-          album={data.album}
-          className="mt-2 w-full sm:w-auto"
-        />
-      )}
+      <FormProvider {...form}>
+        <AlbumForm onSubmit={form.handleSubmit((data) => mutate(data))}>
+          <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
+            Save
+          </SubmitButton>
+        </AlbumForm>
+        {data?.album && (
+          <DeleteAlbumModal
+            album={data.album}
+            className="mt-2 w-full sm:w-auto"
+          />
+        )}
+      </FormProvider>
     </div>
   );
 }

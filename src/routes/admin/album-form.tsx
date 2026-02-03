@@ -1,5 +1,5 @@
-import { type FormEvent } from 'react';
-import { Controller, type UseFormReturn } from 'react-hook-form';
+import { type SubmitEventHandler } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -11,16 +11,16 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import SubmitButton from '@/components/submit-button';
+import type { Children } from '@/lib/types';
 import { type AlbumInput } from './schema';
 
-interface Props {
-  form: UseFormReturn<AlbumInput>;
-  onSubmit: (event: FormEvent<Element>) => Promise<void>;
-  submitting: boolean;
+interface Props extends Children {
+  onSubmit: SubmitEventHandler<HTMLFormElement>;
 }
 
-export default function AlbumForm({ form, onSubmit, submitting }: Props) {
+export default function AlbumForm({ children, onSubmit }: Props) {
+  const form = useFormContext<AlbumInput>();
+
   return (
     <form className="space-y-6" onSubmit={onSubmit}>
       <FieldGroup>
@@ -148,9 +148,7 @@ export default function AlbumForm({ form, onSubmit, submitting }: Props) {
           )}
         />
       </FieldGroup>
-      <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
-        Save
-      </SubmitButton>
+      {children}
     </form>
   );
 }

@@ -1,19 +1,21 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
-import type { Release } from '@/lib/types';
 import {
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useSubmit } from '@/hooks/use-submit';
-import { MESSAGES } from '@/lib/constants';
+import SubmitButton from '@/components/submit-button';
+import { MESSAGE } from '@/lib/constants';
 import { formatDate } from '@/lib/formatters';
+import type { Release } from '@/lib/types';
 import { supabase } from '@/supabase/client';
-import { releaseSchema, type ReleaseInput } from './schema';
 import ReleaseForm from './release-form';
+import { releaseSchema, type ReleaseInput } from './schema';
 
 interface Props {
   onClose: () => void;
@@ -30,10 +32,11 @@ export default function EditReleaseModal({ onClose, release }: Props) {
     resolver: zodResolver(releaseSchema),
   });
 
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [onClose],
-    handleSubmit: form.handleSubmit,
-    submitFn: async ({ date, ...rest }: ReleaseInput) => {
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: `${MESSAGE.RELEASE_PREFIX} added`,
+    },
+    mutationFn: async ({ date, ...rest }: ReleaseInput) => {
       const { error } = await supabase
         .from('releases')
         .update({
@@ -46,7 +49,7 @@ export default function EditReleaseModal({ onClose, release }: Props) {
         throw new Error(error.message);
       }
     },
-    successMessage: `${MESSAGES.RELEASE_PREFIX} edited`,
+    onSuccess: onClose,
   });
 
   return (
@@ -55,7 +58,13 @@ export default function EditReleaseModal({ onClose, release }: Props) {
         <DialogTitle>Edit release</DialogTitle>
         <DialogDescription>Update data for new release</DialogDescription>
       </DialogHeader>
-      <ReleaseForm form={form} onSubmit={onSubmit} submitting={submitting} />
+      <ReleaseForm onSubmit={form.handleSubmit((data) => mutate(data))}>
+        <DialogFooter>
+          <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
+            Save
+          </SubmitButton>
+        </DialogFooter>
+      </ReleaseForm>
     </DialogContent>
   );
 }

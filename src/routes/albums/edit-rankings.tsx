@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
 import { Reorder } from 'framer-motion';
 
 import SubmitButton from '@/components/submit-button';
 import { useRankingsByYear } from '@/hooks/use-data';
-import { useSubmit } from '@/hooks/use-submit';
 import { ROUTE_HREF } from '@/lib/constants';
 import { parseQuery } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
@@ -36,11 +36,11 @@ function Content({ favorites, year }: Props) {
     }),
   );
 
-  const { onSubmit, submitting } = useSubmit({
-    callbacks: [() => navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`)],
-    submitFn: async (event: SubmitEvent) => {
-      event.preventDefault();
-
+  const { isPending, mutate } = useMutation({
+    meta: {
+      successMessage: 'Rankings successfully edited',
+    },
+    mutationFn: async () => {
       const rankings = items.map((item, index) => ({
         id: item.id,
         position: index + 1,
@@ -65,11 +65,19 @@ function Content({ favorites, year }: Props) {
         throw new Error(error.message);
       }
     },
-    successMessage: 'Rankings successfully edited',
+    onSuccess: () => {
+      navigate(`${ROUTE_HREF.TOP_ALBUMS}#${year}`);
+    },
   });
 
   return (
-    <form className="max-w-md space-y-4" onSubmit={onSubmit}>
+    <form
+      className="max-w-md space-y-4"
+      onSubmit={(event) => {
+        event.preventDefault();
+        mutate();
+      }}
+    >
       <Reorder.Group axis="y" onReorder={setItems} values={items}>
         <div className="space-y-2">
           {items.map((item, index) => (
@@ -77,7 +85,7 @@ function Content({ favorites, year }: Props) {
           ))}
         </div>
       </Reorder.Group>
-      <SubmitButton className="w-full sm:w-auto" submitting={submitting}>
+      <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
         Save
       </SubmitButton>
     </form>

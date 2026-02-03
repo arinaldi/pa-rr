@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import Spinner from '@/components/spinner';
 import { useSession } from '@/components/session-provider';
 import { useArtists } from '@/hooks/use-data';
-import { MESSAGES } from '@/lib/constants';
+import { MESSAGE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import {
   getAccessToken,
@@ -79,9 +79,7 @@ export default function Artists() {
       });
     } catch (error) {
       const message =
-        error instanceof Error && error.message
-          ? error.message
-          : MESSAGES.ERROR;
+        error instanceof Error && error.message ? error.message : MESSAGE.ERROR;
 
       toast.error(message);
     }

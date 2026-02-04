@@ -13,7 +13,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import Spinner from '@/components/spinner';
 import { useSession } from '@/components/session-provider';
-import { useArtists } from '@/hooks/data-fetch';
+import { useArtists } from '@/hooks/fetch-data';
 import { MESSAGE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import {

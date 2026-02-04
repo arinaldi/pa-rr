@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Reorder } from 'framer-motion';
 
 import SubmitButton from '@/components/submit-button';
-import { useRankingsByYear } from '@/hooks/data-fetch';
+import { useRankingsByYear } from '@/hooks/fetch-data';
 import { ROUTE_HREF } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import AlbumCard from './album-card';

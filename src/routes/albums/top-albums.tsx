@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import TopLink from '@/components/top-link';
 import { useSession } from '@/components/session-provider';
-import { useTopAlbums } from '@/hooks/data-fetch';
+import { useTopAlbums } from '@/hooks/fetch-data';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import DecadeLink from './decade-link';
 

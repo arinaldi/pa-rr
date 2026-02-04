@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
 
+import type { AdminParams } from '@/hooks/admin-params';
 import { useCountActions } from '@/hooks/count';
-import type { AdminParams } from '@/lib/types';
 import {
   getAdminData,
   getAlbum,

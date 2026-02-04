@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useSession } from '@/components/session-provider';
 import TopLink from '@/components/top-link';
-import { useAllTimeRankings } from '@/hooks/data-fetch';
+import { useAllTimeRankings } from '@/hooks/fetch-data';
 import { ROUTE_HREF, SPOTIFY_URL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 

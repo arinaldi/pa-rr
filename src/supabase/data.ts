@@ -1,3 +1,4 @@
+import type { AdminParams } from '@/hooks/admin-params';
 import {
   type AllTimeListItem,
   formatFavorites,
@@ -6,9 +7,8 @@ import {
   formatReleases,
   formatSongs,
 } from '@/lib/formatters';
-import { supabase } from '@/supabase/client';
 import { MESSAGE, SORT_DIRECTION } from '@/lib/constants';
-import type { AdminParams } from '@/lib/types';
+import { supabase } from '@/supabase/client';
 
 const { ASC, DESC } = SORT_DIRECTION;
 

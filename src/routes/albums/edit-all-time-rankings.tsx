@@ -6,7 +6,7 @@ import { Reorder } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
 import { useAdminParams } from '@/hooks/admin-params';
-import { useAllTimeData } from '@/hooks/data-fetch';
+import { useAllTimeData } from '@/hooks/fetch-data';
 import { ROUTE_HREF } from '@/lib/constants';
 import { DataEmptyPlaceholder } from '@/routes/admin/data-empty-placeholder';
 import { DataTableSearch } from '@/routes/admin/data-table-search';

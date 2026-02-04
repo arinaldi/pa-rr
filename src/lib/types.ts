@@ -11,14 +11,6 @@ export type Ranking = Database['public']['Tables']['rankings']['Row'];
 export type Release = Database['public']['Tables']['releases']['Row'];
 export type Song = Database['public']['Tables']['songs']['Row'];
 
-export interface AdminParams {
-  page: number;
-  perPage: number;
-  search: string;
-  sort: string;
-  status: string[];
-}
-
 export type Callback = () => void;
 
 export interface Children {

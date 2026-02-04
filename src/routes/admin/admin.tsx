@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useAdminParams } from '@/hooks/admin-params';
-import { useAdminData } from '@/hooks/data-fetch';
+import { useAdminData } from '@/hooks/fetch-data';
 import { ROUTES_ADMIN } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { DataEmptyPlaceholder } from './data-empty-placeholder';

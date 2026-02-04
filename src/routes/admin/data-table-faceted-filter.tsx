@@ -1,5 +1,3 @@
-import { startTransition, useOptimistic } from 'react';
-import { useSearchParams } from 'react-router';
 import { Check, PlusCircle } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +17,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { ADMIN_QUERY_KEY } from '@/lib/constants';
+import { useAdminParams } from '@/hooks/admin-params';
 import { cn } from '@/lib/utils';
 
 const options = [
@@ -29,52 +27,19 @@ const options = [
   { label: 'Wishlist', value: 'wishlist' },
 ];
 
-interface Props {
-  query: string[];
-  updateQuery: (value: string[]) => void;
-}
-
-export function DataTableFacetedFilter({ query, updateQuery }: Props) {
-  const setSearchParams = useSearchParams()[1];
-  const [optimisticValue, setOptimisticValue] = useOptimistic(query);
-  const selectedValues = new Set(optimisticValue);
+export function DataTableFacetedFilter() {
+  const [{ status }, setAdminParams] = useAdminParams();
+  const selectedValues = new Set(status);
 
   function onSelect(value: string) {
-    startTransition(() => {
-      setSearchParams((prev) => {
-        const previousValues = prev.getAll(ADMIN_QUERY_KEY);
-        const included = previousValues.includes(value);
+    const included = status.includes(value);
+    const newStatus = included
+      ? status.filter((v) => v !== value)
+      : [...status, value];
 
-        prev.set('page', '1');
-
-        if (included) {
-          const newValues = previousValues.filter((v) => v !== value);
-
-          updateQuery(newValues);
-          setOptimisticValue(newValues);
-          prev.delete(ADMIN_QUERY_KEY);
-          newValues.forEach((v) => prev.append(ADMIN_QUERY_KEY, v));
-        } else {
-          const newValues = [...previousValues, value];
-
-          updateQuery(newValues);
-          setOptimisticValue(newValues);
-          prev.append(ADMIN_QUERY_KEY, value);
-        }
-
-        return prev;
-      });
-    });
-  }
-
-  function onClear() {
-    startTransition(() => {
-      updateQuery([]);
-      setOptimisticValue([]);
-      setSearchParams((prev) => {
-        prev.delete(ADMIN_QUERY_KEY);
-        return prev;
-      });
+    setAdminParams({
+      page: 1,
+      status: newStatus,
     });
   }
 
@@ -126,7 +91,7 @@ export function DataTableFacetedFilter({ query, updateQuery }: Props) {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-[200px] p-0">
+      <PopoverContent align="start" className="w-50 p-0">
         <Command>
           <CommandInput placeholder="Search" />
           <CommandList>
@@ -158,7 +123,7 @@ export function DataTableFacetedFilter({ query, updateQuery }: Props) {
                 <CommandGroup>
                   <CommandItem
                     className="justify-center text-center"
-                    onSelect={onClear}
+                    onSelect={() => setAdminParams({ status: [] })}
                   >
                     Clear filter
                   </CommandItem>

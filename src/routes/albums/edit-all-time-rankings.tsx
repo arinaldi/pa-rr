@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import { Reorder } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
-import { useAllTimeData } from '@/hooks/use-data';
+import { useAdminParams } from '@/hooks/admin-params';
+import { useAllTimeData } from '@/hooks/fetch-data';
 import { ROUTE_HREF } from '@/lib/constants';
-import { parseAdminQuery, parseQuery } from '@/lib/utils';
 import { DataEmptyPlaceholder } from '@/routes/admin/data-empty-placeholder';
 import { DataTableSearch } from '@/routes/admin/data-table-search';
 import { supabase } from '@/supabase/client';
@@ -15,23 +15,26 @@ import AlbumCard from './album-card';
 import type { AllTimeListItem } from '@/lib/formatters';
 
 export default function EditAllTimeRankings() {
-  const [searchParams] = useSearchParams();
-  const { data } = useAllTimeData(parseAdminQuery(searchParams));
+  const [{ search }] = useAdminParams();
+  const { data } = useAllTimeData(search);
 
   return data ? (
-    <Content candidates={data.candidates} favorites={data.favorites} />
+    <Content
+      candidates={data.candidates}
+      favorites={data.favorites}
+      search={search}
+    />
   ) : null;
 }
 
 interface Props {
   candidates: AllTimeListItem[];
   favorites: AllTimeListItem[];
+  search: string;
 }
 
-function Content({ candidates, favorites }: Props) {
+function Content({ candidates, favorites, search }: Props) {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const search = parseQuery(searchParams.get('search'));
   const [items, setItems] = useState(favorites);
 
   function removeItem(id: number) {

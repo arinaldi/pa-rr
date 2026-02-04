@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import SubmitButton from '@/components/submit-button';
-import { useAlbum } from '@/hooks/use-data';
+import { useAlbum } from '@/hooks/fetch-data';
 import { MESSAGE, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import AlbumForm from './album-form';

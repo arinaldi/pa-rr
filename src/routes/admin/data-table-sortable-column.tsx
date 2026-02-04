@@ -1,10 +1,9 @@
-import { startTransition } from 'react';
-import { useSearchParams } from 'react-router';
 import { ArrowDown } from 'lucide-react';
 
-import { cn, parseQuery } from '@/lib/utils';
-import type { Children } from '@/lib/types';
 import { TableHead } from '@/components/ui/table';
+import { useAdminParams } from '@/hooks/admin-params';
+import type { Children } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 interface Props extends Children {
   prop: string;
@@ -16,8 +15,7 @@ export function DataTableSortableColumn({
   prop,
   wrapperClassName = '',
 }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sort = parseQuery(searchParams.get('sort'));
+  const [{ sort }, setAdminParams] = useAdminParams();
   const [sortProp, desc] = sort.split(':') ?? [];
   let newSort: string | null = null;
 
@@ -27,24 +25,10 @@ export function DataTableSortableColumn({
     newSort = `${prop}:desc`;
   }
 
-  function onClick() {
-    startTransition(() => {
-      setSearchParams((prev) => {
-        if (newSort) {
-          prev.set('sort', newSort);
-        } else {
-          prev.delete('sort');
-        }
-
-        return prev;
-      });
-    });
-  }
-
   return (
     <TableHead
       className={cn(`cursor-pointer`, wrapperClassName)}
-      onClick={onClick}
+      onClick={() => setAdminParams({ sort: newSort ?? '' })}
       scope="col"
     >
       {children}

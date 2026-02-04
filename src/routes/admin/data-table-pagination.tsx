@@ -1,5 +1,3 @@
-import { startTransition, useOptimistic, useState } from 'react';
-import { useSearchParams } from 'react-router';
 import {
   ChevronLeft,
   ChevronRight,
@@ -7,13 +5,13 @@ import {
   ChevronsRight,
 } from 'lucide-react';
 
-import { parsePageQuery, parsePerPageQuery } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
 } from '@/components/ui/pagination';
+import { useAdminParams } from '@/hooks/admin-params';
 import { DataTablePerPage } from './data-table-per-page';
 
 interface Props {
@@ -21,26 +19,13 @@ interface Props {
 }
 
 export function DataTablePagination({ total }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(() =>
-    parsePageQuery(searchParams.get('page')),
-  );
-  const [optimisticValue, setOptimisticValue] = useOptimistic(page);
-  const perPage = parsePerPageQuery(searchParams.get('per_page'));
+  const [{ page, perPage }, setAdminParams] = useAdminParams();
   const lastPage = Math.ceil(total / perPage);
-  const isFirstPage = optimisticValue === 1;
-  const isLastPage = optimisticValue === lastPage;
+  const isFirstPage = page === 1;
+  const isLastPage = page === lastPage;
 
-  function goToPage(value: number) {
-    startTransition(() => {
-      setPage(value);
-      setOptimisticValue(value);
-      setSearchParams((prev) => {
-        prev.set('page', value.toString());
-
-        return prev;
-      });
-    });
+  function setPage(value: number) {
+    setAdminParams({ page: value });
   }
 
   return (
@@ -50,14 +35,13 @@ export function DataTablePagination({ total }: Props) {
         <div className="flex items-center gap-10">
           <DataTablePerPage />
           <p className="text-sm font-medium">
-            Page {optimisticValue.toLocaleString()} of{' '}
-            {lastPage.toLocaleString()}
+            Page {page.toLocaleString()} of {lastPage.toLocaleString()}
           </p>
           <PaginationContent className="gap-2">
             <PaginationItem>
               <Button
                 disabled={isFirstPage}
-                onClick={() => goToPage(1)}
+                onClick={() => setPage(1)}
                 size="icon"
                 variant="outline"
               >
@@ -68,7 +52,7 @@ export function DataTablePagination({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isFirstPage}
-                onClick={() => goToPage(optimisticValue - 1)}
+                onClick={() => setPage(page - 1)}
                 size="icon"
                 variant="outline"
               >
@@ -79,7 +63,7 @@ export function DataTablePagination({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isLastPage}
-                onClick={() => goToPage(optimisticValue + 1)}
+                onClick={() => setPage(page + 1)}
                 size="icon"
                 variant="outline"
               >
@@ -90,7 +74,7 @@ export function DataTablePagination({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isLastPage}
-                onClick={() => goToPage(lastPage)}
+                onClick={() => setPage(lastPage)}
                 size="icon"
                 variant="outline"
               >
@@ -108,7 +92,7 @@ export function DataTablePagination({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isFirstPage}
-                onClick={() => goToPage(optimisticValue - 1)}
+                onClick={() => setPage(page - 1)}
                 size="icon"
                 variant="outline"
               >
@@ -119,7 +103,7 @@ export function DataTablePagination({ total }: Props) {
             <PaginationItem>
               <Button
                 disabled={isLastPage}
-                onClick={() => goToPage(optimisticValue + 1)}
+                onClick={() => setPage(page + 1)}
                 size="icon"
                 variant="outline"
               >
@@ -129,8 +113,7 @@ export function DataTablePagination({ total }: Props) {
             </PaginationItem>
           </PaginationContent>
           <p className="text-sm font-medium">
-            Page {optimisticValue.toLocaleString()} of{' '}
-            {lastPage.toLocaleString()}
+            Page {page.toLocaleString()} of {lastPage.toLocaleString()}
           </p>
         </div>
       </Pagination>

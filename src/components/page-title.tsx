@@ -2,7 +2,7 @@ import { useLocation } from 'react-router';
 
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useCount } from '@/hooks/use-count';
+import { useCount } from '@/hooks/count';
 import { APP_NAME, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
 
 export default function PageTitle() {

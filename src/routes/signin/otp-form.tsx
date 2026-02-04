@@ -16,7 +16,7 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import SubmitButton from '@/components/submit-button';
-import { useMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/mobile';
 import { EMAIL, MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { verifyOtpSchema, type VerifyOtpInput } from './schema';

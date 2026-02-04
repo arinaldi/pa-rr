@@ -1,15 +1,8 @@
-import {
-  type ChangeEvent,
-  type ComponentProps,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
-import { useSearchParams } from 'react-router';
+import { type ChangeEvent, type ComponentProps, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
+import { useAdminParams } from '@/hooks/admin-params';
 import { DEBOUNCE_IN_MS, SORT_VALUE } from '@/lib/constants';
-import { parseQuery } from '@/lib/utils';
 import {
   InputGroup,
   InputGroupAddon,
@@ -19,32 +12,20 @@ import {
 import Spinner from '@/components/spinner';
 
 export function DataTableSearch(props: ComponentProps<'input'>) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const search = parseQuery(searchParams.get('search'));
-  const [pending, startTransition] = useTransition();
+  const [adminParams, setAdminParams] = useAdminParams();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
-  const searching = Boolean(timeoutId) || pending;
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>();
+  const searching = Boolean(timeoutId);
 
   function onSearch(event: ChangeEvent<HTMLInputElement>) {
     clearTimeout(timeoutId);
 
     const { value } = event.target;
     const id = setTimeout(() => {
-      startTransition(() => {
-        setSearchParams((prev) => {
-          prev.set('page', '1');
-
-          if (value) {
-            prev.set('search', value);
-            prev.set('sort', SORT_VALUE.YEAR);
-          } else {
-            prev.delete('search');
-            prev.delete('sort');
-          }
-
-          return prev;
-        });
+      setAdminParams({
+        page: 1,
+        search: value,
+        sort: value ? SORT_VALUE.YEAR : '',
       });
 
       setTimeoutId(undefined);
@@ -54,14 +35,10 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
   }
 
   function onClear() {
-    startTransition(() => {
-      setSearchParams((prev) => {
-        prev.set('page', '1');
-        prev.delete('search');
-        prev.delete('sort');
-
-        return prev;
-      });
+    setAdminParams({
+      page: 1,
+      search: '',
+      sort: '',
     });
 
     if (inputRef?.current) {
@@ -73,7 +50,7 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
   return (
     <InputGroup className="md:w-56">
       <InputGroupInput
-        defaultValue={search}
+        defaultValue={adminParams.search}
         name="search"
         onChange={onSearch}
         placeholder="Search"
@@ -83,10 +60,10 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
       <InputGroupAddon>
         <Search />
       </InputGroupAddon>
-      {!searching && search && (
+      {!searching && adminParams.search && (
         <InputGroupAddon align="inline-end">
           <InputGroupButton
-            arial-label="Clear search"
+            aria-label="Clear search"
             onClick={onClear}
             size="icon-sm"
             title="Clear search"

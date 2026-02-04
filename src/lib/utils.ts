@@ -1,52 +1,12 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { ADMIN_QUERY_KEY, PER_PAGE } from '@/lib/constants';
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export function capitalizeFirstLetter(value: string) {
   return `${value.charAt(0).toLocaleUpperCase()}${value.slice(1)}`;
-}
-
-type QueryValue = string | string[] | undefined | null;
-
-export function parseQuery(value: QueryValue) {
-  return typeof value === 'string' ? value : '';
-}
-
-export function parsePageQuery(value: QueryValue) {
-  return typeof value === 'string' ? parseInt(value) : 1;
-}
-
-export function parsePerPageQuery(value: QueryValue) {
-  const { SMALL, MEDIUM, LARGE } = PER_PAGE;
-  const perPage = typeof value === 'string' ? parseInt(value) : PER_PAGE.SMALL;
-
-  if (perPage === SMALL) return SMALL;
-  if (perPage === MEDIUM) return MEDIUM;
-  if (perPage === LARGE) return LARGE;
-  return SMALL;
-}
-
-export function parseAdminQuery(params: URLSearchParams) {
-  const query = Object.fromEntries(params.entries());
-
-  return {
-    page: parsePageQuery(query.page),
-    perPage: parsePerPageQuery(query.per_page),
-    search: parseQuery(query.search),
-    sort: parseQuery(query.sort),
-    status: params.getAll(ADMIN_QUERY_KEY),
-  };
-}
-
-export type AdminParams = ReturnType<typeof parseAdminQuery>;
-
-export async function wait(ms = 0) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
 export function getCookie(name: string) {

@@ -2,7 +2,7 @@ import { useFormStatus } from 'react-dom';
 
 import { Button, type ButtonProps } from '@/components/ui/button';
 import Spinner from '@/components/spinner';
-import { useMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/is-mobile';
 import { cn } from '@/lib/utils';
 
 interface Props extends ButtonProps {

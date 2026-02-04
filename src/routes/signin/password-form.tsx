@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/field';
 import PasswordInput from '@/components/password-input';
 import SubmitButton from '@/components/submit-button';
-import { useMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/is-mobile';
 import { EMAIL, MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { signInSchema, type SignInInput } from './schema';

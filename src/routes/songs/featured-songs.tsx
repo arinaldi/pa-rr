@@ -1,4 +1,4 @@
-import { useFeaturedSongs } from '@/hooks/use-data';
+import { useFeaturedSongs } from '@/hooks/data-fetch';
 import { useSession } from '@/components/session-provider';
 import TopLink from '@/components/top-link';
 import AddSongModal from './add-song-modal';

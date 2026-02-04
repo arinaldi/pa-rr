@@ -4,20 +4,18 @@ import { useMutation } from '@tanstack/react-query';
 import { Reorder } from 'framer-motion';
 
 import SubmitButton from '@/components/submit-button';
-import { useRankingsByYear } from '@/hooks/use-data';
+import { useRankingsByYear } from '@/hooks/data-fetch';
 import { ROUTE_HREF } from '@/lib/constants';
-import { parseQuery } from '@/lib/utils';
 import { supabase } from '@/supabase/client';
 import AlbumCard from './album-card';
 import type { AllTimeListItem } from '@/lib/formatters';
 
 export default function EditRankings() {
-  const params = useParams();
-  const year = parseQuery(params.year);
+  const { year } = useParams();
   const { data } = useRankingsByYear(year);
 
   return data?.favorites ? (
-    <Content favorites={data.favorites} year={year} />
+    <Content favorites={data.favorites} year={year ?? ''} />
   ) : null;
 }
 

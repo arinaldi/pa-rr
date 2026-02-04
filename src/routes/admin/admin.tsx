@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { Check, Disc, HeartPlus } from 'lucide-react';
 
@@ -12,30 +11,27 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ADMIN_QUERY_KEY, ROUTES_ADMIN } from '@/lib/constants';
-import { cn, parseAdminQuery } from '@/lib/utils';
+import { useAdminParams } from '@/hooks/admin-params';
+import { useAdminData } from '@/hooks/data-fetch';
+import { ROUTES_ADMIN } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 import { DataEmptyPlaceholder } from './data-empty-placeholder';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableSearch } from './data-table-search';
 import { DataTableSortableColumn } from './data-table-sortable-column';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableResetFilters } from './data-table-reset-filters';
-import { useAdminData } from '@/hooks/use-data';
 
 export default function Admin() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.getAll(ADMIN_QUERY_KEY));
-  const { data, isLoading } = useAdminData(parseAdminQuery(searchParams));
+  const [adminParams] = useAdminParams();
+  const { data, isLoading } = useAdminData(adminParams);
   const { albums, count, cdCount } = data ?? {
     albums: [],
     count: 0,
     cdCount: 0,
   };
-
-  function updateQuery(value: string[]) {
-    setQuery(value);
-  }
 
   return (
     <>
@@ -56,8 +52,8 @@ export default function Admin() {
       <div className="mt-4 flex flex-col gap-2 md:flex-row md:items-center">
         <DataTableSearch autoFocus />
         <div className="flex flex-wrap items-center gap-2">
-          <DataTableFacetedFilter query={query} updateQuery={updateQuery} />
-          <DataTableResetFilters updateQuery={updateQuery} />
+          <DataTableFacetedFilter />
+          <DataTableResetFilters />
         </div>
       </div>
 

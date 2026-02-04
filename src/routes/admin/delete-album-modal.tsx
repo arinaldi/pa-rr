@@ -23,7 +23,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import SubmitButton from '@/components/submit-button';
-import { useMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/is-mobile';
 import { MESSAGE, ROUTES_ADMIN } from '@/lib/constants';
 import type { Album } from '@/lib/types';
 import { supabase } from '@/supabase/client';

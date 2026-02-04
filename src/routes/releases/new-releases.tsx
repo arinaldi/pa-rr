@@ -1,6 +1,6 @@
 import { useSession } from '@/components/session-provider';
 import { Badge } from '@/components/ui/badge';
-import { useNewReleases } from '@/hooks/use-data';
+import { useNewReleases } from '@/hooks/data-fetch';
 import { sortReleases } from '@/lib/formatters';
 import { cn } from '@/lib/utils';
 import AddReleaseModal from './add-release-modal';

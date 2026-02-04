@@ -8,7 +8,7 @@ import {
 } from '@/lib/formatters';
 import { supabase } from '@/supabase/client';
 import { MESSAGE, SORT_DIRECTION } from '@/lib/constants';
-import { type AdminParams } from '@/lib/utils';
+import type { AdminParams } from '@/lib/types';
 
 const { ASC, DESC } = SORT_DIRECTION;
 
@@ -135,8 +135,7 @@ export async function getAllTimeRankings() {
   };
 }
 
-export async function getCandidates(adminParams: AdminParams) {
-  const { search } = adminParams;
+export async function getCandidates(search: string) {
   const searchTerm = `%${search}%`;
   let candidates: AllTimeListItem[] = [];
 
@@ -171,10 +170,10 @@ export async function getCandidates(adminParams: AdminParams) {
   return { candidates };
 }
 
-export async function getAllTimeData(adminParams: AdminParams) {
+export async function getAllTimeData(search: string) {
   const [{ favorites }, { candidates }] = await Promise.all([
     getAllTimeRankings(),
-    getCandidates(adminParams),
+    getCandidates(search),
   ]);
 
   return {

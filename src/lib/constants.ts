@@ -2,39 +2,6 @@ import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 
 import type { Route } from '@/lib/types';
 
-export const MESSAGE = {
-  ALBUM_PREFIX: 'Album successfully',
-  SONG_PREFIX: 'Song successfully',
-  RELEASE_PREFIX: 'Release successfully',
-  ERROR: 'Something went wrong',
-  NO_DATA: 'No data',
-  NOT_AUTHORIZED: 'Not authorized',
-  INVALID_DATA: 'Invalid data',
-};
-
-export const PER_PAGE = {
-  SMALL: 25,
-  MEDIUM: 50,
-  LARGE: 100,
-};
-
-export const SORT_DIRECTION = {
-  ASC: 'asc',
-  DESC: 'desc',
-  NONE: '',
-};
-
-export const SORT_VALUE = {
-  ARTIST: 'artist',
-  NONE: '',
-  TITLE: 'title',
-  YEAR: 'year',
-};
-
-////////////////////////////////
-
-export const ADMIN_QUERY_KEY = 'status';
-
 export const APP_NAME = 'Perfect Albums';
 
 export const DEBOUNCE_IN_MS = 500;
@@ -48,6 +15,16 @@ export const DECADES = [
 ];
 
 export const EMAIL = import.meta.env.VITE_EMAIL;
+
+export const MESSAGE = {
+  ALBUM_PREFIX: 'Album successfully',
+  SONG_PREFIX: 'Song successfully',
+  RELEASE_PREFIX: 'Release successfully',
+  ERROR: 'Something went wrong',
+  NO_DATA: 'No data',
+  NOT_AUTHORIZED: 'Not authorized',
+  INVALID_DATA: 'Invalid data',
+};
 
 export const MONTHS = [
   'Jan',
@@ -63,6 +40,12 @@ export const MONTHS = [
   'Nov',
   'Dec',
 ];
+
+export const PER_PAGE = {
+  SMALL: 25,
+  MEDIUM: 50,
+  LARGE: 100,
+};
 
 export const ROUTE_HREF = {
   ALL_TIME: '/albums/all-time',
@@ -111,6 +94,19 @@ export const ROUTES_ADMIN = {
   add: { href: '/admin/add', label: 'Add album' },
   base: { href: '/admin', label: 'Admin' },
   edit: { href: '/admin/edit/:id', label: 'Edit album' },
+};
+
+export const SORT_DIRECTION = {
+  ASC: 'asc',
+  DESC: 'desc',
+  NONE: '',
+};
+
+export const SORT_VALUE = {
+  ARTIST: 'artist',
+  NONE: '',
+  TITLE: 'title',
+  YEAR: 'year',
 };
 
 export const SPOTIFY_URL = 'https://open.spotify.com/search';

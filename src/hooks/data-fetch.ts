@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
 
-import { useCountActions } from '@/hooks/use-count';
-import type { AdminParams } from '@/lib/utils';
+import { useCountActions } from '@/hooks/count';
+import type { AdminParams } from '@/lib/types';
 import {
   getAdminData,
   getAlbum,
@@ -33,10 +33,10 @@ export function useAlbum(id: string | undefined) {
   });
 }
 
-export function useAllTimeData(adminParams: AdminParams) {
+export function useAllTimeData(search: string) {
   const result = useQuery({
-    queryKey: ['all-time-edit', adminParams],
-    queryFn: () => getAllTimeData(adminParams),
+    queryKey: ['all-time-edit', search],
+    queryFn: () => getAllTimeData(search),
     placeholderData: keepPreviousData,
   });
   useSetCount(result.data?.count);
@@ -84,10 +84,10 @@ export function useNewReleases() {
   return result;
 }
 
-export function useRankingsByYear(year: string) {
+export function useRankingsByYear(year: string | undefined) {
   const result = useQuery({
     queryKey: ['rankings-by-year', year],
-    queryFn: () => getRankingsByYear(year),
+    queryFn: year ? () => getRankingsByYear(year) : skipToken,
   });
   useSetCount(result.data?.count);
 

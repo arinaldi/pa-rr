@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
@@ -58,13 +58,15 @@ export default function EditReleaseModal({ onClose, release }: Props) {
         <DialogTitle>Edit release</DialogTitle>
         <DialogDescription>Update data for new release</DialogDescription>
       </DialogHeader>
-      <ReleaseForm onSubmit={form.handleSubmit((data) => mutate(data))}>
-        <DialogFooter>
-          <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
-            Save
-          </SubmitButton>
-        </DialogFooter>
-      </ReleaseForm>
+      <FormProvider {...form}>
+        <ReleaseForm onSubmit={form.handleSubmit((data) => mutate(data))}>
+          <DialogFooter>
+            <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
+              Save
+            </SubmitButton>
+          </DialogFooter>
+        </ReleaseForm>
+      </FormProvider>
     </DialogContent>
   );
 }

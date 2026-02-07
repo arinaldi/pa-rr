@@ -2,7 +2,7 @@ import { type ChangeEvent, type ComponentProps, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
 import { useAdminParams } from '@/hooks/admin-params';
-import { DEBOUNCE_IN_MS, SORT_VALUE } from '@/lib/constants';
+import { DEBOUNCE_IN_MS } from '@/lib/constants';
 import {
   InputGroup,
   InputGroupAddon,
@@ -23,9 +23,10 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
     const { value } = event.target;
     const id = setTimeout(() => {
       setAdminParams({
+        direction: value ? 'asc' : '',
         page: 1,
         search: value,
-        sort: value ? SORT_VALUE.YEAR : '',
+        sort: value ? 'year' : '',
       });
 
       setTimeoutId(undefined);
@@ -36,6 +37,7 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
 
   function onClear() {
     setAdminParams({
+      direction: '',
       page: 1,
       search: '',
       sort: '',

@@ -67,15 +67,9 @@ export default function Admin() {
             <Table>
               <TableHeader>
                 <TableRow className="text-xs">
-                  <DataTableSortableColumn prop="artist">
-                    Artist
-                  </DataTableSortableColumn>
-                  <DataTableSortableColumn prop="year">
-                    Year
-                  </DataTableSortableColumn>
-                  <DataTableSortableColumn prop="title">
-                    Title
-                  </DataTableSortableColumn>
+                  <DataTableSortableColumn sortKey="artist" />
+                  <DataTableSortableColumn sortKey="year" />
+                  <DataTableSortableColumn sortKey="title" />
                   <TableHead />
                 </TableRow>
               </TableHeader>

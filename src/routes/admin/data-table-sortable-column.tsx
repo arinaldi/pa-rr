@@ -1,45 +1,65 @@
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown, X } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { TableHead } from '@/components/ui/table';
 import { useAdminParams } from '@/hooks/admin-params';
-import type { Children } from '@/lib/types';
-import { cn } from '@/lib/utils';
 
-interface Props extends Children {
-  prop: string;
-  wrapperClassName?: string;
+interface Props {
+  sortKey: string;
 }
 
-export function DataTableSortableColumn({
-  children,
-  prop,
-  wrapperClassName = '',
-}: Props) {
-  const [{ sort }, setAdminParams] = useAdminParams();
-  const [sortProp, desc] = sort.split(':') ?? [];
-  let newSort: string | null = null;
+export function DataTableSortableColumn({ sortKey }: Props) {
+  const [{ direction, sort }, setAdminParams] = useAdminParams();
 
-  if (sortProp !== prop) {
-    newSort = prop;
-  } else if (sortProp === prop && !desc) {
-    newSort = `${prop}:desc`;
+  function onClick(value: 'asc' | 'desc' | 'clear') {
+    setAdminParams({
+      direction: value === 'clear' ? '' : value,
+      sort: value === 'clear' ? '' : sortKey,
+    });
   }
 
   return (
-    <TableHead
-      className={cn(`cursor-pointer`, wrapperClassName)}
-      onClick={() => setAdminParams({ sort: newSort ?? '' })}
-      scope="col"
-    >
-      {children}
-      <span
-        className={cn('ml-1 flex-none', sortProp === prop ? '' : 'invisible')}
-      >
-        <ArrowDown
-          aria-hidden="true"
-          className={cn('inline size-4', desc ? 'rotate-180' : '')}
-        />
-      </span>
+    <TableHead scope="col">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            className="data-[state=open]:bg-accent -ml-3 h-8 text-xs capitalize"
+            size="sm"
+            variant="ghost"
+          >
+            {sortKey}
+            {sort === sortKey && direction === 'desc' ? (
+              <ArrowDown />
+            ) : sort === sortKey && direction === 'asc' ? (
+              <ArrowUp />
+            ) : (
+              <ChevronsUpDown />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem onSelect={() => onClick('asc')}>
+            <ArrowUp className="text-muted-foreground/70 size-3.5" />
+            Asc
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => onClick('desc')}>
+            <ArrowDown className="text-muted-foreground/70 size-3.5" />
+            Desc
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onSelect={() => onClick('clear')}>
+            <X className="text-muted-foreground/70 size-3.5" />
+            Clear
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </TableHead>
   );
 }

@@ -7,10 +7,8 @@ import {
   formatReleases,
   formatSongs,
 } from '@/lib/formatters';
-import { MESSAGE, SORT_DIRECTION } from '@/lib/constants';
+import { MESSAGE } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
-
-const { ASC, DESC } = SORT_DIRECTION;
 
 export async function getAlbum(id: string | undefined) {
   if (!id) {
@@ -29,9 +27,7 @@ export async function getAlbum(id: string | undefined) {
 }
 
 async function getAlbums(adminParams: AdminParams) {
-  const { page, perPage, search, sort, status } = adminParams;
-  const [sortProp, desc] = sort.split(':') ?? [];
-  const direction = desc ? DESC : ASC;
+  const { direction, page, perPage, search, sort, status } = adminParams;
   const start = (page - 1) * perPage;
   const end = page * perPage - 1;
   const searchTerm = `%${search}%`;
@@ -48,18 +44,18 @@ async function getAlbums(adminParams: AdminParams) {
     });
   }
 
-  if (sortProp) {
-    query = query.order(sortProp, { ascending: direction === ASC });
+  if (sort) {
+    query = query.order(sort, { ascending: direction === 'asc' });
   } else {
     query = query
       .order('artist', { ascending: true })
       .order('title', { ascending: true });
   }
 
-  if (sortProp === 'artist') {
+  if (sort === 'artist') {
     query = query.order('title', { ascending: true });
   } else {
-    query = query.order('artist', { ascending: direction === ASC });
+    query = query.order('artist', { ascending: direction === 'asc' });
   }
 
   const { count, data: albums, error } = await query;

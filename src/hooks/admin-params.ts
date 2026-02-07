@@ -9,6 +9,7 @@ import {
 import { PER_PAGE } from '@/lib/constants';
 
 const parsers = {
+  direction: parseAsString.withDefault(''),
   page: parseAsInteger.withDefault(1),
   perPage: parseAsInteger.withDefault(PER_PAGE.SMALL),
   search: parseAsString.withDefault(''),

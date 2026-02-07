@@ -96,17 +96,4 @@ export const ROUTES_ADMIN = {
   edit: { href: '/admin/edit/:id', label: 'Edit album' },
 };
 
-export const SORT_DIRECTION = {
-  ASC: 'asc',
-  DESC: 'desc',
-  NONE: '',
-};
-
-export const SORT_VALUE = {
-  ARTIST: 'artist',
-  NONE: '',
-  TITLE: 'title',
-  YEAR: 'year',
-};
-
 export const SPOTIFY_URL = 'https://open.spotify.com/search';

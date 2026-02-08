@@ -1,4 +1,4 @@
-import { Link, useNavigate, useSearchParams } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Check, Disc, HeartPlus } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useAdminParams } from '@/hooks/admin-params';
+import { useAdminParams, useSerializedParams } from '@/hooks/admin-params';
 import { useAdminData } from '@/hooks/fetch-data';
 import { ROUTES_ADMIN } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -24,8 +24,8 @@ import { DataTableResetFilters } from './data-table-reset-filters';
 
 export default function Admin() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [adminParams] = useAdminParams();
+  const serializedParams = useSerializedParams();
   const { data, isLoading } = useAdminData(adminParams);
   const { albums, count, cdCount } = data ?? {
     albums: [],
@@ -36,7 +36,7 @@ export default function Admin() {
   return (
     <>
       <div className="flex items-center justify-between gap-2">
-        <Link to={`${ROUTES_ADMIN.add.href}?${searchParams.toString()}`}>
+        <Link to={`${ROUTES_ADMIN.add.href}${serializedParams}`}>
           <Button type="button">Add album</Button>
         </Link>
         <div className="flex items-center gap-4 dark:text-white">
@@ -80,8 +80,7 @@ export default function Admin() {
                     className="cursor-pointer"
                     onClick={() => {
                       const to = `${ROUTES_ADMIN.edit.href.replace(':id', a.id.toString())}`;
-
-                      navigate(`${to}?${searchParams}`);
+                      navigate(`${to}${serializedParams}`);
                     }}
                   >
                     <TableCell>{a.artist}</TableCell>

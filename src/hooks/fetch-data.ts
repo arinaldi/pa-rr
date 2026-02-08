@@ -17,7 +17,7 @@ import {
 
 export function useAdminData(adminParams: AdminParams) {
   const result = useQuery({
-    queryKey: ['admin', adminParams],
+    queryKey: ['albums', adminParams],
     queryFn: () => getAdminData(adminParams),
     placeholderData: keepPreviousData,
   });
@@ -28,7 +28,7 @@ export function useAdminData(adminParams: AdminParams) {
 
 export function useAlbum(id: string | undefined) {
   return useQuery({
-    queryKey: ['admin', 'album', id],
+    queryKey: ['albums', id],
     queryFn: id ? () => getAlbum(id) : skipToken,
   });
 }

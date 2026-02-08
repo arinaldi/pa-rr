@@ -1,9 +1,10 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import SubmitButton from '@/components/submit-button';
+import { useSerializedParams } from '@/hooks/admin-params';
 import { useAlbum } from '@/hooks/fetch-data';
 import { MESSAGE, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
@@ -14,13 +15,13 @@ import DeleteAlbumModal from './delete-album-modal';
 export default function EditAlbum() {
   const navigate = useNavigate();
   const params = useParams();
-  const [searchParams] = useSearchParams();
+  const serializedParams = useSerializedParams();
   const { data } = useAlbum(params.id);
   const form = useForm({
     values: {
       artist: data?.album.artist ?? '',
       title: data?.album.title ?? '',
-      year: Number(data?.album.year),
+      year: data?.album.year ? Number(data?.album.year) : 0,
       studio: data?.album.studio ?? false,
       cd: data?.album.cd ?? false,
       wishlist: data?.album.wishlist ?? false,
@@ -69,7 +70,7 @@ export default function EditAlbum() {
       }
     },
     onSuccess: () => {
-      navigate(`${ROUTES_ADMIN.base.href}?${searchParams.toString()}`);
+      navigate(`${ROUTES_ADMIN.base.href}${serializedParams}`);
     },
   });
 

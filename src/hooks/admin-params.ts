@@ -1,4 +1,5 @@
 import {
+  createSerializer,
   parseAsInteger,
   parseAsNativeArrayOf,
   parseAsString,
@@ -26,3 +27,10 @@ export function useAdminParams() {
 }
 
 export type AdminParams = inferParserType<typeof parsers>;
+
+const serializeParams = createSerializer(parsers);
+
+export function useSerializedParams() {
+  const [adminParams] = useAdminParams();
+  return serializeParams(adminParams);
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import SubmitButton from '@/components/submit-button';
+import { useSerializedParams } from '@/hooks/admin-params';
 import { useMobile } from '@/hooks/mobile';
 import { MESSAGE, ROUTES_ADMIN } from '@/lib/constants';
 import type { Album } from '@/lib/types';
@@ -35,7 +36,7 @@ interface Props {
 
 export default function DeleteAlbumModal({ album, className = '' }: Props) {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const serializedParams = useSerializedParams();
   const [open, setOpen] = useState(false);
   const mobile = useMobile();
   const { isPending, mutate } = useMutation({
@@ -68,8 +69,9 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
         throw new Error(error.message);
       }
     },
+    mutationKey: ['albums', album.id.toString()],
     onSuccess: () => {
-      navigate(`${ROUTES_ADMIN.base.href}?${searchParams.toString()}`);
+      navigate(`${ROUTES_ADMIN.base.href}${serializedParams}`);
     },
   });
 

@@ -1,9 +1,10 @@
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import SubmitButton from '@/components/submit-button';
+import { useSerializedParams } from '@/hooks/admin-params';
 import { MESSAGE, ROUTES_ADMIN } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
 import { albumSchema, type AlbumInput } from './schema';
@@ -11,7 +12,7 @@ import AlbumForm from './album-form';
 
 export default function AddAlbum() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const serializedParams = useSerializedParams();
   const form = useForm({
     defaultValues: {
       artist: '',
@@ -40,7 +41,7 @@ export default function AddAlbum() {
       }
     },
     onSuccess: () => {
-      navigate(`${ROUTES_ADMIN.base.href}?${searchParams.toString()}`);
+      navigate(`${ROUTES_ADMIN.base.href}${serializedParams}`);
     },
   });
 

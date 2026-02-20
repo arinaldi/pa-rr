@@ -1,9 +1,14 @@
-import { createContext, use, useEffect, useState } from 'react';
+import {
+  createContext,
+  use,
+  useEffect,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 import { useNavigate } from 'react-router';
 import { type Session } from '@supabase/supabase-js';
 
 import { Fallback } from '@/components/fallback';
-import { type Children } from '@/lib/types';
 import { supabase } from '@/supabase/client';
 
 interface Context {
@@ -22,7 +27,7 @@ export function useSession() {
   return context.session;
 }
 
-export function SessionProvider({ children }: Children) {
+export function SessionProvider({ children }: PropsWithChildren) {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);

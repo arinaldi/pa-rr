@@ -1,10 +1,14 @@
-import { createContext, use, useEffect, useState } from 'react';
-
-import { type Children } from '@/lib/types';
+import {
+  createContext,
+  use,
+  useEffect,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 
 export type Theme = 'dark' | 'light' | 'system';
 
-interface ThemeProviderProps extends Children {
+interface ThemeProviderProps {
   defaultTheme?: Theme;
   storageKey?: string;
 }
@@ -26,7 +30,7 @@ export function ThemeProvider({
   defaultTheme = 'system',
   storageKey = 'vite-ui-theme',
   ...props
-}: ThemeProviderProps) {
+}: PropsWithChildren<ThemeProviderProps>) {
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );

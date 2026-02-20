@@ -1,8 +1,4 @@
-import type {
-  ForwardRefExoticComponent,
-  ReactNode,
-  SVGAttributes,
-} from 'react';
+import type { ForwardRefExoticComponent, SVGAttributes } from 'react';
 
 import type { Database } from '@/supabase/db-types';
 
@@ -12,10 +8,6 @@ export type Release = Database['public']['Tables']['releases']['Row'];
 export type Song = Database['public']['Tables']['songs']['Row'];
 
 export type Callback = () => void;
-
-export interface Children {
-  children: ReactNode;
-}
 
 export interface ErrorProps {
   error: Error;

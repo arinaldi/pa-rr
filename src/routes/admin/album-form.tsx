@@ -1,4 +1,4 @@
-import { type SubmitEventHandler } from 'react';
+import type { PropsWithChildren, SubmitEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,14 +11,16 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import type { Children } from '@/lib/types';
 import { type AlbumInput } from './schema';
 
-interface Props extends Children {
+interface Props {
   onSubmit: SubmitEventHandler<HTMLFormElement>;
 }
 
-export default function AlbumForm({ children, onSubmit }: Props) {
+export default function AlbumForm({
+  children,
+  onSubmit,
+}: PropsWithChildren<Props>) {
   const form = useFormContext<AlbumInput>();
 
   return (

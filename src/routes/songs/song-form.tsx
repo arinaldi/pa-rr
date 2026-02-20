@@ -1,4 +1,4 @@
-import { type SubmitEventHandler } from 'react';
+import { type PropsWithChildren, type SubmitEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import {
@@ -8,16 +8,19 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import type { Children } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { type SongInput } from './schema';
 
-interface Props extends Children {
+interface Props {
   className?: string;
   onSubmit: SubmitEventHandler<HTMLFormElement>;
 }
 
-export default function SongForm({ children, className, onSubmit }: Props) {
+export default function SongForm({
+  children,
+  className,
+  onSubmit,
+}: PropsWithChildren<Props>) {
   const form = useFormContext<SongInput>();
 
   return (

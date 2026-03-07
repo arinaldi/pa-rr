@@ -34,13 +34,3 @@ interface ErrorResult {
 }
 
 export type MutateResult = SuccessResult | ErrorResult;
-
-export interface Route {
-  href: string;
-  icon: Icon;
-  label: string;
-  items?: {
-    href: string;
-    label: string;
-  }[];
-}

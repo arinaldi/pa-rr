@@ -48,13 +48,13 @@ export default function TopAlbums() {
                       if (a.ranking < b.ranking) return -1;
                       return 0;
                     })
-                    .map((f, index) => {
+                    .map((f) => {
                       const query = encodeURI(`${f.artist} ${f.title}`);
                       const url = `${SPOTIFY_URL}/${query}`;
 
                       return (
                         <li
-                          key={index}
+                          key={f.id}
                           className="text-muted-foreground text-sm"
                         >
                           <span>{f.artist} &ndash;</span>{' '}

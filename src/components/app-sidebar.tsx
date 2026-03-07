@@ -19,7 +19,7 @@ import {
   SidebarTrigger,
   SIDEBAR_COOKIE_NAME,
 } from '@/components/ui/sidebar';
-import { APP_NAME, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
+import { APP_NAME, QUERY_KEY, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
 import { getCookie } from '@/lib/utils';
 import { useSession } from './session-provider';
 import PageTitle from './page-title';
@@ -77,6 +77,7 @@ export function AppSidebar() {
                       href: ROUTES_ADMIN.base.href,
                       icon: Lock,
                       label: ROUTES_ADMIN.base.label,
+                      queryKey: QUERY_KEY.ALBUMS,
                     }}
                   />
                 </SidebarMenu>

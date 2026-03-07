@@ -1,6 +1,6 @@
 import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 
-import type { Route } from '@/lib/types';
+import type { Icon } from '@/lib/types';
 
 export const APP_NAME = 'Perfect Albums';
 
@@ -61,15 +61,40 @@ export const ROUTE_HREF = {
   TOP_ALBUMS: '/albums',
 };
 
+export const QUERY_KEY = {
+  ALBUMS: 'albums',
+  ALL_TIME: 'all-time-rankings',
+  ARTISTS: 'artists',
+  FEATURED_SONGS: 'featured-songs',
+  NEW_RELEASES: 'new-releases',
+  TOP_ALBUMS: 'top-albums',
+} as const;
+
+export type QueryKey = (typeof QUERY_KEY)[keyof typeof QUERY_KEY];
+
+export interface Route {
+  href: string;
+  icon: Icon;
+  label: string;
+  queryKey: QueryKey;
+  items?: {
+    href: string;
+    label: string;
+    queryKey: QueryKey;
+  }[];
+}
+
 export const ROUTES: Route[] = [
   {
     href: ROUTE_HREF.TOP_ALBUMS,
     icon: Layers,
     label: 'Top albums',
+    queryKey: QUERY_KEY.TOP_ALBUMS,
     items: [
       {
         href: ROUTE_HREF.ALL_TIME,
         label: 'All-time',
+        queryKey: QUERY_KEY.ALL_TIME,
       },
     ],
   },
@@ -77,16 +102,19 @@ export const ROUTES: Route[] = [
     href: ROUTE_HREF.FEATURED_SONGS,
     icon: Volume1,
     label: 'Featured songs',
+    queryKey: QUERY_KEY.FEATURED_SONGS,
   },
   {
     href: ROUTE_HREF.NEW_RELEASES,
     icon: Calendar,
     label: 'New releases',
+    queryKey: QUERY_KEY.NEW_RELEASES,
   },
   {
     href: ROUTE_HREF.ARTISTS,
     icon: User,
     label: 'Artists',
+    queryKey: QUERY_KEY.ARTISTS,
   },
 ];
 

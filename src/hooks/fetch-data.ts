@@ -1,8 +1,15 @@
 import { useEffect } from 'react';
-import { keepPreviousData, skipToken, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  queryOptions,
+  skipToken,
+  useQuery,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 
 import type { AdminParams } from '@/hooks/admin-params';
 import { useCountActions } from '@/hooks/count';
+import { PER_PAGE, QUERY_KEY, type QueryKey } from '@/lib/constants';
 import {
   getAdminData,
   getAlbum,
@@ -15,12 +22,70 @@ import {
   getSongs,
 } from '@/supabase/data';
 
-export function useAdminData(adminParams: AdminParams) {
-  const result = useQuery({
-    queryKey: ['albums', adminParams],
+function adminOptions(adminParams: AdminParams) {
+  return queryOptions({
+    queryKey: [QUERY_KEY.ALBUMS, adminParams],
     queryFn: () => getAdminData(adminParams),
     placeholderData: keepPreviousData,
   });
+}
+
+function allTimeRankingOptions() {
+  return queryOptions({
+    queryKey: [QUERY_KEY.ALL_TIME],
+    queryFn: getAllTimeRankings,
+  });
+}
+
+function artistOptions() {
+  return queryOptions({
+    queryKey: [QUERY_KEY.ARTISTS],
+    queryFn: getArtists,
+  });
+}
+
+function releaseOptions() {
+  return queryOptions({
+    queryKey: [QUERY_KEY.NEW_RELEASES],
+    queryFn: getReleases,
+  });
+}
+
+function songOptions() {
+  return queryOptions({
+    queryKey: [QUERY_KEY.FEATURED_SONGS],
+    queryFn: getSongs,
+  });
+}
+
+function topAlbumOptions() {
+  return queryOptions({
+    queryKey: [QUERY_KEY.TOP_ALBUMS],
+    queryFn: getFavorites,
+  });
+}
+
+export const QUERY_OPTIONS: Record<
+  QueryKey,
+  UseQueryOptions<any, any, any, any>
+> = {
+  [QUERY_KEY.ALBUMS]: adminOptions({
+    direction: '',
+    page: 1,
+    perPage: PER_PAGE.SMALL,
+    search: '',
+    sort: '',
+    status: [],
+  }),
+  [QUERY_KEY.ALL_TIME]: allTimeRankingOptions(),
+  [QUERY_KEY.ARTISTS]: artistOptions(),
+  [QUERY_KEY.FEATURED_SONGS]: songOptions(),
+  [QUERY_KEY.NEW_RELEASES]: releaseOptions(),
+  [QUERY_KEY.TOP_ALBUMS]: topAlbumOptions(),
+};
+
+export function useAdminData(adminParams: AdminParams) {
+  const result = useQuery(adminOptions(adminParams));
   useSetCount(result.data?.count);
 
   return result;
@@ -45,40 +110,28 @@ export function useAllTimeData(search: string) {
 }
 
 export function useAllTimeRankings() {
-  const result = useQuery({
-    queryKey: ['all-time-rankings'],
-    queryFn: getAllTimeRankings,
-  });
+  const result = useQuery(allTimeRankingOptions());
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useArtists() {
-  const result = useQuery({
-    queryKey: ['artists'],
-    queryFn: getArtists,
-  });
+  const result = useQuery(artistOptions());
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useFeaturedSongs() {
-  const result = useQuery({
-    queryKey: ['featured-songs'],
-    queryFn: getSongs,
-  });
+  const result = useQuery(songOptions());
   useSetCount(result.data?.count);
 
   return result;
 }
 
 export function useNewReleases() {
-  const result = useQuery({
-    queryKey: ['new-releases'],
-    queryFn: getReleases,
-  });
+  const result = useQuery(releaseOptions());
   useSetCount(result.data?.count);
 
   return result;
@@ -95,10 +148,7 @@ export function useRankingsByYear(year: string | undefined) {
 }
 
 export function useTopAlbums() {
-  const result = useQuery({
-    queryKey: ['top-albums'],
-    queryFn: getFavorites,
-  });
+  const result = useQuery(topAlbumOptions());
   useSetCount(result.data?.count);
 
   return result;

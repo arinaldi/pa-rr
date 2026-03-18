@@ -12,6 +12,7 @@ export function useMobile() {
     };
 
     mql.addEventListener('change', onChange);
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setMobile(window.innerWidth < MOBILE_BREAKPOINT);
 
     return () => mql.removeEventListener('change', onChange);

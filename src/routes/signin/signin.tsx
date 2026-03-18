@@ -17,7 +17,6 @@ export default function SignIn() {
     },
     resolver: zodResolver(emailSchema),
   });
-  // eslint-disable-next-line react-hooks/incompatible-library
   const email = form.watch('email');
 
   function onCancel() {

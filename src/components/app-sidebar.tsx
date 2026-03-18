@@ -23,7 +23,9 @@ import { APP_NAME, QUERY_KEY, ROUTES, ROUTES_ADMIN } from '@/lib/constants';
 import { getCookie } from '@/lib/utils';
 import { useSession } from './session-provider';
 import PageTitle from './page-title';
-import UserMenu from './user-menu';
+import { ThemeSelector } from './theme-selector';
+import { NavSecondary } from './nav-secondary';
+import { NavUser } from './nav-user';
 
 export function AppSidebar() {
   const session = useSession();
@@ -84,17 +86,23 @@ export function AppSidebar() {
               </SidebarGroupContent>
             </SidebarGroup>
           )}
+          <NavSecondary className="mt-auto" />
         </SidebarContent>
-        <SidebarFooter>
-          <UserMenu />
-        </SidebarFooter>
+        {session && (
+          <SidebarFooter>
+            <NavUser user={session.user} />
+          </SidebarFooter>
+        )}
         <SidebarRail />
       </Sidebar>
       <SidebarInset>
         <header className="flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <PageTitle />
+          <div className="flex w-full items-center justify-between gap-2 px-4">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger className="-ml-1" />
+              <PageTitle />
+            </div>
+            <ThemeSelector />
           </div>
         </header>
         <div className="isolate p-4">

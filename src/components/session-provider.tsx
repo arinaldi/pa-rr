@@ -55,3 +55,5 @@ export function SessionProvider({ children }: PropsWithChildren) {
     </SessionContext>
   );
 }
+
+export type { Session };

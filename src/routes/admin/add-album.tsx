@@ -10,6 +10,8 @@ import { supabase } from '@/supabase/client';
 import { albumSchema, type AlbumInput } from './schema';
 import AlbumForm from './album-form';
 
+const thisYear = new Date().getFullYear();
+
 export default function AddAlbum() {
   const navigate = useNavigate();
   const serializedParams = useSerializedParams();
@@ -17,7 +19,7 @@ export default function AddAlbum() {
     defaultValues: {
       artist: '',
       title: '',
-      year: new Date().getFullYear(),
+      year: thisYear,
       studio: false,
       cd: false,
       wishlist: false,

@@ -21,12 +21,12 @@ export default function FeaturedSongs() {
           return (
             <div key={letter}>
               <h2
-                className="border-b pb-2 text-xl font-semibold tracking-tight"
+                className="border-b pb-2 text-lg font-semibold tracking-tight"
                 id={`letter-${letter}`}
               >
                 {letter}
               </h2>
-              <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <ul className="mt-4 grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {data.map((s) => (
                   <li key={s.id} className="text-sm">
                     <span className="flex items-center gap-2">

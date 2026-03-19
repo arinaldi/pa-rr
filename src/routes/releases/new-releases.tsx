@@ -19,7 +19,7 @@ export default function NewReleases() {
           .sort(sortReleases)
           .map(([date, data]) => (
             <div key={date}>
-              <h2 className="bg-accent flex items-center gap-2 rounded-md px-3 py-2 text-xl font-semibold tracking-tight">
+              <h2 className="bg-accent flex items-center gap-2 rounded-md px-3 py-1.5 font-semibold tracking-tight">
                 {date}
                 <Badge className="bg-background" variant="outline">
                   {data.length.toLocaleString()}
@@ -30,7 +30,7 @@ export default function NewReleases() {
                   <li
                     key={r.id}
                     className={cn(
-                      'grid grid-cols-2 gap-2 p-3 sm:grid-cols-[1fr_2fr]',
+                      'grid grid-cols-2 items-center gap-4 px-3 py-1.5 sm:grid-cols-[1fr_2fr]',
                       i < data.length - 1 && 'border-b',
                     )}
                   >

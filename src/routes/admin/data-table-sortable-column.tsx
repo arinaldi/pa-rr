@@ -30,7 +30,7 @@ export function DataTableSortableColumn({ sortKey }: Props) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            className="data-[state=open]:bg-accent -ml-3 h-8 text-xs capitalize"
+            className="-ml-3 capitalize data-[state=open]:bg-accent"
             size="sm"
             variant="ghost"
           >
@@ -46,16 +46,16 @@ export function DataTableSortableColumn({ sortKey }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onSelect={() => onClick('asc')}>
-            <ArrowUp className="text-muted-foreground/70 size-3.5" />
+            <ArrowUp className="size-3.5 text-muted-foreground/70" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => onClick('desc')}>
-            <ArrowDown className="text-muted-foreground/70 size-3.5" />
+            <ArrowDown className="size-3.5 text-muted-foreground/70" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={() => onClick('clear')}>
-            <X className="text-muted-foreground/70 size-3.5" />
+            <X className="size-3.5 text-muted-foreground/70" />
             Clear
           </DropdownMenuItem>
         </DropdownMenuContent>

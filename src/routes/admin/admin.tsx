@@ -66,7 +66,7 @@ export default function Admin() {
           <div className="mt-4 rounded-md border">
             <Table>
               <TableHeader>
-                <TableRow className="text-xs">
+                <TableRow>
                   <DataTableSortableColumn sortKey="artist" />
                   <DataTableSortableColumn sortKey="year" />
                   <DataTableSortableColumn sortKey="title" />
@@ -87,10 +87,10 @@ export default function Admin() {
                     <TableCell>{a.year}</TableCell>
                     <TableCell>
                       {a.cd && (
-                        <Disc className="text-muted-foreground mr-1 mb-0.5 inline size-4" />
+                        <Disc className="mr-1 mb-0.5 inline size-4 text-muted-foreground" />
                       )}
                       {a.wishlist && (
-                        <HeartPlus className="text-muted-foreground mr-1 mb-0.5 inline size-4" />
+                        <HeartPlus className="mr-1 mb-0.5 inline size-4 text-muted-foreground" />
                       )}
                       <span
                         className={cn(a.studio ? 'font-medium' : 'font-light')}
@@ -98,7 +98,7 @@ export default function Admin() {
                         {a.title}
                       </span>
                       {a.favorite && (
-                        <Check className="text-muted-foreground mb-0.5 ml-1 inline size-4" />
+                        <Check className="mb-0.5 ml-1 inline size-4 text-muted-foreground" />
                       )}
                     </TableCell>
                     <TableCell className="flex justify-end"></TableCell>

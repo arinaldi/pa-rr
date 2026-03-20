@@ -5,7 +5,6 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react';
-import { useNavigate } from 'react-router';
 import { type Session } from '@supabase/supabase-js';
 
 import { Fallback } from '@/components/fallback';
@@ -28,7 +27,6 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +45,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, []);
 
   return (
     <SessionContext value={{ session }}>

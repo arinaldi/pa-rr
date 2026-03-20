@@ -40,10 +40,11 @@ export function DataTablePagination({ total }: Props) {
           <PaginationContent className="gap-2">
             <PaginationItem>
               <Button
+                className="rounded-full"
                 disabled={isFirstPage}
                 onClick={() => setPage(1)}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 <span className="sr-only">Go to first page</span>
                 <ChevronsLeft className="size-4" />
@@ -51,10 +52,11 @@ export function DataTablePagination({ total }: Props) {
             </PaginationItem>
             <PaginationItem>
               <Button
+                className="rounded-full"
                 disabled={isFirstPage}
                 onClick={() => setPage(page - 1)}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 <span className="sr-only">Go to previous page</span>
                 <ChevronLeft className="size-4" />
@@ -62,10 +64,11 @@ export function DataTablePagination({ total }: Props) {
             </PaginationItem>
             <PaginationItem>
               <Button
+                className="rounded-full"
                 disabled={isLastPage}
                 onClick={() => setPage(page + 1)}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 <span className="sr-only">Go to next page</span>
                 <ChevronRight className="size-4" />
@@ -73,10 +76,11 @@ export function DataTablePagination({ total }: Props) {
             </PaginationItem>
             <PaginationItem>
               <Button
+                className="rounded-full"
                 disabled={isLastPage}
                 onClick={() => setPage(lastPage)}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 <span className="sr-only">Go to last page</span>
                 <ChevronsRight className="size-4" />
@@ -91,10 +95,11 @@ export function DataTablePagination({ total }: Props) {
           <PaginationContent className="gap-2">
             <PaginationItem>
               <Button
+                className="rounded-full"
                 disabled={isFirstPage}
                 onClick={() => setPage(page - 1)}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 <span className="sr-only">Go to previous page</span>
                 <ChevronLeft className="size-4" />
@@ -102,10 +107,11 @@ export function DataTablePagination({ total }: Props) {
             </PaginationItem>
             <PaginationItem>
               <Button
+                className="rounded-full"
                 disabled={isLastPage}
                 onClick={() => setPage(page + 1)}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 <span className="sr-only">Go to next page</span>
                 <ChevronRight className="size-4" />

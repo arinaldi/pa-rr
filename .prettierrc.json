@@ -5,6 +5,8 @@
   "insertPragma": false,
   "jsxSingleQuote": false,
   "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "src/index.css",
+  "tailwindFunctions": ["cn", "cva"],
   "pluginSearchDirs": false,
   "printWidth": 80,
   "proseWrap": "preserve",

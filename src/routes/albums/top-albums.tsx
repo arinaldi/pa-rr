@@ -41,7 +41,7 @@ export default function TopAlbums() {
                 </div>
               </CardHeader>
               <CardContent>
-                <ol className="ml-4 list-decimal space-y-1">
+                <ol className="list-decimal space-y-1 [&>li]:ml-6">
                   {favorites
                     .sort((a, b) => {
                       if (a.ranking > b.ranking) return 1;
@@ -55,11 +55,11 @@ export default function TopAlbums() {
                       return (
                         <li
                           key={f.id}
-                          className="text-muted-foreground text-sm"
+                          className="text-sm text-muted-foreground"
                         >
                           <span>{f.artist} &ndash;</span>{' '}
                           <a
-                            className="text-foreground hover:text-muted-foreground underline underline-offset-4"
+                            className="text-foreground underline underline-offset-4 hover:text-muted-foreground"
                             href={url}
                             rel="noopener noreferrer"
                             target="_blank"

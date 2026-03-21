@@ -1,86 +1,49 @@
-export async function getAccessToken() {
-  const res = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `grant_type=client_credentials&client_id=${import.meta.env.VITE_SPOTIFY_CLIENT_ID}&client_secret=${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`,
-  });
-  const data = await res.json();
-
-  return data?.access_token ?? null;
+interface Pagination {
+  page: number;
+  pages: number;
+  per_page: number;
+  items: number;
+  urls: Record<string, string>;
 }
 
-export async function getArtistId(
-  token: string,
-  artist: string,
-): Promise<string | null> {
-  const res = await fetch(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(artist)}&type=artist&limit=1`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+interface ArtistSearch {
+  pagination: Pagination;
+  results: {
+    id: number;
+    type: string;
+    master_id: number | null;
+    master_url: string | null;
+    uri: string;
+    title: string;
+    thumb: string;
+    cover_image: string;
+    resource_url: string;
+  }[];
+}
+
+export interface ArtistReleases {
+  pagination: Pagination;
+  releases: {
+    id: number;
+    title: string;
+    type: string;
+    main_release: number;
+    artist: string;
+    role: string;
+    resource_url: string;
+    year: number;
+  }[];
+}
+
+export async function getReleases(artist: string) {
+  const searchRes = await fetch(
+    `https://api.discogs.com/database/search?q=${encodeURIComponent(artist)}&type=artist&per_page=1`,
   );
-  const data = await res.json();
-  const artistId = data?.artists?.items[0]?.id ?? null;
+  const searchData = (await searchRes.json()) as ArtistSearch;
+  const resourceUrl = searchData.results[0]?.resource_url;
+  const releasesUrl = `${resourceUrl}/releases?sort=year&sort_order=desc`;
+  const releasesRes = await fetch(releasesUrl);
+  const releasesData = (await releasesRes.json()) as ArtistReleases;
 
-  return artistId;
-}
-
-interface SpotifyItem {
-  album_type: string;
-  total_tracks: number;
-  external_urls: {
-    spotify: string;
-  };
-  id: string;
-  name: string;
-  release_date: string;
-}
-
-interface SpotifyAlbums {
-  href: string;
-  total: number;
-  items: SpotifyItem[];
-}
-
-export interface Result {
-  date: string;
-  href: string;
-  id: string;
-  name: string;
-  type: string;
-}
-
-export async function getArtistAlbums(
-  token: string,
-  artistId: string,
-): Promise<Result[]> {
-  const res = await fetch(
-    `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album%2Csingle`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-  const data: SpotifyAlbums = await res.json();
-
-  return (
-    data?.items?.map((item) => ({
-      date: item.release_date,
-      href: item.external_urls.spotify,
-      id: item.id,
-      name: item.name,
-      type: item.album_type,
-    })) ?? []
-  );
-}
-
-export function sortByDateDesc(a: Result, b: Result) {
-  if (a.date > b.date) return -1;
-  if (a.date < b.date) return 1;
-  return 0;
+  return releasesData.releases;
 }

@@ -16,19 +16,12 @@ import { useSession } from '@/components/session-provider';
 import { useArtists } from '@/hooks/fetch-data';
 import { MESSAGE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import {
-  getAccessToken,
-  getArtistAlbums,
-  getArtistId,
-  sortByDateDesc,
-  type Result,
-} from './helpers';
+import { getReleases, type ArtistReleases } from './helpers';
 import Random from './random';
 
 interface State {
   artist: string;
-  data: Result[];
-  token: string;
+  data: ArtistReleases['releases'];
 }
 
 export default function Artists() {
@@ -41,42 +34,22 @@ export default function Artists() {
   const [results, setResults] = useState<State>({
     artist: '',
     data: [],
-    token: '',
   });
   const filteredArtists = search
     ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
     : artists;
 
   async function fetchReleases(artist: string) {
-    let { token } = results;
     setFetching(true);
 
     try {
-      if (!token) {
-        token = await getAccessToken();
-
-        if (!token) {
-          throw new Error('No access token');
-        }
-      }
-
-      const artistId = await getArtistId(token, artist);
-
-      if (!artistId) {
-        throw new Error('No artist ID');
-      }
-
-      const data = await getArtistAlbums(token, artistId);
+      const data = await getReleases(artist);
 
       if (!data) {
         throw new Error('Failed to fetch releases');
       }
 
-      setResults({
-        artist,
-        data: data.sort(sortByDateDesc),
-        token,
-      });
+      setResults({ artist, data });
     } catch (error) {
       const message =
         error instanceof Error && error.message ? error.message : MESSAGE.ERROR;
@@ -119,7 +92,7 @@ export default function Artists() {
             </InputGroupAddon>
           )}
         </InputGroup>
-        <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
+        <ScrollArea className="max-h-100 rounded-md border sm:max-h-200">
           <div className="p-4">
             {filteredArtists.map((a, index) => {
               if (session) {
@@ -127,7 +100,7 @@ export default function Artists() {
                   <div key={a}>
                     <Button
                       className={cn(
-                        'text-foreground block h-auto px-0 py-0.5 text-left text-sm',
+                        'block h-auto px-0 py-0.5 text-left text-sm text-foreground',
                         results.artist === a ? 'font-semibold' : 'font-normal',
                       )}
                       disabled={fetching}
@@ -159,7 +132,7 @@ export default function Artists() {
       <div className="flex shrink-0 flex-col gap-4">
         <Random artists={artists} />
         {results.data.length > 0 && (
-          <ScrollArea className="max-h-[400px] rounded-md border sm:max-h-[800px]">
+          <ScrollArea className="max-h-100 rounded-md border sm:max-h-200">
             <div className="p-4">
               <h4 className="text-sm font-medium">
                 {results.data.length.toLocaleString()}{' '}
@@ -167,20 +140,23 @@ export default function Artists() {
               </h4>
               <ul className="mt-4 space-y-4">
                 {results.data.map((item) => (
-                  <li className="space-y-1 text-sm" key={item.id}>
+                  <li
+                    className="space-y-1 text-sm"
+                    key={`${item.id}|${item.main_release}`}
+                  >
                     <a
                       className={cn(
-                        'hover:text-muted-foreground block underline underline-offset-4',
-                        item.type === 'album' ? 'font-medium' : 'font-light',
+                        'block underline underline-offset-4 hover:text-muted-foreground',
+                        item.type === 'master' ? 'font-medium' : 'font-light',
                       )}
-                      href={item.href}
+                      href={`https://www.discogs.com/${item.type}/${item.id}`}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      {item.name}
+                      {item.title}
                     </a>
-                    <p className="text-muted-foreground font-light">
-                      {item.date}
+                    <p className="font-light text-muted-foreground">
+                      {item.year}
                     </p>
                   </li>
                 ))}

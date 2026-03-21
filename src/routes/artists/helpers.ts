@@ -27,11 +27,11 @@ export interface ArtistReleases {
     id: number;
     title: string;
     type: string;
-    main_release: number;
+    main_release?: number;
     artist: string;
     role: string;
     resource_url: string;
-    year: number;
+    year?: number;
   }[];
 }
 

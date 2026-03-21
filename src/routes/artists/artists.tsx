@@ -156,7 +156,7 @@ export default function Artists() {
                       {item.title}
                     </a>
                     <p className="font-light text-muted-foreground">
-                      {item.year}
+                      {item.year ?? <span>&ndash;</span>}
                     </p>
                   </li>
                 ))}

@@ -78,16 +78,18 @@ export default function EditAlbum() {
     <div className="max-w-sm">
       <FormProvider {...form}>
         <AlbumForm onSubmit={form.handleSubmit((data) => mutate(data))}>
-          <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
-            Save
-          </SubmitButton>
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
+            <SubmitButton className="w-full sm:w-auto" submitting={isPending}>
+              Save
+            </SubmitButton>
+            {data?.album && (
+              <DeleteAlbumModal
+                album={data.album}
+                className="w-full sm:w-auto"
+              />
+            )}
+          </div>
         </AlbumForm>
-        {data?.album && (
-          <DeleteAlbumModal
-            album={data.album}
-            className="mt-2 w-full sm:w-auto"
-          />
-        )}
       </FormProvider>
     </div>
   );

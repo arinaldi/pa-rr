@@ -50,16 +50,21 @@ export default function RemoveAllTimeRankingModal({ item, removeItem }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="size-6" size="icon" type="button" variant="ghost">
-          <X className="size-4" />
+        <Button
+          className="rounded-full"
+          size="icon-xs"
+          type="button"
+          variant="destructive"
+        >
+          <X />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Are you sure you want to remove this all-time ranking?
-          </DialogTitle>
-          <DialogDescription>This action cannot be undone</DialogDescription>
+          <DialogTitle>Remove all-time ranking</DialogTitle>
+          <DialogDescription>
+            {item.artist} &ndash; {item.title}
+          </DialogDescription>
         </DialogHeader>
         <form
           onSubmit={(event) => {

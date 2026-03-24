@@ -38,11 +38,10 @@ export default function DeleteReleaseModal({ onClose, release }: Props) {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>
-          Are you sure you want to delete {release.artist} &ndash;{' '}
-          {release.title}?
-        </DialogTitle>
-        <DialogDescription>This action cannot be undone</DialogDescription>
+        <DialogTitle>Delete release</DialogTitle>
+        <DialogDescription>
+          {release.artist} &ndash; {release.title}
+        </DialogDescription>
       </DialogHeader>
       <form
         onSubmit={(event) => {

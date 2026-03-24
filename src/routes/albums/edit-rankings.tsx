@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
-import { Reorder } from 'framer-motion';
+import { Reorder } from 'motion/react';
 
 import SubmitButton from '@/components/submit-button';
 import { useRankingsByYear } from '@/hooks/fetch-data';
 import { ROUTE_HREF } from '@/lib/constants';
 import { supabase } from '@/supabase/client';
-import AlbumCard from './album-card';
+import AlbumItem from './album-item';
 import type { AllTimeListItem } from '@/lib/formatters';
 
 export default function EditRankings() {
@@ -79,7 +79,7 @@ function Content({ favorites, year }: Props) {
       <Reorder.Group axis="y" onReorder={setItems} values={items}>
         <div className="space-y-2">
           {items.map((item, index) => (
-            <AlbumCard key={item.id} item={item} position={index + 1} />
+            <AlbumItem key={item.id} item={item} position={index + 1} />
           ))}
         </div>
       </Reorder.Group>

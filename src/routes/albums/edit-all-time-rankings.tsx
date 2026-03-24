@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
-import { Reorder } from 'framer-motion';
+import { Reorder } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
@@ -11,7 +11,7 @@ import { ROUTE_HREF } from '@/lib/constants';
 import { DataEmptyPlaceholder } from '@/routes/admin/data-empty-placeholder';
 import { DataTableSearch } from '@/routes/admin/data-table-search';
 import { supabase } from '@/supabase/client';
-import AlbumCard from './album-card';
+import AlbumItem from './album-item';
 import type { AllTimeListItem } from '@/lib/formatters';
 
 export default function EditAllTimeRankings() {
@@ -84,8 +84,8 @@ function Content({ candidates, favorites, search }: Props) {
                 >
                   <div>
                     <p className="text-sm font-medium">{c.title}</p>
-                    <p className="text-muted-foreground text-sm">{c.artist}</p>
-                    <p className="text-muted-foreground text-xs">{c.year}</p>
+                    <p className="text-sm text-muted-foreground">{c.artist}</p>
+                    <p className="text-xs text-muted-foreground">{c.year}</p>
                   </div>
                   <Button
                     disabled={items.some((i) => i.id === c.id)}
@@ -112,7 +112,7 @@ function Content({ candidates, favorites, search }: Props) {
           <Reorder.Group axis="y" onReorder={setItems} values={items}>
             <div className="space-y-2">
               {items.map((item, index) => (
-                <AlbumCard
+                <AlbumItem
                   key={item.id}
                   item={item}
                   position={index + 1}

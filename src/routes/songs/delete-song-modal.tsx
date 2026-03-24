@@ -35,10 +35,10 @@ export default function DeleteSongModal({ onClose, song }: Props) {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>
-          Are you sure you want to delete {song.artist} &ndash; {song.title}?
-        </DialogTitle>
-        <DialogDescription>This action cannot be undone</DialogDescription>
+        <DialogTitle>Delete song</DialogTitle>
+        <DialogDescription>
+          {song.artist} &ndash; {song.title}
+        </DialogDescription>
       </DialogHeader>
       <form
         onSubmit={(event) => {

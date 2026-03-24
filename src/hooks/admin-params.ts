@@ -17,18 +17,19 @@ const parsers = {
   sort: parseAsString.withDefault(''),
   status: parseAsNativeArrayOf(parseAsString),
 };
+const options = {
+  urlKeys: {
+    perPage: 'per_page',
+  },
+};
 
 export function useAdminParams() {
-  return useQueryStates(parsers, {
-    urlKeys: {
-      perPage: 'per_page',
-    },
-  });
+  return useQueryStates(parsers, options);
 }
 
 export type AdminParams = inferParserType<typeof parsers>;
 
-const serializeParams = createSerializer(parsers);
+const serializeParams = createSerializer(parsers, options);
 
 export function useSerializedParams() {
   const [adminParams] = useAdminParams();

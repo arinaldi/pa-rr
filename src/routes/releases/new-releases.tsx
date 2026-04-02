@@ -19,7 +19,7 @@ export default function NewReleases() {
           .sort(sortReleases)
           .map(([date, data]) => (
             <div key={date}>
-              <h2 className="bg-accent flex items-center gap-2 rounded-md px-3 py-1.5 font-semibold tracking-tight">
+              <h2 className="flex items-center gap-2 rounded-md bg-accent px-3 py-1.5 font-semibold tracking-tight">
                 {date}
                 <Badge className="bg-background" variant="outline">
                   {data.length.toLocaleString()}
@@ -30,15 +30,17 @@ export default function NewReleases() {
                   <li
                     key={r.id}
                     className={cn(
-                      'grid grid-cols-2 items-center gap-4 px-3 py-1.5 sm:grid-cols-[1fr_2fr]',
+                      'flex items-center justify-between gap-2 px-3 py-3',
                       i < data.length - 1 && 'border-b',
                     )}
                   >
-                    <span className="text-muted-foreground">{r.artist}</span>
-                    <span className="flex items-center gap-2">
-                      {r.title}
-                      {session && <ReleaseActions release={r} />}
-                    </span>
+                    <div className="space-y-1">
+                      <p className="leading-none font-medium">{r.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {r.artist}
+                      </p>
+                    </div>
+                    {session && <ReleaseActions release={r} />}
                   </li>
                 ))}
               </ul>

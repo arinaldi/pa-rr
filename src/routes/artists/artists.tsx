@@ -24,6 +24,11 @@ interface State {
   data: ArtistReleases['releases'];
 }
 
+const initialState: State = {
+  artist: '',
+  data: [],
+};
+
 export default function Artists() {
   const session = useSession();
   const { data } = useArtists();
@@ -31,10 +36,7 @@ export default function Artists() {
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
   const [fetching, setFetching] = useState(false);
-  const [results, setResults] = useState<State>({
-    artist: '',
-    data: [],
-  });
+  const [results, setResults] = useState<State>(initialState);
   const filteredArtists = search
     ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
     : artists;
@@ -60,6 +62,12 @@ export default function Artists() {
     setFetching(false);
   }
 
+  function reset() {
+    setResults(initialState);
+    setSearch('');
+    searchRef?.current?.focus();
+  }
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
       <div className="flex shrink-0 flex-col gap-4">
@@ -79,10 +87,7 @@ export default function Artists() {
               <InputGroupButton
                 aria-label="Clear search"
                 className="rounded-full"
-                onClick={() => {
-                  setSearch('');
-                  searchRef?.current?.focus();
-                }}
+                onClick={reset}
                 size="icon-xs"
                 title="Clear search"
               >

@@ -77,10 +77,14 @@ export default function Artists() {
           {!fetching && search && (
             <InputGroupAddon align="inline-end">
               <InputGroupButton
+                aria-label="Clear search"
+                className="rounded-full"
                 onClick={() => {
                   setSearch('');
                   searchRef?.current?.focus();
                 }}
+                size="icon-xs"
+                title="Clear search"
               >
                 <X />
               </InputGroupButton>

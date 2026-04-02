@@ -66,8 +66,9 @@ export function DataTableSearch(props: ComponentProps<'input'>) {
         <InputGroupAddon align="inline-end">
           <InputGroupButton
             aria-label="Clear search"
+            className="rounded-full"
             onClick={onClear}
-            size="icon-sm"
+            size="icon-xs"
             title="Clear search"
           >
             <X />

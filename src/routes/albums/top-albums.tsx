@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Pencil } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,10 @@ export default function TopAlbums() {
             <Card key={year}>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2" id={year}>
+                  <CardTitle
+                    className="flex items-center gap-2 font-semibold tracking-tight"
+                    id={year}
+                  >
                     {year}
                     <Badge variant="secondary">
                       {favorites.length.toLocaleString()}
@@ -33,15 +36,20 @@ export default function TopAlbums() {
                   </CardTitle>
                   {session && (
                     <Link to={ROUTE_HREF.EDIT_RANKINGS.replace(':year', year)}>
-                      <Button size="icon" variant="outline">
-                        <Pencil className="size-4" />
+                      <Button
+                        className="rounded-full"
+                        size="icon-sm"
+                        variant="ghost"
+                      >
+                        <span className="sr-only">Edit rankings</span>
+                        <SquarePen />
                       </Button>
                     </Link>
                   )}
                 </div>
               </CardHeader>
               <CardContent>
-                <ol className="list-decimal space-y-1 [&>li]:ml-6">
+                <ol className="list-decimal text-sm [&>li]:mb-3 [&>li]:ml-6">
                   {favorites
                     .sort((a, b) => {
                       if (a.ranking > b.ranking) return 1;
@@ -53,19 +61,18 @@ export default function TopAlbums() {
                       const url = `${SPOTIFY_URL}/${query}`;
 
                       return (
-                        <li
-                          key={f.id}
-                          className="text-sm text-muted-foreground"
-                        >
-                          <span>{f.artist} &ndash;</span>{' '}
+                        <li key={f.id} className="space-y-0.5 marker:text-xs">
                           <a
-                            className="text-foreground underline underline-offset-4 hover:text-muted-foreground"
+                            className="block leading-5 underline underline-offset-3 hover:text-muted-foreground"
                             href={url}
                             rel="noopener noreferrer"
                             target="_blank"
                           >
                             {f.title}
                           </a>
+                          <p className="text-xs text-muted-foreground">
+                            {f.artist}
+                          </p>
                         </li>
                       );
                     })}

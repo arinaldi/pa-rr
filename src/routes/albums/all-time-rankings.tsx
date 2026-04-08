@@ -14,7 +14,7 @@ export default function AllTimeRankings() {
   const session = useSession();
 
   return (
-    <div className="max-w-lg space-y-4">
+    <div className="max-w-md space-y-4">
       {session && (
         <Link className="block" to={ROUTE_HREF.ALL_TIME_EDIT}>
           <Button>Edit</Button>
@@ -22,23 +22,23 @@ export default function AllTimeRankings() {
       )}
       {favorites.length > 0 && (
         <>
-          <ol className="list-decimal space-y-1 [&>li]:ml-8">
+          <ol className="list-decimal space-y-1 text-sm [&>li]:mb-3 [&>li]:ml-8">
             {favorites.map((f, index) => {
               const query = encodeURI(`${f.artist} ${f.title}`);
               const url = `${SPOTIFY_URL}/${query}`;
 
               return (
                 <Fragment key={f.id}>
-                  <li className="text-sm text-muted-foreground">
-                    <span>{f.artist} &ndash;</span>{' '}
+                  <li className="space-y-0.5 marker:text-xs">
                     <a
-                      className="text-foreground underline underline-offset-4 hover:text-muted-foreground"
+                      className="block leading-5 underline underline-offset-3 hover:text-muted-foreground"
                       href={url}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
                       {f.title}
                     </a>
+                    <p className="text-xs text-muted-foreground">{f.artist}</p>
                   </li>
                   {(index + 1) % 10 === 0 && favorites[index + 1] && (
                     <Separator className="my-4" />

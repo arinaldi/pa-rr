@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EllipsisVertical, Pencil, Trash } from 'lucide-react';
+import { EllipsisVertical, SquarePen, Trash } from 'lucide-react';
 
 import type { Song } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -58,7 +58,7 @@ export default function SongActions({ song }: Props) {
             onClick={() => setModal((m) => ({ ...m, type: 'edit' }))}
           >
             <DropdownMenuItem className="flex items-center gap-2">
-              <Pencil className="size-4" />
+              <SquarePen />
               Edit
             </DropdownMenuItem>
           </DialogTrigger>
@@ -67,7 +67,7 @@ export default function SongActions({ song }: Props) {
             onClick={() => setModal((m) => ({ ...m, type: 'delete' }))}
           >
             <DropdownMenuItem className="flex items-center gap-2">
-              <Trash className="size-4" />
+              <Trash />
               Delete
             </DropdownMenuItem>
           </DialogTrigger>

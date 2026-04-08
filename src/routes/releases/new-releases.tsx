@@ -34,8 +34,8 @@ export default function NewReleases() {
                       i < data.length - 1 && 'border-b',
                     )}
                   >
-                    <div className="space-y-1">
-                      <p className="leading-none font-medium">{r.title}</p>
+                    <div className="space-y-0.5">
+                      <p className="leading-5">{r.title}</p>
                       <p className="text-xs text-muted-foreground">
                         {r.artist}
                       </p>

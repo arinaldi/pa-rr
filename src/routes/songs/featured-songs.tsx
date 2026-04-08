@@ -26,25 +26,23 @@ export default function FeaturedSongs() {
               >
                 {letter}
               </h2>
-              <ul className="mt-4 grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <ul className="mt-4 grid grid-cols-1 gap-4 text-sm md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {data.map((s) => (
-                  <li key={s.id} className="text-sm">
-                    <span className="flex items-center gap-2">
-                      <span>
-                        <span className="text-muted-foreground">
-                          {s.artist} &ndash;
-                        </span>{' '}
-                        <a
-                          className="hover:text-muted-foreground underline underline-offset-4"
-                          href={s.link}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          {s.title}
-                        </a>
-                      </span>
-                      {session && <SongActions song={s} />}
-                    </span>
+                  <li key={s.id} className="flex items-center gap-2">
+                    <div className="space-y-0.5">
+                      <a
+                        className="block leading-5 underline underline-offset-3 hover:text-muted-foreground"
+                        href={s.link}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {s.title}
+                      </a>
+                      <p className="text-xs text-muted-foreground">
+                        {s.artist}
+                      </p>
+                    </div>
+                    {session && <SongActions song={s} />}
                   </li>
                 ))}
               </ul>

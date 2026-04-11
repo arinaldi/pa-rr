@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import { Reorder } from 'motion/react';
+import { CirclePlus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import SubmitButton from '@/components/submit-button';
@@ -83,9 +84,8 @@ function Content({ candidates, favorites, search }: Props) {
                   key={c.id}
                 >
                   <div>
-                    <p className="text-sm font-medium">{c.title}</p>
-                    <p className="text-sm text-muted-foreground">{c.artist}</p>
-                    <p className="text-xs text-muted-foreground">{c.year}</p>
+                    <p className="text-sm">{c.title}</p>
+                    <p className="text-xs text-muted-foreground">{c.artist}</p>
                   </div>
                   <Button
                     disabled={items.some((i) => i.id === c.id)}
@@ -95,6 +95,7 @@ function Content({ candidates, favorites, search }: Props) {
                     size="sm"
                     variant="outline"
                   >
+                    <CirclePlus data-icon="inline-start" />
                     Add
                   </Button>
                 </div>

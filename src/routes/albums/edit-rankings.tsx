@@ -76,6 +76,7 @@ function Content({ favorites, year }: Props) {
         mutate();
       }}
     >
+      <h1 className="font-semibold tracking-tight">{year}</h1>
       <Reorder.Group axis="y" onReorder={setItems} values={items}>
         <div className="space-y-2">
           {items.map((item, index) => (

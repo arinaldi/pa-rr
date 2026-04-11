@@ -32,13 +32,13 @@ export default function AlbumItem({ item, position, removeItem }: Props) {
         variant="outline"
       >
         <ItemContent className="select-none">
-          <ItemTitle>
+          <ItemTitle className="font-normal">
             {position}. {item.title}
             {removeItem && (
               <RemoveAllTimeRankingModal item={item} removeItem={removeItem} />
             )}
           </ItemTitle>
-          <ItemDescription>{item.artist}</ItemDescription>
+          <ItemDescription className="text-xs">{item.artist}</ItemDescription>
         </ItemContent>
         <ItemActions>
           <GripVertical

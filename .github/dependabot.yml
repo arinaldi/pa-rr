@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: npm # <-- works for pnpm as well
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: saturday
+    target-branch: main
+    groups:
+      development:
+        dependency-type: 'development'
+      production:
+        dependency-type: 'production'
+    commit-message:
+      prefix: '[bot] '
+    reviewers:
+      - 'arinaldi'
+    ignore:
+      - dependency-name: '@swc/core'

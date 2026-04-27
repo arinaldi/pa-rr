@@ -40,7 +40,7 @@
   "devDependencies": {
     "@eslint-react/eslint-plugin": "^4.2.3",
     "@eslint/js": "^10.0.1",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/vite": "^4.2.4",
     "@tanstack/eslint-plugin-query": "^5.99.0",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
@@ -53,8 +53,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^4.2.2",
+    "prettier-plugin-tailwindcss": "^0.7.3",
+    "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.8"

@@ -22,3 +22,7 @@ export function getCookie(name: string) {
 
   return null;
 }
+
+export async function wait(ms = 0) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

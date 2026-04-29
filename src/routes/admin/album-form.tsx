@@ -4,11 +4,13 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Field,
-  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { type AlbumInput } from './schema';
@@ -75,80 +77,83 @@ export default function AlbumForm({
             </Field>
           )}
         />
-        <Controller
-          control={form.control}
-          name="studio"
-          render={({ field }) => (
-            <Field orientation="horizontal">
-              <Checkbox
-                checked={field.value}
-                id={field.name}
-                name={field.name}
-                onCheckedChange={field.onChange}
-              />
-              <FieldContent>
-                <FieldLabel htmlFor={field.name}>Studio</FieldLabel>
-                <FieldDescription>Is this a studio album?</FieldDescription>
-              </FieldContent>
-            </Field>
-          )}
-        />
-        <Controller
-          control={form.control}
-          name="cd"
-          render={({ field }) => (
-            <Field orientation="horizontal">
-              <Checkbox
-                checked={field.value}
-                id={field.name}
-                name={field.name}
-                onCheckedChange={field.onChange}
-              />
-              <FieldContent>
-                <FieldLabel htmlFor={field.name}>CD</FieldLabel>
-                <FieldDescription>Do you own this CD?</FieldDescription>
-              </FieldContent>
-            </Field>
-          )}
-        />
-        <Controller
-          control={form.control}
-          name="wishlist"
-          render={({ field }) => (
-            <Field orientation="horizontal">
-              <Checkbox
-                checked={field.value}
-                id={field.name}
-                name={field.name}
-                onCheckedChange={field.onChange}
-              />
-              <FieldContent>
-                <FieldLabel htmlFor={field.name}>Wishlist</FieldLabel>
-                <FieldDescription>
-                  Is this CD on your wishlist?
-                </FieldDescription>
-              </FieldContent>
-            </Field>
-          )}
-        />
-        <Controller
-          control={form.control}
-          name="favorite"
-          render={({ field }) => (
-            <Field orientation="horizontal">
-              <Checkbox
-                checked={field.value}
-                id={field.name}
-                name={field.name}
-                onCheckedChange={field.onChange}
-              />
-              <FieldContent>
-                <FieldLabel htmlFor={field.name}>Favorite</FieldLabel>
-                <FieldDescription>Is this a top album?</FieldDescription>
-              </FieldContent>
-            </Field>
-          )}
-        />
+        <FieldSeparator />
+        <FieldSet>
+          <FieldLegend variant="label">Album metadata</FieldLegend>
+          <FieldDescription>
+            Select the properties for this album
+          </FieldDescription>
+          <FieldGroup className="gap-3">
+            <Controller
+              control={form.control}
+              name="studio"
+              render={({ field }) => (
+                <Field orientation="horizontal">
+                  <Checkbox
+                    checked={field.value}
+                    id={field.name}
+                    name={field.name}
+                    onCheckedChange={field.onChange}
+                  />
+                  <FieldLabel className="font-normal" htmlFor={field.name}>
+                    Studio
+                  </FieldLabel>
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="cd"
+              render={({ field }) => (
+                <Field orientation="horizontal">
+                  <Checkbox
+                    checked={field.value}
+                    id={field.name}
+                    name={field.name}
+                    onCheckedChange={field.onChange}
+                  />
+                  <FieldLabel className="font-normal" htmlFor={field.name}>
+                    CD
+                  </FieldLabel>
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="wishlist"
+              render={({ field }) => (
+                <Field orientation="horizontal">
+                  <Checkbox
+                    checked={field.value}
+                    id={field.name}
+                    name={field.name}
+                    onCheckedChange={field.onChange}
+                  />
+                  <FieldLabel className="font-normal" htmlFor={field.name}>
+                    Wishlist
+                  </FieldLabel>
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="favorite"
+              render={({ field }) => (
+                <Field orientation="horizontal">
+                  <Checkbox
+                    checked={field.value}
+                    id={field.name}
+                    name={field.name}
+                    onCheckedChange={field.onChange}
+                  />
+                  <FieldLabel className="font-normal" htmlFor={field.name}>
+                    Favorite
+                  </FieldLabel>
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </FieldSet>
       </FieldGroup>
       {children}
     </form>

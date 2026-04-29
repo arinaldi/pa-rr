@@ -3,11 +3,11 @@ import { Check, Disc, HeartPlus } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { CopyButton } from '@/components/copy-button';
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
@@ -21,6 +21,8 @@ import { DataTableSearch } from './data-table-search';
 import { DataTableSortableColumn } from './data-table-sortable-column';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableResetFilters } from './data-table-reset-filters';
+
+let lastArtist = '';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -70,40 +72,53 @@ export default function Admin() {
                   <DataTableSortableColumn sortKey="artist" />
                   <DataTableSortableColumn sortKey="year" />
                   <DataTableSortableColumn sortKey="title" />
-                  <TableHead />
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {albums.map((a) => (
-                  <TableRow
-                    key={a.id}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      const to = `${ROUTES_ADMIN.edit.href.replace(':id', a.id.toString())}`;
-                      navigate(`${to}${serializedParams}`);
-                    }}
-                  >
-                    <TableCell>{a.artist}</TableCell>
-                    <TableCell>{a.year}</TableCell>
-                    <TableCell>
-                      {a.cd && (
-                        <Disc className="mr-1 mb-0.5 inline size-4 text-muted-foreground" />
-                      )}
-                      {a.wishlist && (
-                        <HeartPlus className="mr-1 mb-0.5 inline size-4 text-muted-foreground" />
-                      )}
-                      <span
-                        className={cn(a.studio ? 'font-medium' : 'font-light')}
-                      >
-                        {a.title}
-                      </span>
-                      {a.favorite && (
-                        <Check className="mb-0.5 ml-1 inline size-4 text-muted-foreground" />
-                      )}
-                    </TableCell>
-                    <TableCell className="flex justify-end"></TableCell>
-                  </TableRow>
-                ))}
+                {albums.map((album) => {
+                  const { artist } = album;
+                  const firstAppearance = artist !== lastArtist;
+                  lastArtist = artist;
+
+                  return (
+                    <TableRow
+                      key={album.id}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        const to = `${ROUTES_ADMIN.edit.href.replace(':id', album.id.toString())}`;
+                        navigate(`${to}${serializedParams}`);
+                      }}
+                    >
+                      <TableCell>
+                        <span className="flex items-center gap-1">
+                          {artist}
+                          {firstAppearance && <CopyButton value={artist} />}
+                        </span>
+                      </TableCell>
+                      <TableCell>{album.year}</TableCell>
+                      <TableCell>
+                        <span className="flex items-center gap-1">
+                          {album.cd && (
+                            <Disc className="inline size-4 text-muted-foreground" />
+                          )}
+                          {album.wishlist && (
+                            <HeartPlus className="inline size-4 text-muted-foreground" />
+                          )}
+                          <span
+                            className={cn(
+                              album.studio ? 'font-medium' : 'font-light',
+                            )}
+                          >
+                            {album.title}
+                          </span>
+                          {album.favorite && (
+                            <Check className="inline size-4 text-muted-foreground" />
+                          )}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>

@@ -49,16 +49,18 @@ export default function RemoveAllTimeRankingModal({ item, removeItem }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          className="rounded-full"
-          size="icon-xs"
-          type="button"
-          variant="destructive"
-        >
-          <X />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button
+            className="rounded-full"
+            size="icon-xs"
+            type="button"
+            variant="destructive"
+          >
+            <X />
+          </Button>
+        }
+      />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Remove all-time ranking</DialogTitle>

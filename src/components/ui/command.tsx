@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Command as CommandPrimitive } from 'cmdk';
-import { SearchIcon, CheckIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -11,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { InputGroup, InputGroupAddon } from '@/components/ui/input-group';
+import { SearchIcon, CheckIcon } from 'lucide-react';
 
 function Command({
   className,
@@ -35,11 +35,12 @@ function CommandDialog({
   className,
   showCloseButton = false,
   ...props
-}: React.ComponentProps<typeof Dialog> & {
+}: Omit<React.ComponentProps<typeof Dialog>, 'children'> & {
   title?: string;
   description?: string;
   className?: string;
   showCloseButton?: boolean;
+  children: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>

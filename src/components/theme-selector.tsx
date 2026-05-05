@@ -18,18 +18,20 @@ export function ThemeSelector() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          className="-mr-1 size-7 rounded-full"
-          size="icon"
-          variant="ghost"
-        >
-          {theme === 'light' && <Sun />}
-          {theme === 'dark' && <Moon />}
-          {theme === 'system' && <SunMoon />}
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            className="-mr-1 size-7 rounded-full"
+            size="icon"
+            variant="ghost"
+          >
+            {theme === 'light' && <Sun />}
+            {theme === 'dark' && <Moon />}
+            {theme === 'system' && <SunMoon />}
+            <span className="sr-only">Toggle theme</span>
+          </Button>
+        }
+      />
       <DropdownMenuContent
         align="end"
         className="w-(--radix-dropdown-menu-trigger-width) rounded"

@@ -1,6 +1,7 @@
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -9,6 +10,11 @@ import { useAdminParams } from '@/hooks/admin-params';
 import { PER_PAGE } from '@/lib/constants';
 
 const { SMALL, MEDIUM, LARGE } = PER_PAGE;
+const items = [
+  { label: SMALL, value: SMALL.toString() },
+  { label: MEDIUM, value: MEDIUM.toString() },
+  { label: LARGE, value: LARGE.toString() },
+];
 
 export function DataTablePerPage() {
   const [{ perPage }, setAdminParams] = useAdminParams();
@@ -17,21 +23,26 @@ export function DataTablePerPage() {
     <div className="flex items-center gap-x-2">
       <p className="text-sm font-medium">Rows per page</p>
       <Select
+        items={items}
         onValueChange={(value) => {
           setAdminParams({
             page: 1,
-            perPage: parseInt(value),
+            perPage: value ? parseInt(value) : SMALL,
           });
         }}
         value={perPage.toString()}
       >
-        <SelectTrigger className="h-8">
+        <SelectTrigger>
           <SelectValue />
         </SelectTrigger>
         <SelectContent side="top">
-          <SelectItem value={SMALL.toString()}>{SMALL}</SelectItem>
-          <SelectItem value={MEDIUM.toString()}>{MEDIUM}</SelectItem>
-          <SelectItem value={LARGE.toString()}>{LARGE}</SelectItem>
+          <SelectGroup>
+            {items.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </div>

@@ -45,52 +45,51 @@ export function DataTableFacetedFilter() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          className="h-8 border-dashed text-xs"
-          size="sm"
-          variant="outline"
-        >
-          <PlusCircle />
-          Status
-          {selectedValues.size > 0 && (
-            <>
-              <Separator
-                className="mx-2 data-[orientation=vertical]:h-4"
-                orientation="vertical"
-              />
-              <Badge
-                className="rounded-sm px-1 font-normal md:hidden"
-                variant="secondary"
-              >
-                {selectedValues.size.toLocaleString()}
-              </Badge>
-              <div className="hidden space-x-1 md:flex">
-                {selectedValues.size > 2 ? (
-                  <Badge
-                    className="rounded-sm px-1 font-normal"
-                    variant="secondary"
-                  >
-                    {selectedValues.size.toLocaleString()} selected
-                  </Badge>
-                ) : (
-                  options
-                    .filter((o) => selectedValues.has(o.value))
-                    .map((o) => (
-                      <Badge
-                        key={o.value}
-                        className="rounded-sm px-1 font-normal"
-                        variant="secondary"
-                      >
-                        {o.label}
-                      </Badge>
-                    ))
-                )}
-              </div>
-            </>
-          )}
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger
+        render={
+          <Button
+            className="h-8 border-dashed text-xs"
+            size="sm"
+            variant="outline"
+          >
+            <PlusCircle />
+            Status
+            {selectedValues.size > 0 && (
+              <>
+                <Separator className="mx-2" orientation="vertical" />
+                <Badge
+                  className="rounded-sm px-1 font-normal md:hidden"
+                  variant="secondary"
+                >
+                  {selectedValues.size.toLocaleString()}
+                </Badge>
+                <div className="hidden space-x-1 md:flex">
+                  {selectedValues.size > 2 ? (
+                    <Badge
+                      className="rounded-sm px-1 font-normal"
+                      variant="secondary"
+                    >
+                      {selectedValues.size.toLocaleString()} selected
+                    </Badge>
+                  ) : (
+                    options
+                      .filter((o) => selectedValues.has(o.value))
+                      .map((o) => (
+                        <Badge
+                          key={o.value}
+                          className="rounded-sm px-1 font-normal"
+                          variant="secondary"
+                        >
+                          {o.label}
+                        </Badge>
+                      ))
+                  )}
+                </div>
+              </>
+            )}
+          </Button>
+        }
+      />
       <PopoverContent align="start" className="w-50 p-0">
         <Command>
           <CommandInput placeholder="Search" />
@@ -104,7 +103,7 @@ export function DataTableFacetedFilter() {
                   <CommandItem key={value} onSelect={onSelect} value={value}>
                     <div
                       className={cn(
-                        'border-primary mr-2 flex size-4 items-center justify-center rounded-sm border',
+                        'mr-2 flex size-4 items-center justify-center rounded-sm border border-primary',
                         selected
                           ? 'bg-primary text-primary-foreground'
                           : 'opacity-50 [&_svg]:invisible',

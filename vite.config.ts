@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   build: {
-    chunkSizeWarningLimit: 750,
+    chunkSizeWarningLimit: 950,
     rolldownOptions: {
       output: {
         codeSplitting: {

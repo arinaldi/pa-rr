@@ -43,19 +43,22 @@ export function AppSidebar() {
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild>
-                <Link to="/">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                    <Disc className="size-4" />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{APP_NAME}</span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      The best music on the net
-                    </span>
-                  </div>
-                </Link>
-              </SidebarMenuButton>
+              <SidebarMenuButton
+                render={
+                  <Link to="/">
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                      <Disc className="size-4" />
+                    </div>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">{APP_NAME}</span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        The best music on the net
+                      </span>
+                    </div>
+                  </Link>
+                }
+                size="lg"
+              />
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>

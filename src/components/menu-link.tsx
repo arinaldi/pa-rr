@@ -41,33 +41,36 @@ export default function MenuLink({ route }: Props) {
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={active}>
-        <NavLink
-          onClick={closeMobile}
-          onFocus={() => prefetch(route.queryKey)}
-          onMouseEnter={() => prefetch(route.queryKey)}
-          to={href}
-        >
-          {({ isActive }) => (
-            <>
-              <route.icon
-                className={cn(
-                  isActive && parentActive ? '' : 'text-muted-foreground',
-                )}
-              />
-              <span
-                className={cn(
-                  isActive && parentActive
-                    ? 'font-medium'
-                    : 'text-muted-foreground',
-                )}
-              >
-                {label}
-              </span>
-            </>
-          )}
-        </NavLink>
-      </SidebarMenuButton>
+      <SidebarMenuButton
+        isActive={active}
+        render={
+          <NavLink
+            onClick={closeMobile}
+            onFocus={() => prefetch(route.queryKey)}
+            onMouseEnter={() => prefetch(route.queryKey)}
+            to={href}
+          >
+            {({ isActive }) => (
+              <>
+                <route.icon
+                  className={cn(
+                    isActive && parentActive ? '' : 'text-muted-foreground',
+                  )}
+                />
+                <span
+                  className={cn(
+                    isActive && parentActive
+                      ? 'font-medium'
+                      : 'text-muted-foreground',
+                  )}
+                >
+                  {label}
+                </span>
+              </>
+            )}
+          </NavLink>
+        }
+      />
       {items && (
         <SidebarMenuSub>
           {items.map((item) => {
@@ -75,24 +78,27 @@ export default function MenuLink({ route }: Props) {
 
             return (
               <SidebarMenuSubItem key={item.label}>
-                <SidebarMenuSubButton asChild isActive={subActive}>
-                  <NavLink
-                    onClick={closeMobile}
-                    onFocus={() => prefetch(item.queryKey)}
-                    onMouseEnter={() => prefetch(item.queryKey)}
-                    to={item.href}
-                  >
-                    {({ isActive }) => (
-                      <span
-                        className={cn(
-                          isActive ? 'font-medium' : 'text-muted-foreground',
-                        )}
-                      >
-                        {item.label}
-                      </span>
-                    )}
-                  </NavLink>
-                </SidebarMenuSubButton>
+                <SidebarMenuSubButton
+                  isActive={subActive}
+                  render={
+                    <NavLink
+                      onClick={closeMobile}
+                      onFocus={() => prefetch(item.queryKey)}
+                      onMouseEnter={() => prefetch(item.queryKey)}
+                      to={item.href}
+                    >
+                      {({ isActive }) => (
+                        <span
+                          className={cn(
+                            isActive ? 'font-medium' : 'text-muted-foreground',
+                          )}
+                        >
+                          {item.label}
+                        </span>
+                      )}
+                    </NavLink>
+                  }
+                />
               </SidebarMenuSubItem>
             );
           })}

@@ -1,12 +1,12 @@
 import * as React from 'react';
+
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   MoreHorizontalIcon,
 } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
@@ -50,18 +50,19 @@ function PaginationLink({
 }: PaginationLinkProps) {
   return (
     <Button
-      asChild
       variant={isActive ? 'outline' : 'ghost'}
       size={size}
       className={cn(className)}
-    >
-      <a
-        aria-current={isActive ? 'page' : undefined}
-        data-slot="pagination-link"
-        data-active={isActive}
-        {...props}
-      />
-    </Button>
+      nativeButton={false}
+      render={
+        <a
+          aria-current={isActive ? 'page' : undefined}
+          data-slot="pagination-link"
+          data-active={isActive}
+          {...props}
+        />
+      }
+    />
   );
 }
 
@@ -77,7 +78,7 @@ function PaginationPrevious({
       className={cn('pl-1.5!', className)}
       {...props}
     >
-      <ChevronLeftIcon data-icon="inline-start" className="cn-rtl-flip" />
+      <ChevronLeftIcon data-icon="inline-start" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   );
@@ -96,7 +97,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">{text}</span>
-      <ChevronRightIcon data-icon="inline-end" className="cn-rtl-flip" />
+      <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   );
 }

@@ -7,9 +7,8 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import DeleteSongModal from './delete-song-modal';
@@ -40,37 +39,41 @@ export default function SongActions({ song }: Props) {
       onOpenChange={(open) => setModal((m) => ({ ...m, open }))}
     >
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            className="shrink-0 rounded-full"
-            size="icon-sm"
-            variant="ghost"
-          >
-            <span className="sr-only">Open menu</span>
-            <EllipsisVertical />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DialogTrigger
-            asChild
-            onClick={() => setModal((m) => ({ ...m, type: 'edit' }))}
-          >
-            <DropdownMenuItem className="flex items-center gap-2">
-              <SquarePen />
-              Edit
-            </DropdownMenuItem>
-          </DialogTrigger>
-          <DialogTrigger
-            asChild
-            onClick={() => setModal((m) => ({ ...m, type: 'delete' }))}
-          >
-            <DropdownMenuItem className="flex items-center gap-2">
-              <Trash />
-              Delete
-            </DropdownMenuItem>
-          </DialogTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              className="shrink-0 rounded-full"
+              size="icon-sm"
+              variant="ghost"
+            >
+              <span className="sr-only">Open menu</span>
+              <EllipsisVertical />
+            </Button>
+          }
+        />
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DialogTrigger
+              nativeButton={false}
+              onClick={() => setModal((m) => ({ ...m, type: 'edit' }))}
+              render={
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <SquarePen />
+                  Edit
+                </DropdownMenuItem>
+              }
+            />
+            <DialogTrigger
+              nativeButton={false}
+              onClick={() => setModal((m) => ({ ...m, type: 'delete' }))}
+              render={
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <Trash />
+                  Delete
+                </DropdownMenuItem>
+              }
+            />
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
       {modal.type === 'edit' && <EditSongModal onClose={onClose} song={song} />}

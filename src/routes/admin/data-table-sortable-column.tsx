@@ -28,33 +28,35 @@ export function DataTableSortableColumn({ sortKey }: Props) {
   return (
     <TableHead scope="col">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            className="-ml-3 capitalize data-[state=open]:bg-accent"
-            size="sm"
-            variant="ghost"
-          >
-            {sortKey}
-            {sort === sortKey && direction === 'desc' ? (
-              <ArrowDown />
-            ) : sort === sortKey && direction === 'asc' ? (
-              <ArrowUp />
-            ) : (
-              <ChevronsUpDown />
-            )}
-          </Button>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              className="-ml-3 capitalize data-[state=open]:bg-accent"
+              size="sm"
+              variant="ghost"
+            >
+              {sortKey}
+              {sort === sortKey && direction === 'desc' ? (
+                <ArrowDown />
+              ) : sort === sortKey && direction === 'asc' ? (
+                <ArrowUp />
+              ) : (
+                <ChevronsUpDown />
+              )}
+            </Button>
+          }
+        />
         <DropdownMenuContent align="start">
-          <DropdownMenuItem onSelect={() => onClick('asc')}>
+          <DropdownMenuItem onClick={() => onClick('asc')}>
             <ArrowUp className="size-3.5 text-muted-foreground/70" />
             Asc
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => onClick('desc')}>
+          <DropdownMenuItem onClick={() => onClick('desc')}>
             <ArrowDown className="size-3.5 text-muted-foreground/70" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => onClick('clear')}>
+          <DropdownMenuItem onClick={() => onClick('clear')}>
             <X className="size-3.5 text-muted-foreground/70" />
             Clear
           </DropdownMenuItem>

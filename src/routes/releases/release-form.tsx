@@ -1,6 +1,7 @@
 import type { PropsWithChildren, SubmitEventHandler } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { DatePickerInput } from '@/components/date-picker-input';
 import {
   Field,
   FieldError,
@@ -63,11 +64,10 @@ export default function ReleaseForm({
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Date</FieldLabel>
-              <Input
-                {...field}
-                aria-invalid={fieldState.invalid}
+              <DatePickerInput
                 id={field.name}
-                type="date"
+                onChange={(value) => field.onChange(value)}
+                value={field.value}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

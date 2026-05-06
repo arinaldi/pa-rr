@@ -3,7 +3,8 @@ import { Calendar, Layers, User, Volume1 } from 'lucide-react';
 import type { Icon } from '@/lib/types';
 
 export const APP_NAME = 'Perfect Albums';
-
+export const DATE_INPUT = 'yyyy-MM-dd';
+export const DATE_OUTPUT = 'MMMM d, yyyy';
 export const DEBOUNCE_IN_MS = 500;
 
 export const DECADES = [

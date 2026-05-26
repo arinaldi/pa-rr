@@ -101,6 +101,9 @@ export default function Admin() {
                           {album.cd && (
                             <Disc className="inline size-4 text-muted-foreground" />
                           )}
+                          {album.favorite && (
+                            <Check className="inline size-4 text-muted-foreground" />
+                          )}
                           {album.wishlist && (
                             <HeartPlus className="inline size-4 text-muted-foreground" />
                           )}
@@ -111,9 +114,6 @@ export default function Admin() {
                           >
                             {album.title}
                           </span>
-                          {album.favorite && (
-                            <Check className="inline size-4 text-muted-foreground" />
-                          )}
                         </span>
                       </TableCell>
                     </TableRow>

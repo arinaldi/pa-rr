@@ -31,97 +31,94 @@ export function DataTablePagination({ total }: Props) {
   return (
     <>
       {/* Desktop version */}
-      <Pagination className="mt-4 hidden px-2 sm:flex sm:items-center sm:justify-end">
-        <div className="flex items-center gap-10">
-          <DataTablePerPage />
-          <p className="text-sm font-medium">
-            Page {page.toLocaleString()} of {lastPage.toLocaleString()}
-          </p>
-          <PaginationContent className="gap-2">
-            <PaginationItem>
-              <Button
-                className="rounded-full"
-                disabled={isFirstPage}
-                onClick={() => setPage(1)}
-                size="icon"
-                variant="ghost"
-              >
-                <span className="sr-only">Go to first page</span>
-                <ChevronsLeft className="size-4" />
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                className="rounded-full"
-                disabled={isFirstPage}
-                onClick={() => setPage(page - 1)}
-                size="icon"
-                variant="ghost"
-              >
-                <span className="sr-only">Go to previous page</span>
-                <ChevronLeft className="size-4" />
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                className="rounded-full"
-                disabled={isLastPage}
-                onClick={() => setPage(page + 1)}
-                size="icon"
-                variant="ghost"
-              >
-                <span className="sr-only">Go to next page</span>
-                <ChevronRight className="size-4" />
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                className="rounded-full"
-                disabled={isLastPage}
-                onClick={() => setPage(lastPage)}
-                size="icon"
-                variant="ghost"
-              >
-                <span className="sr-only">Go to last page</span>
-                <ChevronsRight className="size-4" />
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </div>
+      <Pagination className="mt-4 hidden px-2 sm:flex sm:items-center sm:justify-end sm:gap-10">
+        <DataTablePerPage />
+        <p className="text-sm font-medium">
+          Page {page.toLocaleString()} of {lastPage.toLocaleString()}
+        </p>
+        <PaginationContent className="gap-2">
+          <PaginationItem>
+            <Button
+              className="rounded-full"
+              disabled={isFirstPage}
+              onClick={() => setPage(1)}
+              size="icon"
+              variant="ghost"
+            >
+              <span className="sr-only">Go to first page</span>
+              <ChevronsLeft className="size-4" />
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <Button
+              className="rounded-full"
+              disabled={isFirstPage}
+              onClick={() => setPage(page - 1)}
+              size="icon"
+              variant="ghost"
+            >
+              <span className="sr-only">Go to previous page</span>
+              <ChevronLeft className="size-4" />
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <Button
+              className="rounded-full"
+              disabled={isLastPage}
+              onClick={() => setPage(page + 1)}
+              size="icon"
+              variant="ghost"
+            >
+              <span className="sr-only">Go to next page</span>
+              <ChevronRight className="size-4" />
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <Button
+              className="rounded-full"
+              disabled={isLastPage}
+              onClick={() => setPage(lastPage)}
+              size="icon"
+              variant="ghost"
+            >
+              <span className="sr-only">Go to last page</span>
+              <ChevronsRight className="size-4" />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
       </Pagination>
       {/* Mobile version */}
-      <Pagination className="mt-4 justify-end px-2 sm:hidden">
-        <div className="flex items-center gap-4">
-          <PaginationContent className="gap-2">
-            <PaginationItem>
-              <Button
-                className="rounded-full"
-                disabled={isFirstPage}
-                onClick={() => setPage(page - 1)}
-                size="icon"
-                variant="ghost"
-              >
-                <span className="sr-only">Go to previous page</span>
-                <ChevronLeft className="size-4" />
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                className="rounded-full"
-                disabled={isLastPage}
-                onClick={() => setPage(page + 1)}
-                size="icon"
-                variant="ghost"
-              >
-                <span className="sr-only">Go to next page</span>
-                <ChevronRight className="size-4" />
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-          <p className="text-sm font-medium">
-            Page {page.toLocaleString()} of {lastPage.toLocaleString()}
-          </p>
-        </div>
+      <Pagination className="mt-4 flex-wrap items-center justify-between gap-2 px-2 sm:hidden">
+        <DataTablePerPage />
+        <p className="text-sm font-medium">
+          {page.toLocaleString()} of {lastPage.toLocaleString()}
+        </p>
+        <PaginationContent className="gap-2">
+          <PaginationItem>
+            <Button
+              className="rounded-full"
+              disabled={isFirstPage}
+              onClick={() => setPage(page - 1)}
+              size="icon"
+              variant="ghost"
+            >
+              <span className="sr-only">Go to previous page</span>
+              <ChevronLeft className="size-4" />
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <Button
+              className="rounded-full"
+              disabled={isLastPage}
+              onClick={() => setPage(page + 1)}
+              size="icon"
+              variant="ghost"
+            >
+              <span className="sr-only">Go to next page</span>
+              <ChevronRight className="size-4" />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
       </Pagination>
     </>
   );

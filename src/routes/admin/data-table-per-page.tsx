@@ -21,7 +21,7 @@ export function DataTablePerPage() {
 
   return (
     <div className="flex items-center gap-x-2">
-      <p className="text-sm font-medium">Rows per page</p>
+      <p className="hidden text-sm font-medium sm:block">Rows per page</p>
       <Select
         items={items}
         onValueChange={(value) => {

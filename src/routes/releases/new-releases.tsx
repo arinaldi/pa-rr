@@ -29,10 +29,7 @@ export default function NewReleases() {
                 {data.map((r, i) => (
                   <li
                     key={r.id}
-                    className={cn(
-                      'flex items-center justify-between gap-2 px-3 py-3 sm:justify-start',
-                      i < data.length - 1 && 'border-b',
-                    )}
+                    className={cn`flex items-center justify-between gap-2 px-3 py-3 sm:justify-start ${i < data.length - 1 && 'border-b'}`}
                   >
                     <div className="space-y-0.5">
                       <p className="leading-5">{r.title}</p>

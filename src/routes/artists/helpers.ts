@@ -21,6 +21,20 @@ interface ArtistSearch {
   }[];
 }
 
+export async function searchArtist(artist: string) {
+  const searchRes = await fetch(
+    `https://api.discogs.com/database/search?q=${encodeURIComponent(artist)}&type=artist&per_page=1`,
+  );
+  const searchData = (await searchRes.json()) as ArtistSearch;
+  const [result] = searchData.results;
+
+  if (!result) {
+    throw new Error('Artist not found');
+  }
+
+  return result.resource_url;
+}
+
 export interface ArtistReleases {
   pagination: Pagination;
   releases: {
@@ -35,14 +49,10 @@ export interface ArtistReleases {
   }[];
 }
 
-export async function getReleases(artist: string) {
-  const searchRes = await fetch(
-    `https://api.discogs.com/database/search?q=${encodeURIComponent(artist)}&type=artist&per_page=1`,
+export async function getReleases(resourceUrl: string) {
+  const releasesRes = await fetch(
+    `${resourceUrl}/releases?sort=year&sort_order=desc`,
   );
-  const searchData = (await searchRes.json()) as ArtistSearch;
-  const resourceUrl = searchData.results[0]?.resource_url;
-  const releasesUrl = `${resourceUrl}/releases?sort=year&sort_order=desc`;
-  const releasesRes = await fetch(releasesUrl);
   const releasesData = (await releasesRes.json()) as ArtistReleases;
 
   return releasesData.releases;

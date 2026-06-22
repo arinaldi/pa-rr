@@ -16,50 +16,59 @@ import { useSession } from '@/components/session-provider';
 import { useArtists } from '@/hooks/fetch-data';
 import { MESSAGE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { getReleases, type ArtistReleases } from './helpers';
+import { getReleases, searchArtist, type ArtistReleases } from './helpers';
 import Random from './random';
 
 interface State {
   artist: string;
+  busy: boolean;
   data: ArtistReleases['releases'];
 }
 
 const initialState: State = {
   artist: '',
+  busy: false,
   data: [],
 };
 
 export default function Artists() {
   const session = useSession();
-  const { data } = useArtists();
-  const artists = data?.artists ?? [];
+  const { data: artistsData } = useArtists();
+  const artists = artistsData?.artists ?? [];
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
-  const [fetching, setFetching] = useState(false);
   const [results, setResults] = useState<State>(initialState);
   const filteredArtists = search
     ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
     : artists;
 
   async function fetchReleases(artist: string) {
-    setFetching(true);
+    setResults({
+      artist,
+      busy: true,
+      data: [],
+    });
 
     try {
-      const data = await getReleases(artist);
+      const resourceUrl = await searchArtist(artist);
+      const releases = await getReleases(resourceUrl);
 
-      if (!data) {
+      if (!releases) {
         throw new Error('Failed to fetch releases');
       }
 
-      setResults({ artist, data });
+      setResults({
+        artist,
+        busy: false,
+        data: releases,
+      });
     } catch (error) {
       const message =
         error instanceof Error && error.message ? error.message : MESSAGE.ERROR;
 
       toast.error(message);
+      setResults((prev) => ({ ...prev, busy: false }));
     }
-
-    setFetching(false);
   }
 
   function reset() {
@@ -82,7 +91,7 @@ export default function Artists() {
           <InputGroupAddon>
             <Search />
           </InputGroupAddon>
-          {!fetching && search && (
+          {!results.busy && search && (
             <InputGroupAddon align="inline-end">
               <InputGroupButton
                 aria-label="Clear search"
@@ -95,7 +104,7 @@ export default function Artists() {
               </InputGroupButton>
             </InputGroupAddon>
           )}
-          {fetching && (
+          {results.busy && (
             <InputGroupAddon align="inline-end">
               <Spinner className="size-4" />
             </InputGroupAddon>
@@ -108,11 +117,8 @@ export default function Artists() {
                 return (
                   <div key={a}>
                     <Button
-                      className={cn(
-                        'block h-auto px-0 py-0.5 text-left text-sm text-foreground',
-                        results.artist === a ? 'font-semibold' : 'font-normal',
-                      )}
-                      disabled={fetching}
+                      className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${results.artist === a ? 'font-semibold' : 'font-normal'}`}
+                      disabled={results.busy}
                       onClick={() => fetchReleases(a)}
                       size="sm"
                       variant="link"
@@ -154,10 +160,7 @@ export default function Artists() {
                     key={`${item.id}|${item.main_release}`}
                   >
                     <a
-                      className={cn(
-                        'block underline underline-offset-4 hover:text-muted-foreground',
-                        item.type === 'master' ? 'font-medium' : 'font-light',
-                      )}
+                      className={cn`block underline underline-offset-4 hover:text-muted-foreground ${item.type === 'master' ? 'font-medium' : 'font-light'}`}
                       href={`https://www.discogs.com/${item.type}/${item.id}`}
                       rel="noopener noreferrer"
                       target="_blank"

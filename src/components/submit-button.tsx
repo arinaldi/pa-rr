@@ -23,7 +23,7 @@ export default function SubmitButton({
   return (
     <Button
       {...props}
-      className={cn(className, 'relative')}
+      className={cn`${className} relative`}
       disabled={props.disabled ?? loading}
       size={mobile ? 'lg' : 'default'}
       type="submit"
@@ -34,7 +34,7 @@ export default function SubmitButton({
         </span>
       )}
       <span
-        className={cn(loading ? 'invisible' : '', 'flex items-center gap-2')}
+        className={cn`${loading ? 'invisible' : ''} flex items-center gap-2`}
       >
         {children}
       </span>

@@ -81,7 +81,7 @@ export function AppRoutes() {
               </Routes>
               <ScrollToTop />
               <TailwindIndicator />
-              <Toaster position="top-right" richColors />
+              <Toaster position="top-center" richColors />
             </ThemeProvider>
           </SessionProvider>
         </QueryClientProvider>

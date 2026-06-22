@@ -102,12 +102,7 @@ export function DataTableFacetedFilter() {
                 return (
                   <CommandItem key={value} onSelect={onSelect} value={value}>
                     <div
-                      className={cn(
-                        'mr-2 flex size-4 items-center justify-center rounded-sm border border-primary',
-                        selected
-                          ? 'bg-primary text-primary-foreground'
-                          : 'opacity-50 [&_svg]:invisible',
-                      )}
+                      className={cn`mr-2 flex size-4 items-center justify-center rounded-sm border border-primary ${selected ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible'}`}
                     >
                       <Check className="text-current" />
                     </div>

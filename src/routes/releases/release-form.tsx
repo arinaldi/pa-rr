@@ -25,7 +25,7 @@ export default function ReleaseForm({
   const form = useFormContext<ReleaseInput>();
 
   return (
-    <form className={cn('space-y-6', className)} onSubmit={onSubmit}>
+    <form className={cn`space-y-6 ${className}`} onSubmit={onSubmit}>
       <FieldGroup>
         <Controller
           control={form.control}

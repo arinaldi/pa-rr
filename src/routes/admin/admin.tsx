@@ -108,9 +108,7 @@ export default function Admin() {
                             <HeartPlus className="inline size-4 text-muted-foreground" />
                           )}
                           <span
-                            className={cn(
-                              album.studio ? 'font-medium' : 'font-light',
-                            )}
+                            className={cn`${album.studio ? 'font-medium' : 'font-light'}`}
                           >
                             {album.title}
                           </span>

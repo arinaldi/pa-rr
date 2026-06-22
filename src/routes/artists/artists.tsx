@@ -117,10 +117,7 @@ export default function Artists() {
                 return (
                   <div key={a}>
                     <Button
-                      className={cn(
-                        'block h-auto px-0 py-0.5 text-left text-sm text-foreground',
-                        results.artist === a ? 'font-semibold' : 'font-normal',
-                      )}
+                      className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${results.artist === a ? 'font-semibold' : 'font-normal'}`}
                       disabled={results.busy}
                       onClick={() => fetchReleases(a)}
                       size="sm"
@@ -163,10 +160,7 @@ export default function Artists() {
                     key={`${item.id}|${item.main_release}`}
                   >
                     <a
-                      className={cn(
-                        'block underline underline-offset-4 hover:text-muted-foreground',
-                        item.type === 'master' ? 'font-medium' : 'font-light',
-                      )}
+                      className={cn`block underline underline-offset-4 hover:text-muted-foreground ${item.type === 'master' ? 'font-medium' : 'font-light'}`}
                       href={`https://www.discogs.com/${item.type}/${item.id}`}
                       rel="noopener noreferrer"
                       target="_blank"

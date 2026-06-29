@@ -6,7 +6,7 @@ interface Props {
   artists: string[];
 }
 
-export default function Random({ artists }: Props) {
+export function Random({ artists }: Props) {
   const [value, setValue] = useState('');
 
   function onClick() {

@@ -1,7 +1,9 @@
-import { useRef, useState } from 'react';
-import { toast } from 'sonner';
+import { Suspense, useRef, useState } from 'react';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Search, X } from 'lucide-react';
 
+import { AppMessage } from '@/components/app-message';
 import { Button } from '@/components/ui/button';
 import {
   InputGroup,
@@ -14,22 +16,9 @@ import { Separator } from '@/components/ui/separator';
 import Spinner from '@/components/spinner';
 import { useSession } from '@/components/session-provider';
 import { useArtists } from '@/hooks/fetch-data';
-import { MESSAGE } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { getReleases, searchArtist, type ArtistReleases } from './helpers';
-import Random from './random';
-
-interface State {
-  artist: string;
-  busy: boolean;
-  data: ArtistReleases['releases'];
-}
-
-const initialState: State = {
-  artist: '',
-  busy: false,
-  data: [],
-};
+import { Random } from './random';
+import { Results } from './results';
 
 export default function Artists() {
   const session = useSession();
@@ -37,42 +26,13 @@ export default function Artists() {
   const artists = artistsData?.artists ?? [];
   const searchRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
-  const [results, setResults] = useState<State>(initialState);
+  const [activeArtist, setActiveArtist] = useState('');
   const filteredArtists = search
     ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
     : artists;
 
-  async function fetchReleases(artist: string) {
-    setResults({
-      artist,
-      busy: true,
-      data: [],
-    });
-
-    try {
-      const resourceUrl = await searchArtist(artist);
-      const releases = await getReleases(resourceUrl);
-
-      if (!releases) {
-        throw new Error('Failed to fetch releases');
-      }
-
-      setResults({
-        artist,
-        busy: false,
-        data: releases,
-      });
-    } catch (error) {
-      const message =
-        error instanceof Error && error.message ? error.message : MESSAGE.ERROR;
-
-      toast.error(message);
-      setResults((prev) => ({ ...prev, busy: false }));
-    }
-  }
-
   function reset() {
-    setResults(initialState);
+    setActiveArtist('');
     setSearch('');
     searchRef?.current?.focus();
   }
@@ -91,7 +51,7 @@ export default function Artists() {
           <InputGroupAddon>
             <Search />
           </InputGroupAddon>
-          {!results.busy && search && (
+          {search && (
             <InputGroupAddon align="inline-end">
               <InputGroupButton
                 aria-label="Clear search"
@@ -104,11 +64,6 @@ export default function Artists() {
               </InputGroupButton>
             </InputGroupAddon>
           )}
-          {results.busy && (
-            <InputGroupAddon align="inline-end">
-              <Spinner className="size-4" />
-            </InputGroupAddon>
-          )}
         </InputGroup>
         <ScrollArea className="max-h-100 rounded-md border sm:max-h-200">
           <div className="p-4">
@@ -117,9 +72,8 @@ export default function Artists() {
                 return (
                   <div key={a}>
                     <Button
-                      className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${results.artist === a ? 'font-semibold' : 'font-normal'}`}
-                      disabled={results.busy}
-                      onClick={() => fetchReleases(a)}
+                      className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${activeArtist === a ? 'font-semibold' : 'font-normal'}`}
+                      onClick={() => setActiveArtist(a)}
                       size="sm"
                       variant="link"
                     >
@@ -146,36 +100,25 @@ export default function Artists() {
       </div>
       <div className="flex shrink-0 flex-col gap-4">
         <Random artists={artists} />
-        {results.data.length > 0 && (
-          <ScrollArea className="max-h-100 rounded-md border sm:max-h-200">
-            <div className="p-4">
-              <h4 className="text-sm font-medium">
-                {results.data.length.toLocaleString()}{' '}
-                {results.data.length === 1 ? 'release' : 'releases'}
-              </h4>
-              <ul className="mt-4 space-y-4">
-                {results.data.map((item) => (
-                  <li
-                    className="space-y-1 text-sm"
-                    key={`${item.id}|${item.main_release}`}
-                  >
-                    <a
-                      className={cn`block underline underline-offset-4 hover:text-muted-foreground ${item.type === 'master' ? 'font-medium' : 'font-light'}`}
-                      href={`https://www.discogs.com/${item.type}/${item.id}`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {item.title}
-                    </a>
-                    <p className="font-light text-muted-foreground">
-                      {item.year ?? <span>&ndash;</span>}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </ScrollArea>
-        )}
+        <QueryErrorResetBoundary>
+          {({ reset }) => (
+            <ErrorBoundary
+              fallbackRender={({ error, resetErrorBoundary }) => (
+                <AppMessage
+                  description={
+                    error instanceof Error ? error.message : undefined
+                  }
+                  onError={resetErrorBoundary}
+                />
+              )}
+              onReset={reset}
+            >
+              <Suspense fallback={<Spinner className="size-4" />}>
+                {activeArtist ? <Results activeArtist={activeArtist} /> : null}
+              </Suspense>
+            </ErrorBoundary>
+          )}
+        </QueryErrorResetBoundary>
       </div>
     </div>
   );

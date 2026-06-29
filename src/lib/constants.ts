@@ -126,3 +126,4 @@ export const ROUTES_ADMIN = {
 };
 
 export const SPOTIFY_URL = 'https://open.spotify.com/search';
+export const STALE_TIME_IN_MS = 60_000;

@@ -31,12 +31,6 @@ export default function Artists() {
     ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
     : artists;
 
-  function reset() {
-    setActiveArtist('');
-    setSearch('');
-    searchRef?.current?.focus();
-  }
-
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8">
       <div className="flex shrink-0 flex-col gap-4">
@@ -56,7 +50,11 @@ export default function Artists() {
               <InputGroupButton
                 aria-label="Clear search"
                 className="rounded-full"
-                onClick={reset}
+                onClick={() => {
+                  setActiveArtist('');
+                  setSearch('');
+                  searchRef?.current?.focus();
+                }}
                 size="icon-xs"
                 title="Clear search"
               >
@@ -112,6 +110,7 @@ export default function Artists() {
                 />
               )}
               onReset={reset}
+              resetKeys={[activeArtist]}
             >
               <Suspense fallback={<ResultsLoading />}>
                 {activeArtist ? <Results activeArtist={activeArtist} /> : null}

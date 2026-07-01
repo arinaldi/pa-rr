@@ -11,8 +11,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
+import { Item, ItemContent, ItemTitle } from '@/components/ui/item';
 import { useSession } from '@/components/session-provider';
 import { useArtists } from '@/hooks/fetch-data';
 import { cn } from '@/lib/utils';
@@ -63,38 +62,38 @@ export default function Artists() {
             </InputGroupAddon>
           )}
         </InputGroup>
-        <ScrollArea className="max-h-100 rounded-md border sm:max-h-200">
-          <div className="p-4">
-            {filteredArtists.map((a, index) => {
-              if (session) {
+        <div className="overflow-hidden rounded-lg border">
+          <div className="h-100 scroll-fade scrollbar-none space-y-2 overflow-y-auto p-2 scroll-fade-20 sm:h-200">
+            <h4 className="text-center text-sm font-medium">
+              {filteredArtists.length.toLocaleString()}
+              {filteredArtists.length === 1 ? ' result' : ' results'}
+            </h4>
+            <div className="flex flex-col gap-2">
+              {filteredArtists.map((a) => {
                 return (
-                  <div key={a}>
-                    <Button
-                      className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${activeArtist === a ? 'font-semibold' : 'font-normal'}`}
-                      onClick={() => setActiveArtist(a)}
-                      size="sm"
-                      variant="link"
-                    >
-                      {a}
-                    </Button>
-                    {index !== filteredArtists.length - 1 && (
-                      <Separator className="my-2" />
-                    )}
-                  </div>
+                  <Item key={a} size="xs" variant="outline">
+                    <ItemContent>
+                      <ItemTitle>
+                        {session ? (
+                          <Button
+                            className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${activeArtist === a ? 'font-semibold' : 'font-normal'}`}
+                            onClick={() => setActiveArtist(a)}
+                            size="sm"
+                            variant="link"
+                          >
+                            {a}
+                          </Button>
+                        ) : (
+                          a
+                        )}
+                      </ItemTitle>
+                    </ItemContent>
+                  </Item>
                 );
-              }
-
-              return (
-                <div key={a}>
-                  <p className="text-sm">{a}</p>
-                  {index !== filteredArtists.length - 1 && (
-                    <Separator className="my-2" />
-                  )}
-                </div>
-              );
-            })}
+              })}
+            </div>
           </div>
-        </ScrollArea>
+        </div>
       </div>
       <div className="flex shrink-0 flex-col gap-4">
         <Random artists={artists} />

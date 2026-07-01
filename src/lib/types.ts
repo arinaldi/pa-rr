@@ -9,11 +9,6 @@ export type Song = Database['public']['Tables']['songs']['Row'];
 
 export type Callback = () => void;
 
-export interface ErrorProps {
-  error: Error;
-  reset: () => void;
-}
-
 interface IconProps extends SVGAttributes<SVGElement> {
   children?: never;
   color?: string;
@@ -22,15 +17,3 @@ interface IconProps extends SVGAttributes<SVGElement> {
 export type Icon = ForwardRefExoticComponent<
   IconProps & React.RefAttributes<SVGSVGElement>
 >;
-
-interface SuccessResult {
-  data: unknown;
-  type: 'success';
-}
-
-interface ErrorResult {
-  message: string;
-  type: 'error';
-}
-
-export type MutateResult = SuccessResult | ErrorResult;

@@ -13,12 +13,12 @@ import {
 } from '@/components/ui/input-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import Spinner from '@/components/spinner';
 import { useSession } from '@/components/session-provider';
 import { useArtists } from '@/hooks/fetch-data';
 import { cn } from '@/lib/utils';
 import { Random } from './random';
 import { Results } from './results';
+import { ResultsLoading } from './results-loading';
 
 export default function Artists() {
   const session = useSession();
@@ -113,7 +113,7 @@ export default function Artists() {
               )}
               onReset={reset}
             >
-              <Suspense fallback={<Spinner className="size-4" />}>
+              <Suspense fallback={<ResultsLoading />}>
                 {activeArtist ? <Results activeArtist={activeArtist} /> : null}
               </Suspense>
             </ErrorBoundary>

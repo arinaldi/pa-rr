@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 
@@ -75,6 +75,12 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
     },
   });
 
+  function onSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    mutate();
+  }
+
   if (mobile) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
@@ -84,12 +90,7 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
           </Button>
         </DrawerTrigger>
         <DrawerContent>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              mutate();
-            }}
-          >
+          <form onSubmit={onSubmit}>
             <DrawerHeader className="text-left">
               <DrawerTitle>Delete album</DrawerTitle>
               <DrawerDescription>
@@ -135,12 +136,7 @@ export default function DeleteAlbumModal({ album, className = '' }: Props) {
             {album.artist} &ndash; {album.title}
           </DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            mutate();
-          }}
-        >
+        <form onSubmit={onSubmit}>
           <DialogFooter>
             <SubmitButton submitting={isPending} variant="destructive">
               Delete

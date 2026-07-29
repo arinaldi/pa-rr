@@ -22,8 +22,6 @@ import { DataTableSortableColumn } from './data-table-sortable-column';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { DataTableResetFilters } from './data-table-reset-filters';
 
-let lastArtist = '';
-
 export default function Admin() {
   const navigate = useNavigate();
   const [adminParams] = useAdminParams();
@@ -75,48 +73,42 @@ export default function Admin() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {albums.map((album) => {
-                  const { artist } = album;
-                  const firstAppearance = artist !== lastArtist;
-                  lastArtist = artist;
-
-                  return (
-                    <TableRow
-                      key={album.id}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const to = `${ROUTES_ADMIN.edit.href.replace(':id', album.id.toString())}`;
-                        navigate(`${to}${serializedParams}`);
-                      }}
-                    >
-                      <TableCell>
-                        <span className="flex items-center gap-1">
-                          {artist}
-                          {firstAppearance && <CopyButton value={artist} />}
+                {albums.map((a) => (
+                  <TableRow
+                    key={a.id}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const to = `${ROUTES_ADMIN.edit.href.replace(':id', a.id.toString())}`;
+                      navigate(`${to}${serializedParams}`);
+                    }}
+                  >
+                    <TableCell>
+                      <span className="flex items-center gap-1">
+                        {a.artist}
+                        <CopyButton value={a.artist} />
+                      </span>
+                    </TableCell>
+                    <TableCell>{a.year}</TableCell>
+                    <TableCell>
+                      <span className="flex items-center gap-1">
+                        {a.cd && (
+                          <Disc className="inline size-4 text-muted-foreground" />
+                        )}
+                        {a.favorite && (
+                          <Check className="inline size-4 text-muted-foreground" />
+                        )}
+                        {a.wishlist && (
+                          <HeartPlus className="inline size-4 text-muted-foreground" />
+                        )}
+                        <span
+                          className={cn`${a.studio ? 'font-medium' : 'font-light'}`}
+                        >
+                          {a.title}
                         </span>
-                      </TableCell>
-                      <TableCell>{album.year}</TableCell>
-                      <TableCell>
-                        <span className="flex items-center gap-1">
-                          {album.cd && (
-                            <Disc className="inline size-4 text-muted-foreground" />
-                          )}
-                          {album.favorite && (
-                            <Check className="inline size-4 text-muted-foreground" />
-                          )}
-                          {album.wishlist && (
-                            <HeartPlus className="inline size-4 text-muted-foreground" />
-                          )}
-                          <span
-                            className={cn`${album.studio ? 'font-medium' : 'font-light'}`}
-                          >
-                            {album.title}
-                          </span>
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>

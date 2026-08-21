@@ -24,7 +24,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(function initializeSession() {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
 

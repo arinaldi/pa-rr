@@ -6,19 +6,22 @@ import { supabase } from '@/supabase/client';
 export default function SignoutPage() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function signOut() {
-      const { error } = await supabase.auth.signOut();
+  useEffect(
+    function performSignout() {
+      async function signOut() {
+        const { error } = await supabase.auth.signOut();
 
-      if (error) {
-        throw new Error(error.message);
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        navigate('/');
       }
 
-      navigate('/');
-    }
-
-    signOut();
-  }, [navigate]);
+      signOut();
+    },
+    [navigate],
+  );
 
   return null;
 }

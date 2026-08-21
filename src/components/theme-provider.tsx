@@ -134,50 +134,56 @@ export function ThemeProvider({
 
   const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(getSystemTheme);
 
-  useEffect(() => {
-    applyTheme(themeState);
+  useEffect(
+    function applyThemeOnChange() {
+      applyTheme(themeState);
 
-    if (themeState !== 'system') {
-      return undefined;
-    }
-
-    const mediaQuery = window.matchMedia(COLOR_SCHEME_QUERY);
-    const handleChange = () => {
-      setSystemTheme(getSystemTheme());
-      applyTheme('system');
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
-  }, [themeState, applyTheme]);
-
-  useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.storageArea !== localStorage) {
-        return;
+      if (themeState !== 'system') {
+        return undefined;
       }
 
-      if (event.key !== storageKey) {
-        return;
-      }
+      const mediaQuery = window.matchMedia(COLOR_SCHEME_QUERY);
+      const handleChange = () => {
+        setSystemTheme(getSystemTheme());
+        applyTheme('system');
+      };
 
-      if (isTheme(event.newValue)) {
-        setThemeState(event.newValue);
-        return;
-      }
+      mediaQuery.addEventListener('change', handleChange);
 
-      setThemeState(defaultTheme);
-    };
+      return () => {
+        mediaQuery.removeEventListener('change', handleChange);
+      };
+    },
+    [themeState, applyTheme],
+  );
 
-    window.addEventListener('storage', handleStorageChange);
+  useEffect(
+    function handleStorageChange() {
+      const handleStorageChange = (event: StorageEvent) => {
+        if (event.storageArea !== localStorage) {
+          return;
+        }
 
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, [defaultTheme, storageKey]);
+        if (event.key !== storageKey) {
+          return;
+        }
+
+        if (isTheme(event.newValue)) {
+          setThemeState(event.newValue);
+          return;
+        }
+
+        setThemeState(defaultTheme);
+      };
+
+      window.addEventListener('storage', handleStorageChange);
+
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
+    },
+    [defaultTheme, storageKey],
+  );
 
   const resolvedTheme = useMemo(
     () => (themeState === 'system' ? systemTheme : themeState),
@@ -193,33 +199,36 @@ export function ThemeProvider({
     setTheme('system');
   }, [themeState, resolvedTheme, setTheme]);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat) {
-        return;
-      }
+  useEffect(
+    function handleKeyDown() {
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.repeat) {
+          return;
+        }
 
-      if (event.metaKey || event.ctrlKey || event.altKey) {
-        return;
-      }
+        if (event.metaKey || event.ctrlKey || event.altKey) {
+          return;
+        }
 
-      if (isEditableTarget(event.target)) {
-        return;
-      }
+        if (isEditableTarget(event.target)) {
+          return;
+        }
 
-      if (event.key.toLowerCase() !== 'd') {
-        return;
-      }
+        if (event.key.toLowerCase() !== 'd') {
+          return;
+        }
 
-      toggleTheme();
-    };
+        toggleTheme();
+      };
 
-    window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keydown', handleKeyDown);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [toggleTheme]);
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    },
+    [toggleTheme],
+  );
 
   const value = useMemo(
     () => ({

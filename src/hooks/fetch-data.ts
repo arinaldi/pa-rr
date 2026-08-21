@@ -157,11 +157,14 @@ export function useTopAlbums() {
 function useSetCount(count: number | undefined) {
   const { setCount } = useCountActions();
 
-  useEffect(() => {
-    if (count) {
-      setCount(count);
-    }
-  }, [count, setCount]);
+  useEffect(
+    function updateCount() {
+      if (count) {
+        setCount(count);
+      }
+    },
+    [count, setCount],
+  );
 
   return null;
 }

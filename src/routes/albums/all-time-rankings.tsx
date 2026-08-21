@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { ScrollToHash } from '@/components/scroll-to-hash';
 import { useSession } from '@/components/session-provider';
 import TopLink from '@/components/top-link';
 import { useAllTimeRankings } from '@/hooks/fetch-data';
@@ -29,7 +30,10 @@ export default function AllTimeRankings() {
 
               return (
                 <Fragment key={f.id}>
-                  <li className="space-y-0.5 marker:text-xs">
+                  <li
+                    className="space-y-0.5 marker:text-xs"
+                    id={f.allTimeRanking?.toString()}
+                  >
                     <a
                       className="block leading-5 underline underline-offset-3 hover:text-muted-foreground"
                       href={url}
@@ -47,6 +51,7 @@ export default function AllTimeRankings() {
               );
             })}
           </ol>
+          <ScrollToHash />
           <TopLink />
         </>
       )}

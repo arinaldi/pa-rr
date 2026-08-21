@@ -109,16 +109,16 @@ export async function getAllTimeRankings() {
     .from('rankings')
     .select(
       `
-            all_time_position,
-            id,
-            position,
-            album:albums (
-              artist,
-              id,
-              title,
-              year
-            )
-          `,
+        all_time_position,
+        id,
+        position,
+        album:albums (
+          artist,
+          id,
+          title,
+          year
+        )
+      `,
     )
     .gte('all_time_position', 1)
     .order('all_time_position', { ascending: true });
@@ -212,6 +212,7 @@ export async function getFavorites() {
         wishlist,
         year,
         ranking:rankings (
+          all_time_position,
           position
       )
       `,

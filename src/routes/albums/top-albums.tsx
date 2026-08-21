@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { SquarePen } from 'lucide-react';
+import { SquarePen, Trophy } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -62,14 +62,29 @@ export default function TopAlbums() {
 
                       return (
                         <li key={f.id} className="space-y-0.5 marker:text-xs">
-                          <a
-                            className="block leading-5 underline underline-offset-3 hover:text-muted-foreground"
-                            href={url}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            {f.title}
-                          </a>
+                          <p className="flex gap-2">
+                            <a
+                              className="block leading-5 underline underline-offset-3 hover:text-muted-foreground"
+                              href={url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              {f.title}
+                            </a>
+                            {f.allTimeRanking && (
+                              <Badge
+                                render={
+                                  <Link
+                                    to={`${ROUTE_HREF.ALL_TIME}#${f.allTimeRanking}`}
+                                  >
+                                    <Trophy data-icon="inline-start" />
+                                    {f.allTimeRanking}
+                                  </Link>
+                                }
+                                variant="outline"
+                              />
+                            )}
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             {f.artist}
                           </p>

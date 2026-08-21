@@ -17,6 +17,7 @@ export function formatDate(isoString: string): string {
 }
 
 export interface ListItem {
+  allTimeRanking: number | null;
   artist: string;
   id: number;
   ranking: number;
@@ -27,7 +28,6 @@ export interface ListItem {
 export type FavoriteResults = Record<string, ListItem[]>;
 
 export interface AllTimeListItem extends ListItem {
-  allTimeRanking: number | null;
   rankingId: number;
 }
 
@@ -44,6 +44,7 @@ export function formatFavorites(favorites: RankedAlbum[]): FavoriteResults {
 
   favorites.forEach(({ artist, id, ranking, title, year }) => {
     const data = {
+      allTimeRanking: ranking?.all_time_position ?? null,
       artist,
       id,
       ranking: ranking?.position ?? 0,

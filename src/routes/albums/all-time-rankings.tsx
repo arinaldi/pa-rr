@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { ScrollToHash } from '@/components/scroll-to-hash';
 import { useSession } from '@/components/session-provider';
 import TopLink from '@/components/top-link';
 import { useAllTimeRankings } from '@/hooks/fetch-data';
@@ -51,7 +50,6 @@ export default function AllTimeRankings() {
               );
             })}
           </ol>
-          <ScrollToHash />
           <TopLink />
         </>
       )}

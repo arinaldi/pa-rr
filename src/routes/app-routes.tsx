@@ -19,6 +19,7 @@ import NotFound from '@/routes/not-found';
 import Playlist from '@/routes/playlist/playlist';
 import { PrivateRoute } from '@/components/private-route';
 import { PublicRoute } from '@/components/public-route';
+import { ScrollToHash } from '@/components/scroll-to-hash';
 import { SessionProvider } from '@/components/session-provider';
 import SignIn from '@/routes/signin/signin';
 import SignOut from '@/routes/signout/signout';
@@ -78,6 +79,7 @@ export function AppRoutes() {
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
+              <ScrollToHash />
               <TailwindIndicator />
               <Toaster position="top-center" richColors />
             </ThemeProvider>

@@ -21,7 +21,10 @@ export function Results({ activeArtist }: Props) {
             <Item key={`${r.id}|${r.main_release}`} size="xs" variant="muted">
               <ItemContent className="overflow-x-hidden">
                 <a
-                  className={cn`block truncate underline underline-offset-1 hover:text-muted-foreground ${r.type === 'master' ? 'font-medium' : 'font-light'}`}
+                  className={cn(
+                    'block truncate underline underline-offset-1 hover:text-muted-foreground',
+                    r.type === 'master' ? 'font-medium' : 'font-light',
+                  )}
                   href={`https://www.discogs.com/${r.type}/${r.id}`}
                   rel="noopener noreferrer"
                   target="_blank"

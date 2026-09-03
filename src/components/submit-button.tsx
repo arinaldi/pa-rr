@@ -23,7 +23,7 @@ export default function SubmitButton({
   return (
     <Button
       {...props}
-      className={cn`${className} relative`}
+      className={cn(className, 'relative')}
       disabled={props.disabled ?? loading}
       size={mobile ? 'lg' : 'default'}
       type="submit"
@@ -33,9 +33,7 @@ export default function SubmitButton({
           <Spinner className="size-4" />
         </span>
       )}
-      <span
-        className={cn`${loading ? 'invisible' : ''} flex items-center gap-2`}
-      >
+      <span className={cn('flex items-center gap-2', loading && 'invisible')}>
         {children}
       </span>
     </Button>

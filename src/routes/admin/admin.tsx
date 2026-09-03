@@ -91,6 +91,13 @@ export default function Admin() {
                     <TableCell>{a.year}</TableCell>
                     <TableCell>
                       <span className="flex items-center gap-1">
+                        <span
+                          className={cn(
+                            a.studio ? 'font-medium' : 'font-light',
+                          )}
+                        >
+                          {a.title}
+                        </span>
                         {a.cd && (
                           <Disc className="inline size-4 text-muted-foreground" />
                         )}
@@ -100,11 +107,6 @@ export default function Admin() {
                         {a.wishlist && (
                           <HeartPlus className="inline size-4 text-muted-foreground" />
                         )}
-                        <span
-                          className={cn`${a.studio ? 'font-medium' : 'font-light'}`}
-                        >
-                          {a.title}
-                        </span>
                       </span>
                     </TableCell>
                   </TableRow>

@@ -53,10 +53,16 @@ export default function MenuLink({ route }: Props) {
             {({ isActive }) => (
               <>
                 <route.icon
-                  className={cn`${isActive && parentActive ? '' : 'text-muted-foreground'}`}
+                  className={cn(
+                    isActive && parentActive ? '' : 'text-muted-foreground',
+                  )}
                 />
                 <span
-                  className={cn`${isActive && parentActive ? 'font-medium' : 'text-muted-foreground'}`}
+                  className={cn(
+                    isActive && parentActive
+                      ? 'font-medium'
+                      : 'text-muted-foreground',
+                  )}
                 >
                   {label}
                 </span>
@@ -83,7 +89,9 @@ export default function MenuLink({ route }: Props) {
                     >
                       {({ isActive }) => (
                         <span
-                          className={cn`${isActive ? 'font-medium' : 'text-muted-foreground'}`}
+                          className={cn(
+                            isActive ? 'font-medium' : 'text-muted-foreground',
+                          )}
                         >
                           {item.label}
                         </span>

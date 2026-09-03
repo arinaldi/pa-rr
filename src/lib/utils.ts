@@ -1,4 +1,4 @@
-export { cn } from 'cnfast';
+export { cn } from 'cn';
 
 export function capitalizeFirstLetter(value: string) {
   return `${value.charAt(0).toLocaleUpperCase()}${value.slice(1)}`;

@@ -76,7 +76,12 @@ export default function Artists() {
                       <ItemTitle>
                         {session ? (
                           <Button
-                            className={cn`block h-auto px-0 py-0.5 text-left text-sm text-foreground ${activeArtist === a ? 'font-semibold' : 'font-normal'}`}
+                            className={cn(
+                              'block h-auto px-0 py-0.5 text-left text-sm text-foreground',
+                              activeArtist === a
+                                ? 'font-semibold'
+                                : 'font-normal',
+                            )}
                             onClick={() => setActiveArtist(a)}
                             size="sm"
                             variant="link"

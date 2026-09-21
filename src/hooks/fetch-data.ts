@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 
 import type { AdminParams } from '@/hooks/admin-params';
-import { useCountActions } from '@/hooks/count';
+import { setCount } from '@/hooks/count';
 import { PER_PAGE, QUERY_KEY, type QueryKey } from '@/lib/constants';
 import {
   getAdminData,
@@ -155,15 +155,13 @@ export function useTopAlbums() {
 }
 
 function useSetCount(count: number | undefined) {
-  const { setCount } = useCountActions();
-
   useEffect(
     function updateCount() {
-      if (count) {
+      if (count !== undefined) {
         setCount(count);
       }
     },
-    [count, setCount],
+    [count],
   );
 
   return null;

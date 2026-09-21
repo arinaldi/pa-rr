@@ -2,22 +2,16 @@ import { create } from 'zustand';
 
 interface CountState {
   count: number;
-  actions: {
-    setCount: (count: number) => void;
-  };
 }
 
-const useCountStore = create<CountState>((set) => ({
+const useCountStore = create<CountState>(() => ({
   count: 0,
-  actions: {
-    setCount: (count: number) => set({ count }),
-  },
 }));
 
 export function useCount() {
   return useCountStore((state) => state.count);
 }
 
-export function useCountActions() {
-  return useCountStore((state) => state.actions);
+export function setCount(count: number) {
+  useCountStore.setState({ count });
 }
